@@ -181,7 +181,14 @@ export const DATA = {
         "Land quality opportunities. AI finds and applies while you focus.",
     },
   ],
-  education: [],
+  education: [] as Array<{
+    school: string;
+    degree?: string;
+    start?: string;
+    end?: string;
+    href?: string;
+    logoUrl?: string;
+  }>,
   projects: [
     {
       title: "Discord Ticket Tool",
