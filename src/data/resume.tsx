@@ -162,7 +162,7 @@ export const DATA = {
       badges: [],
       location: "Toronto, Canada",
       title: "Founder",
-      logoUrl: "/zensweat.PNG",
+      logoUrl: "/zensweat.png",
       start: "2023",
       end: "Present",
       description:
@@ -217,7 +217,7 @@ export const DATA = {
           icon: <Icons.globe className="size-3" />,
         },
       ],
-      image: "/chrome.png",
+      image: "/Chrome.png",
       video: "",
     },
     {
