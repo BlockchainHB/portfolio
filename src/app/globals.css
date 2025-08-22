@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Typography system tweaks */
+@layer utilities {
+  .type-h1 { @apply text-[24px] sm:text-[28px] leading-[1.15] tracking-[-0.01em] font-semibold text-slate-900 dark:text-slate-100; }
+  .type-h2 { @apply text-[12px] sm:text-[13px] leading-none tracking-[0.12em] uppercase font-semibold text-slate-500 dark:text-slate-400; }
+  .type-body { @apply text-[16px] sm:text-[17px] leading-[1.7] text-slate-900 dark:text-slate-100; }
+  .type-meta { @apply text-[14px] sm:text-[15px] leading-[1.6] text-slate-600 dark:text-slate-400; }
+  .type-micro { @apply text-[12px] sm:text-[13px] leading-[1.5] text-slate-500 dark:text-slate-400; }
+  .measure { max-width: 68ch; }
+}
+
 @layer base {
     :root {
       --background: 0 0% 100%;
@@ -33,6 +43,22 @@
       --ring: 0 0% 3.9%;
 
       --radius: 0.5rem;
+      /* motion tokens */
+      --motion-duration-xs: 120ms;
+      --motion-duration-sm: 180ms;
+      --motion-duration-md: 240ms;
+      --motion-duration-lg: 360ms;
+      --motion-duration-xl: 600ms;
+      --motion-stagger-micro: 40ms;
+      --motion-stagger: 80ms;
+      --ease-swift-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-gentle-in: cubic-bezier(0.2, 0, 0, 1);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --elev-1: 0 2px 6px rgba(0,0,0,.08);
+      --elev-2: 0 6px 12px rgba(0,0,0,.10);
+      --elev-3: 0 14px 24px rgba(0,0,0,.12);
+      --glass-blur: 16px;
+      --glass-noise: 0.015;
     }
 
     .dark {
@@ -64,6 +90,19 @@
       --input: 0 0% 14.9%;
       --ring: 0 0% 83.1%;
     }
+  .theme { --animate-marquee: marquee var(--duration) infinite linear; --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  }
+  }
+
+  /* reduced motion fallbacks for tokens */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --motion-duration-xs: 1ms;
+      --motion-duration-sm: 1ms;
+      --motion-duration-md: 1ms;
+      --motion-duration-lg: 1ms;
+      --motion-duration-xl: 1ms;
+    }
   }
 
   @layer base {
@@ -78,11 +117,11 @@
   h3 code {
     @apply !text-lg md:!text-xl;
   }
-  
+
   pre {
     @apply !px-0 rounded-lg overflow-x-auto py-4
   }
-   
+
   pre [data-line] {
     @apply px-4
   }
@@ -90,17 +129,17 @@
   code {
     @apply text-sm md:text-base !leading-loose;
   }
-  
+
   pre > code {
     counter-reset: line;
   }
-  
+
   code[data-theme*=" "],
   code[data-theme*=" "] span {
     color: var(--shiki-light);
     background-color: var(--shiki-light-bg);
   }
-   
+
   @media (prefers-color-scheme: dark) {
     code[data-theme*=" "],
     code[data-theme*=" "] span {
@@ -108,25 +147,25 @@
       background-color: var(--shiki-dark-bg);
     }
   }
-  
+
   code[data-line-numbers] {
     counter-reset: line;
   }
-  
+
   code[data-line-numbers] > [data-line]::before {
     counter-increment: line;
     content: counter(line);
     @apply inline-block w-4 mr-4 text-right text-gray-500;
   }
- 
+
   code {
     counter-reset: line;
   }
- 
+
   code > [data-line]::before {
   counter-increment: line;
   content: counter(line);
- 
+
   /* Other styling */
   display: inline-block;
   width: 1rem;
@@ -134,11 +173,72 @@
   text-align: right;
   color: gray;
 }
- 
+
 code[data-line-numbers-max-digits="2"] > [data-line]::before {
   width: 2rem;
 }
- 
+
 code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
 }
+
+@theme inline {
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+/* Motion utilities and load orchestration */
+@layer utilities {
+  .reveal { opacity: 0; transform: translateY(8px); }
+  .reveal.in { opacity: 1; transform: none; transition: opacity var(--motion-duration-md) var(--ease-swift-out), transform var(--motion-duration-md) var(--ease-swift-out); }
+  .elev-1 { box-shadow: var(--elev-1); }
+  .elev-2 { box-shadow: var(--elev-2); }
+  .elev-3 { box-shadow: var(--elev-3); }
+  .glass { backdrop-filter: blur(var(--glass-blur)); }
+}
+
+/* staged load sequence (body[data-mounted]) */
+[data-mounted="true"] .load-stagger > * { opacity: 0; transform: translateY(6px); }
+[data-mounted="true"] .load-stagger > * { transition: opacity var(--motion-duration-sm) var(--ease-swift-out), transform var(--motion-duration-sm) var(--ease-swift-out); }
+[data-mounted="true"] .load-stagger > *:nth-child(n) { transition-delay: calc((var(--n, 0)) * var(--motion-stagger-micro)); }
+
+/* View-timeline progressive enhancement */
+@supports (animation-timeline: view()) {
+  .sl-reveal { opacity: 0; transform: translateY(10px); animation: sl-in var(--motion-duration-lg) var(--ease-swift-out) both; animation-timeline: view(); animation-range: entry 20% cover 30%; }
+  @keyframes sl-in { to { opacity: 1; transform: none; } }
+
+  /* Hero parallax */
+  .hero-parallax { view-timeline-name: --hero; view-timeline-axis: block; }
+  .hero-avatar { animation: hero-avatar var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: transform; }
+  @keyframes hero-avatar { to { transform: translateY(-12px) scale(1.02); } }
+  .hero-name { animation: hero-name var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: transform; }
+  @keyframes hero-name { to { transform: translateY(-6px); } }
+  .hero-summary { animation: hero-summary var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: opacity; }
+  @keyframes hero-summary { to { opacity: 0.92; } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar, .hero-name, .hero-summary { animation: none !important; transform: none !important; opacity: 1 !important; }
+}
+
+/* Aperture reveal for cards */
+.aperture-reveal { clip-path: circle(60% at 50% 50%); opacity: 0; transform: translateY(6px) scale(0.98); }
+.aperture-reveal.in { clip-path: circle(140% at 50% 50%); opacity: 1; transform: none; transition: clip-path var(--motion-duration-lg) var(--ease-swift-out), opacity var(--motion-duration-md) var(--ease-swift-out), transform var(--motion-duration-lg) var(--ease-swift-out); }
+
+/* Glare utility (uses --glare-x) */
+.glare::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.12) 50%, transparent 60%); transform: translateX(calc(var(--glare-x, 50%) - 50%)); mix-blend-mode: screen; opacity: 0; transition: opacity var(--motion-duration-sm) var(--ease-swift-out); }
+.glare:hover::after { opacity: 1; }

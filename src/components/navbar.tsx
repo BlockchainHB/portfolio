@@ -1,3 +1,4 @@
+"use client";
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,8 +25,14 @@ export default function Navbar() {
                   href={item.href}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12"
+                    "size-12 relative overflow-hidden after:absolute after:inset-0 after:rounded-full after:opacity-0 after:content-[''] after:bg-[radial-gradient(circle_at_var(--x,50%)_var(--y,50%),rgba(0,0,0,0.06),transparent_40%)] hover:after:opacity-100 transition-[transform,opacity] duration-150 [transition-timing-function:var(--ease-standard)] hover:scale-[1.04]"
                   )}
+                  onMouseMove={(e) => {
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    const rect = el.getBoundingClientRect();
+                    el.style.setProperty("--x", `${e.clientX - rect.left}px`);
+                    el.style.setProperty("--y", `${e.clientY - rect.top}px`);
+                  }}
                 >
                   <item.icon className="size-4" />
                 </Link>

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { MotionProvider } from "@/components/motion-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -15,15 +16,36 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: "Hasaam Bhatti - Automate Work",
+    template: `%s | Hasaam Bhatti - Automate Work`,
   },
   description: DATA.description,
+  icons: {
+    icon: [
+      { url: "/favicon.ico/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico/favicon.ico" },
+    ],
+    apple: [
+      { url: "/favicon.ico/apple-icon-180x180.png", sizes: "180x180", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-152x152.png", sizes: "152x152", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-144x144.png", sizes: "144x144", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-120x120.png", sizes: "120x120", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-114x114.png", sizes: "114x114", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-76x76.png", sizes: "76x76", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-60x60.png", sizes: "60x60", type: "image/png" },
+      { url: "/favicon.ico/apple-icon-57x57.png", sizes: "57x57", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico/favicon.ico"],
+  },
+  manifest: "/favicon.ico/manifest.json",
   openGraph: {
-    title: `${DATA.name}`,
+    title: "Hasaam Bhatti - Automate Work",
     description: DATA.description,
     url: DATA.url,
-    siteName: `${DATA.name}`,
+    siteName: "Hasaam Bhatti - Automate Work",
     locale: "en_US",
     type: "website",
   },
@@ -39,7 +61,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: `${DATA.name}`,
+    title: "Hasaam Bhatti - Automate Work",
     card: "summary_large_image",
   },
   verification: {
@@ -57,14 +79,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
+          "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6",
           fontSans.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
-            {children}
-            <Navbar />
+            <MotionProvider>
+              {children}
+              <Navbar />
+            </MotionProvider>
           </TooltipProvider>
         </ThemeProvider>
       </body>

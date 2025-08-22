@@ -35,7 +35,21 @@ export function HackathonCard({
         {dates && (
           <time className="text-xs text-muted-foreground">{dates}</time>
         )}
-        <h2 className="font-semibold leading-none">{title}</h2>
+        <div className="flex items-start justify-between gap-2">
+          <h2 className="font-semibold leading-none">{title}</h2>
+          {links && links.length > 0 && (
+            <div className="flex flex-row items-start gap-1">
+              {links?.map((link, idx) => (
+                <Link href={link.href} key={idx}>
+                  <Badge key={idx} title={link.title} className="flex gap-1 px-2 py-1 text-[10px]">
+                    {link.icon}
+                    {link.title}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
         {location && (
           <p className="text-sm text-muted-foreground">{location}</p>
         )}
@@ -45,18 +59,6 @@ export function HackathonCard({
           </span>
         )}
       </div>
-      {links && links.length > 0 && (
-        <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
-          {links?.map((link, idx) => (
-            <Link href={link.href} key={idx}>
-              <Badge key={idx} title={link.title} className="flex gap-2">
-                {link.icon}
-                {link.title}
-              </Badge>
-            </Link>
-          ))}
-        </div>
-      )}
     </li>
   );
 }

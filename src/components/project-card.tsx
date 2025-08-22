@@ -2,7 +2,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -72,7 +71,21 @@ export function ProjectCard({
       </Link>
       <CardHeader className="px-2">
         <div className="space-y-1">
-          <CardTitle className="mt-1 text-base">{title}</CardTitle>
+          <div className="flex items-start justify-between gap-2">
+            <CardTitle className="mt-1 text-base">{title}</CardTitle>
+            {links && links.length > 0 && (
+              <div className="flex flex-row items-start gap-1">
+                {links?.map((link, idx) => (
+                  <Link href={link?.href} key={idx} target="_blank">
+                    <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
+                      {link.icon}
+                      {link.type}
+                    </Badge>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           <time className="font-sans text-xs">{dates}</time>
           <div className="hidden font-sans text-xs underline print:visible">
             {link?.replace("https://", "").replace("www.", "").replace("/", "")}
@@ -97,20 +110,6 @@ export function ProjectCard({
           </div>
         )}
       </CardContent>
-      <CardFooter className="px-2 pb-2">
-        {links && links.length > 0 && (
-          <div className="flex flex-row flex-wrap items-start gap-1">
-            {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
-                <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
-                  {link.icon}
-                  {link.type}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        )}
-      </CardFooter>
     </Card>
   );
 }
