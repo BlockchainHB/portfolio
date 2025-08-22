@@ -203,6 +203,9 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 
 /* Motion utilities and load orchestration */
 @layer utilities {
+  /* Marquee utilities (explicit classes so they aren't purged in prod) */
+  .animate-marquee { animation: marquee var(--duration) linear infinite; }
+  .animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
   .reveal { opacity: 0; transform: translateY(8px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity var(--motion-duration-md) var(--ease-swift-out), transform var(--motion-duration-md) var(--ease-swift-out); }
   .elev-1 { box-shadow: var(--elev-1); }

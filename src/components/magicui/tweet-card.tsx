@@ -21,14 +21,44 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
   const { reducedMotion } = useMotion();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isCoarse, setIsCoarse] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   useEffect(() => {
     if (!videoRef.current) return;
     const io = new IntersectionObserver(([entry]) => setIsIntersecting(entry.isIntersecting), { threshold: 0.2 });
     io.observe(videoRef.current);
     return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    const mq = typeof window !== 'undefined' ? window.matchMedia('(pointer: coarse)') : null;
+    const update = () => setIsCoarse(!!mq?.matches);
+    update();
+    mq?.addEventListener('change', update);
+    return () => mq?.removeEventListener('change', update);
+  }, []);
+  // Auto-stop preview when out of view
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (!isIntersecting && previewing) {
+      try { videoRef.current.pause(); } catch {}
+      setPreviewing(false);
+    }
+  }, [isIntersecting, previewing]);
   return (
-    <Link href={href} target="_blank" className="block group">
+    <Link
+      href={href}
+      target="_blank"
+      className="block group"
+      onClick={(e) => {
+        const v = videoRef.current;
+        if (!v) return;
+        if (isCoarse && !previewing && !reducedMotion) {
+          e.preventDefault();
+          v.play().catch(() => {});
+          setPreviewing(true);
+        }
+      }}
+    >
       <article className="w-full overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 transition-colors hover:border-slate-300 dark:hover:border-slate-600">
         <div className="flex items-center gap-2 p-3">
           <div className="relative h-8 w-8 overflow-hidden rounded-full border border-slate-200 dark:border-slate-600">
@@ -61,11 +91,25 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
               onMouseLeave={reducedMotion ? undefined : () => {
                 const v = videoRef.current; if (!v) return; v.pause();
               }}
+              onTouchStart={(e) => {
+                const v = videoRef.current; if (!v) return;
+                if (isCoarse && !previewing && !reducedMotion) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  v.play().catch(() => {});
+                  setPreviewing(true);
+                }
+              }}
               controls={reducedMotion}
             >
               <source src={video} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            {isCoarse && !previewing && !reducedMotion && (
+              <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/0">
+                <span className="rounded-full bg-black/60 px-3 py-1 text-xs text-white">Tap to preview</span>
+              </div>
+            )}
           </div>
         )}
         {media && !video && (
