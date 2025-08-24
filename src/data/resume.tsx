@@ -134,7 +134,7 @@ export const DATA = {
     
     {
       company: "Second Brain",
-      href: "#",
+      href: "https://secondbrainn.com",
       badges: [],
       location: "Toronto, Canada",
       title: "Founder",
