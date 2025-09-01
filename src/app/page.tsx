@@ -62,8 +62,6 @@ export default function Page() {
                       ctaLabel={
                         work.company === "Launch Fast"
                           ? "Sign up"
-                          : work.company === "Hire Flow"
-                          ? "Early Access"
                           : work.company === "Second Brain"
                           ? "Book Demo"
                           : "Learn more"
