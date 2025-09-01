@@ -10,7 +10,7 @@ export const DATA = {
   description:
     "Full-stack AI builder, automation architect & multi-brand founder. I build products fast — from SaaS to Amazon FBA — blending code, commerce.",
   summary:
-    "Internet-Raised Entrepreneur. I’ve spent the last decade solo-founding and scaling ventures across crypto, NFTs, clothing, and Amazon FBA — building brands with real traction.\n\nToday I’m a self-taught full-stack founder. I built Launch Fast, an Amazon intelligence SaaS, end-to-end, and now lead product development at LegacyX, combining technical execution with business growth.",
+    "I’ve spent the last decade building ventures from the ground up—from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter learning the Amazon marketplace inside and out, I taught myself to code and built LaunchFast, the all-in-one intelligence SaaS I wish existed when I started.\n\nNow, as Head of Product Development at LegacyX, I lead teams to build the tools that help other entrepreneurs win, blending hard-won business strategy with end-to-end technical execution.",
   avatarUrl: "/me.jpg",
   skills: {
     aiTools: [
