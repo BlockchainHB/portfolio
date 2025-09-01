@@ -38,7 +38,7 @@ export default function Page() {
             <div className="mt-6 sm:mt-8 mb-4 border-t border-slate-200" />
             <Section title="Building">
               <div className="flex min-h-0 flex-col gap-y-3">
-                {DATA.work.map((work, id) => (
+                {[...DATA.work].filter((w) => w.company !== "Hire Flow").map((work, id) => (
                   <BlurFade key={work.company} delay={BLUR_FADE_DELAY * 2 + id * 0.05}>
                     <ListRow
                       title={work.company}
