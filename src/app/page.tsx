@@ -98,6 +98,7 @@ export default function Page() {
                   {(() => {
                     const keep = [
                       "launch fast chrome extension",
+                      "notion changelog agent",
                       "discord ticket tool",
                       "kijiji post automation",
                       "njoyn navigator",

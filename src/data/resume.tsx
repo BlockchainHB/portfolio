@@ -221,6 +221,29 @@ export const DATA = {
       video: "",
     },
     {
+      title: "GitHub → Notion Changelog Agent",
+      href: "https://github.com/BlockchainHB/github-merge-notion-agent",
+      dates: "Sep 2025 – Present",
+      active: true,
+      description:
+        "GitHub Action that turns merged PRs into a daily Notion changelog with GPT summaries — timezone‑aware, idempotent, schema‑aware, and linked back to each PR.",
+      technologies: ["GitHub Actions", "Notion API", "OpenAI GPT", "TypeScript"],
+      links: [
+        {
+          type: "Repository",
+          href: "https://github.com/BlockchainHB/github-merge-notion-agent",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Marketplace",
+          href: "https://github.com/marketplace/actions/github-merge-notion-changelog",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/git.png",
+      video: "",
+    },
+    {
       title: "Leaderboard Kit",
       href: "https://github.com/BlockchainHB/fba-ranker",
       dates: "July 2025",
