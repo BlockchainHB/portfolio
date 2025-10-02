@@ -97,6 +97,7 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
+                      "launchfast mcp server",
                       "launch fast chrome extension",
                       "notion changelog agent",
                       "discord ticket tool",
@@ -143,7 +144,7 @@ export default function Page() {
                   content="Transform your vibe marketing research by retaining deep insights across multiple chat sessions and LLMs using Pinecone vector indexes 🧠"
                   authorName="Hasaam Bhatti"
                   authorHandle="automatingwork"
-                  avatar="/me.jpg"
+                  avatar="/Headshot.png"
                   media="/vid 1.png"
                   video="https://video.twimg.com/amplify_video/1931188967434579968/vid/avc1/1880x1080/uiUsUQREhO_lQKFi.mp4?tag=21"
                 />
@@ -152,7 +153,7 @@ export default function Page() {
                   content="Most founders waste weeks building products nobody wants. So I made this video showing my exact method to validate SaaS ideas in hours"
                   authorName="Hasaam Bhatti"
                   authorHandle="automatingwork"
-                  avatar="/me.jpg"
+                  avatar="/Headshot.png"
                   media="/vid 2.png"
                   video="https://video.twimg.com/amplify_video/1941521534700474368/vid/avc1/3538x2160/FQ0Fea1Kjt4uvBJD.mp4?tag=21"
                 />

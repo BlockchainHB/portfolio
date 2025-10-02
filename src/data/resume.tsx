@@ -10,8 +10,8 @@ export const DATA = {
   description:
     "Full-stack AI builder, automation architect & multi-brand founder. I build products fast — from SaaS to Amazon FBA — blending code, commerce.",
   summary:
-    "I’ve spent the last decade building ventures from the ground up—from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter learning the Amazon marketplace inside and out, I taught myself to code and built LaunchFast, the all-in-one intelligence SaaS I wish existed when I started.\n\nNow, as Head of Product Development at LegacyX, I lead teams to build the tools that help other entrepreneurs win, blending hard-won business strategy with end-to-end technical execution.",
-  avatarUrl: "/me.jpg",
+    "I've spent the last decade building ventures from the ground up—from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter learning the Amazon marketplace inside and out, I taught myself to code and built LaunchFast, the all-in-one intelligence SaaS I wish existed when I started.\n\nNow, as Head of Product Development at LegacyX, I lead teams to build the tools that help other entrepreneurs win, blending hard-won business strategy with end-to-end technical execution.",
+  avatarUrl: "/Headshot.png",
   skills: {
     aiTools: [
       "Cursor",
@@ -190,6 +190,36 @@ export const DATA = {
     logoUrl?: string;
   }>,
   projects: [
+    {
+      title: "LaunchFast MCP Server",
+      href: "https://github.com/BlockchainHB/launchfastmcp",
+      dates: "Oct 2025 – Present",
+      active: true,
+      description:
+        "8-hour product research → 30-second AI chats. Production MCP server bringing Amazon & Alibaba intelligence to Claude — TypeScript + Zod validation, exponential backoff, multi-layer caching, published to npm.",
+      technologies: [
+        "TypeScript",
+        "MCP SDK",
+        "Zod",
+        "Node.js",
+        "Railway",
+        "npm",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/launchfastmcp",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "npm Package",
+          href: "https://www.npmjs.com/package/@launchfast/mcp",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/MCP.png",
+      video: "",
+    },
     {
       title: "Discord Ticket Tool",
       href: "#",
