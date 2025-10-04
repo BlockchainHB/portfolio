@@ -89,7 +89,8 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6"
+          "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6",
+          fontSans.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
