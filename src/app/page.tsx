@@ -58,7 +58,7 @@ export default function Page() {
                       description={work.description}
                       href={work.href}
                       image={work.logoUrl}
-                      bareImage={work.company === "HB Goodies" || work.company === "Second Brain"}
+                      bareImage={true}
                       ctaLabel={
                         work.company === "Launch Fast"
                           ? "Sign up"
@@ -97,7 +97,7 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
-                      "launchfast mcp server",
+                      "launch fast mcp server",
                       "launch fast chrome extension",
                       "notion changelog agent",
                       "discord ticket tool",
