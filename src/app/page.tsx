@@ -58,7 +58,7 @@ export default function Page() {
                       description={work.description}
                       href={work.href}
                       image={work.logoUrl}
-                      bareImage={work.company === "HB Goodies" || work.company === "Second Brain"}
+                      bareImage={true}
                       ctaLabel={
                         work.company === "Launch Fast"
                           ? "Sign up"
