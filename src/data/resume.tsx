@@ -191,7 +191,7 @@ export const DATA = {
   }>,
   projects: [
     {
-      title: "LaunchFast MCP Server",
+      title: "Launch Fast MCP Server",
       href: "https://github.com/BlockchainHB/launchfastmcp",
       dates: "Oct 2025 – Present",
       active: true,
