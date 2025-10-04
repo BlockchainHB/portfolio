@@ -77,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={fontSans.variable}>
+    <html lang="en" suppressHydrationWarning className={cn(fontSans.variable, fontSans.className)}>
       <head>
         <script
           defer
@@ -90,7 +90,8 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6",
-          fontSans.variable
+          fontSans.variable,
+          fontSans.className
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
