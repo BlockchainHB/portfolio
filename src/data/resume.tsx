@@ -9,6 +9,7 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/Toronto,+ON,+Canada",
   description:
     "Full-stack AI builder, automation architect & multi-brand founder. I build products fast — from SaaS to Amazon FBA — blending code, commerce.",
+  tagline: "I ship AI products in days, not months",
   summary:
     "I've spent the last decade building ventures from the ground up—from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter learning the Amazon marketplace inside and out, I taught myself to code and built LaunchFast, the all-in-one intelligence SaaS I wish existed when I started.\n\nNow, as Head of Product Development at LegacyX, I lead teams to build the tools that help other entrepreneurs win, blending hard-won business strategy with end-to-end technical execution.",
   avatarUrl: "/Headshot.png",

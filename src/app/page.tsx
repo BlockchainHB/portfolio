@@ -30,6 +30,7 @@ export default function Page() {
               <div>
                 <BlurFade staggerIndex={1}>
                   <h1 className="type-h1 text-balance hero-name">{DATA.name.split("(")[0].trim()}</h1>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1.5 font-medium tracking-tight">{DATA.tagline}</p>
                 </BlurFade>
               </div>
             </div>
@@ -44,7 +45,7 @@ export default function Page() {
           <div>
             <div className="mt-2 sm:mt-3 mb-4 border-t border-slate-200 dark:border-slate-700" />
             <Section title="Building">
-              <div className="flex min-h-0 flex-col gap-y-3">
+              <div className="flex min-h-0 flex-col gap-y-3 sm:gap-y-4">
                 {(() => {
                   const priority = ["Launch Fast", "Second Brain", "LegacyX", "HB Goodies"];
                   const ordered = [...DATA.work]
@@ -71,7 +72,24 @@ export default function Page() {
                 ))}
               </div>
             </Section>
-            
+
+            <BlurFade delay={BLUR_FADE_DELAY * 3}>
+              <div className="mt-6 sm:mt-8 p-4 sm:p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900/50 dark:to-slate-800/30">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                  AI Enablement for Enterprise
+                </h3>
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-4">
+                  I help large organizations ship AI products faster through strategic consulting, rapid prototyping, and technical enablement.
+                </p>
+                <Link
+                  href="mailto:hb@hbgoodies.com?subject=AI%20Enablement%20Consultation"
+                  className="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white bg-slate-900 dark:bg-slate-100 dark:text-slate-900 rounded-md hover:bg-slate-800 dark:hover:bg-slate-200 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md w-full sm:w-auto"
+                >
+                  Schedule a Consultation
+                </Link>
+              </div>
+            </BlurFade>
+
             {DATA.education && DATA.education.length > 0 && (
               <Section title="Education" className="mt-8">
                 <div className="flex min-h-0 flex-col gap-y-3">

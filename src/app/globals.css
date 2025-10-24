@@ -1,3 +1,40 @@
+/* Satoshi Font - Robust Loading */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/T6OH7OES5VI6Q4XQFWI32O66QIDJ5BML/GKRNXWZ42AOYIFJKBFXB6JQZL67MOWVJ.woff2') format('woff2'),
+       url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/T6OH7OES5VI6Q4XQFWI32O66QIDJ5BML/73CFFWVUFUVITEHH32SWJITYVBTTSJR6.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/IUPBNHVBV5UGOF32EXAPOR2CLOMOEMCP/XVDIVYVZMWKN67SBSITEXAQFYYKEFVLY.woff2') format('woff2'),
+       url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/IUPBNHVBV5UGOF32EXAPOR2CLOMOEMCP/QHYJHCRRKHAKB2CYDNJIRWO3XITCB4PU.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/NP367X7XWBPFBS43L4UYEG62HLKSGD5X/TXQSWBQKKZ4AMLNDSJ65S53E6DPTZZLQ.woff2') format('woff2'),
+       url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/NP367X7XWBPFBS43L4UYEG62HLKSGD5X/QEVYKNIHJ5COJL4FTPVPVRBG32JTWRDT.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/PZNTKMFW7WDJ77VMJB3NKUTAMVLM3YXE/W26XXHE2EDANVU43ZMJADUPQIGMFMDVT.woff2') format('woff2'),
+       url('https://cdn.fontshare.com/wf/XZUYOLCKSNBFGUDTJ47JO7NDRHLK6ZSE/PZNTKMFW7WDJ77VMJB3NKUTAMVLM3YXE/T3VFB2RHOAYCVH3NLVIWVUPQDBQJV6K2.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,6 +148,13 @@
     }
     body {
       @apply bg-background text-foreground;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+    html {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+    * {
+      font-family: inherit;
     }
   }
 
