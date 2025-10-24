@@ -4,15 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion-provider";
 import { Analytics } from "@vercel/analytics/react";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -77,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={fontSans.variable}>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           defer
@@ -88,10 +82,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6",
-          fontSans.variable
-        )}
+        className="min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6"
       >
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
