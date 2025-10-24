@@ -29,10 +29,10 @@ export function ListRow({
   return (
     // flat, quiet row
     <Wrapper {...wrapperProps} className={href ? "block" : undefined}>
-      <div className="group relative flex items-start justify-between gap-4 rounded-md border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 p-3 transition hover:border-slate-300 dark:hover:border-slate-600 will-change-transform hover:translate-y-[-2px] elev-1 hover:elev-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-600">
+      <div className="group relative flex items-start justify-between gap-4 rounded-md border border-slate-200 bg-white dark:border-border dark:bg-card p-3 transition hover:border-slate-300 dark:hover:border-slate-600 will-change-transform hover:translate-y-[-2px] elev-1 hover:elev-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-600">
         <div className="flex items-start gap-3">
           {image && (
-            <div className={bareImage ? "relative h-7 w-7" : "relative h-7 w-7 overflow-hidden rounded-md border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-800"}>
+            <div className={bareImage ? "relative h-7 w-7" : "relative h-7 w-7 overflow-hidden rounded-md border border-slate-200 bg-white dark:border-border dark:bg-secondary"}>
               <Image src={image} alt="" fill sizes="32px" className="object-contain transition-transform duration-150 [transition-timing-function:var(--ease-standard)] group-hover:translate-x-[10px]" />
             </div>
           )}
@@ -46,7 +46,7 @@ export function ListRow({
         <div className="type-micro flex-none shrink-0">
           {right ?? (
             href && (
-              <span className="inline-flex items-center gap-1 rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-800 px-2 py-0.5 text-[11px] leading-none text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 whitespace-nowrap transition-transform duration-150 [transition-timing-function:var(--ease-standard)] group-hover:translate-x-[4px]">
+              <span className="inline-flex items-center gap-1 rounded border border-slate-200 bg-white dark:border-border dark:bg-secondary px-2 py-0.5 text-[11px] leading-none text-slate-600 dark:text-muted-foreground hover:bg-slate-50 dark:hover:bg-accent whitespace-nowrap transition-transform duration-150 [transition-timing-function:var(--ease-standard)] group-hover:translate-x-[4px]">
                 {ctaLabel ?? "Learn more"}
               </span>
             )
