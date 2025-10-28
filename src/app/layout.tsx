@@ -1,4 +1,3 @@
-import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
@@ -17,10 +16,10 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: "Hasaam Bhatti - Automate Work",
-    template: `%s | Hasaam Bhatti - Automate Work`,
+    default: "Hasaam Bhatti — AI Engineer & Founder",
+    template: `%s | Hasaam Bhatti`,
   },
-  description: DATA.description,
+  description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can. Toronto-based, decade of FBA + SaaS experience.",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -43,12 +42,20 @@ export const metadata: Metadata = {
   },
   manifest: "/favicons/manifest.json",
   openGraph: {
-    title: "Hasaam Bhatti - Automate Work",
-    description: DATA.description,
+    title: "Hasaam Bhatti — AI Engineer & Founder",
+    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
     url: DATA.url,
-    siteName: "Hasaam Bhatti - Automate Work",
+    siteName: "Hasaam Bhatti",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Hasaam Bhatti — AI Engineer & Founder',
+      },
+    ],
   },
   robots: {
     index: true,
@@ -62,8 +69,9 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Hasaam Bhatti - Automate Work",
+    title: "Hasaam Bhatti — AI Engineer & Founder",
     card: "summary_large_image",
+    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
   },
   verification: {
     google: "",
@@ -94,11 +102,10 @@ export default function RootLayout({
           fontSans.className
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="light">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider delayDuration={0}>
             <MotionProvider>
               {children}
-              <Navbar />
               <Analytics />
             </MotionProvider>
           </TooltipProvider>

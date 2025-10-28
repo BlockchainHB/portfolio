@@ -1,3 +1,5 @@
+"use client";
+
 import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 // import BlurFadeText from "@/components/magicui/blur-fade-text";
@@ -11,18 +13,50 @@ import Markdown from "react-markdown";
 import { Section } from "@/components/section";
 import { ListRow } from "@/components/list-row";
 import { TweetCard } from "@/components/magicui/tweet-card";
+import Cal, { getCalApi } from "@calcom/embed-react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "@/components/navbar";
+import { cn } from "@/lib/utils";
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function Page() {
+  const [isCalOpen, setIsCalOpen] = useState(false);
+  const [isCalLoaded, setIsCalLoaded] = useState(false);
+
+  useEffect(() => {
+    // Preload Cal.com immediately on mount
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", {
+        styles: { branding: { brandColor: "#3b82f6" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+      setIsCalLoaded(true);
+    })();
+  }, []);
+
+  // ESC key to close modal
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsCalOpen(false);
+    };
+    if (isCalOpen) {
+      window.addEventListener('keydown', handleEsc);
+      return () => window.removeEventListener('keydown', handleEsc);
+    }
+  }, [isCalOpen]);
+
   return (
     <main className="min-h-[100dvh]">
       <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
-          <div className="hero-parallax">
+          <div className="hero-parallax pb-6 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3">
               <BlurFade staggerIndex={0}>
-                <Avatar className="size-12 border hero-avatar">
+                <Avatar className="size-14 border hero-avatar">
                   <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                   <AvatarFallback>{DATA.initials}</AvatarFallback>
                 </Avatar>
@@ -42,8 +76,7 @@ export default function Page() {
             </div>
           </div>
           <div>
-            <div className="mt-2 sm:mt-3 mb-4 border-t border-slate-200 dark:border-slate-700" />
-            <Section title="Building">
+            <Section title="Currently Building">
               <div className="flex min-h-0 flex-col gap-y-3">
                 {(() => {
                   const priority = ["Launch Fast", "Second Brain", "LegacyX", "HB Goodies"];
@@ -70,6 +103,11 @@ export default function Page() {
                   </BlurFade>
                 ))}
               </div>
+              <BlurFade delay={BLUR_FADE_DELAY * 2.5}>
+                <p className="mt-6 text-sm text-slate-600 dark:text-slate-400">
+                  Follow my builds on X → <Link href="https://x.com/automatingwork" className="text-blue-500 hover:underline">@automatingwork</Link>
+                </p>
+              </BlurFade>
             </Section>
             
             {DATA.education && DATA.education.length > 0 && (
@@ -89,10 +127,10 @@ export default function Page() {
                 </div>
               </Section>
             )}
-            <Section title="I Build & Ship Fast" className="mt-8">
-              <div className="space-y-6">
+            <Section title="Recent Builds" className="mt-8">
+              <div className="space-y-8">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">A compact set of recent projects.</p>
+                  <p className="text-sm text-zinc-600">Production software I've shipped.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
@@ -133,10 +171,10 @@ export default function Page() {
                 </BlurFade>
               </div>
             </Section>
-            <Section title="Startup Tools & Tactics" className="mt-8">
+            <Section title="Playbooks & Insights" className="mt-8">
               <div className="space-y-6">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">Sharing what works for building profitable SaaS products</p>
+                  <p className="text-sm text-zinc-600">Sharing what actually works when building SaaS with AI</p>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-4">
                 <TweetCard
@@ -160,7 +198,7 @@ export default function Page() {
                 </div>
               </div>
             </Section>
-            <Section title="My Stack" className="mt-8">
+            <Section title="Tools I Build With" className="mt-8">
               <div className="space-y-6">
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   <p className="text-sm text-zinc-600">Tools I use to ship AI products fast</p>
@@ -183,22 +221,92 @@ export default function Page() {
               </div>
             </Section>
             <Section className="mt-8 pb-24">
-              <div className="grid items-center justify-center gap-4 px-0 text-center w-full">
+              <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
-                  <div className="space-y-3">
-                    <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">Get in Touch</h3>
-                    <p className="mx-auto max-w-[600px] text-muted-foreground md:text-base/relaxed">
-                      Ready to build something amazing? Let&apos;s discuss your next AI project.{" "}
-                      <Link href={DATA.contact.social.X.url} className="text-blue-500 hover:underline">Drop me a message on X</Link>{" "}
-                      and let&apos;s make it happen.
-                    </p>
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">Let&apos;s Build Together</h3>
+                    <button
+                      onClick={() => setIsCalOpen(true)}
+                      disabled={!isCalLoaded}
+                      className={cn(
+                        "inline-flex h-9 items-center justify-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
+                        !isCalLoaded && "opacity-50 cursor-not-allowed"
+                      )}
+                    >
+                      Book a call
+                    </button>
                   </div>
+                </BlurFade>
+                <BlurFade delay={BLUR_FADE_DELAY * 9}>
+                  <p className="text-sm text-muted-foreground">
+                    Prefer to message?{" "}
+                    <Link href={DATA.contact.social.X.url} className="text-blue-500 hover:underline">
+                      Reach out on X
+                    </Link>
+                  </p>
                 </BlurFade>
               </div>
             </Section>
+
+            {/* Cal.com Modal */}
+            <AnimatePresence>
+              {isCalOpen && (
+                <>
+                  {/* Backdrop */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setIsCalOpen(false)}
+                    className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+                  />
+
+                  {/* Modal */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    transition={{ type: "spring", duration: 0.4, bounce: 0.25 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                    onClick={(e) => {
+                      if (e.target === e.currentTarget) setIsCalOpen(false);
+                    }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="cal-modal-title"
+                  >
+                    <div className="relative w-full max-w-[900px] h-[85vh] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden">
+                      <h2 id="cal-modal-title" className="sr-only">Schedule a call</h2>
+
+                      {/* Close button */}
+                      <button
+                        onClick={() => setIsCalOpen(false)}
+                        className="absolute top-2 right-2 z-10 p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        aria-label="Close"
+                      >
+                        <svg className="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+
+                      {/* Cal embed */}
+                      <Cal
+                        calLink="hasaam/30min"
+                        style={{ width: "100%", height: "100%" }}
+                        config={{
+                          layout: "month_view",
+                          theme: "auto"
+                        }}
+                      />
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
+      <Navbar onCalendarClick={() => setIsCalOpen(true)} />
     </main>
   );
 }

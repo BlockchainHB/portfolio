@@ -10,7 +10,7 @@ export const DATA = {
   description:
     "Full-stack AI builder, automation architect & multi-brand founder. I build products fast — from SaaS to Amazon FBA — blending code, commerce.",
   summary:
-    "I've spent the last decade building ventures from the ground up—from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter learning the Amazon marketplace inside and out, I taught myself to code and built LaunchFast, the all-in-one intelligence SaaS I wish existed when I started.\n\nNow, as Head of Product Development at LegacyX, I lead teams to build the tools that help other entrepreneurs win, blending hard-won business strategy with end-to-end technical execution.",
+    "Founder @Launch Fast — building AI systems for e-commerce & SaaS — faster than teams can.\n\nOver the last decade, I've built ventures from the ground up — from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter mastering the Amazon marketplace, I taught myself to code and built **Launch Fast** — the all-in-one intelligence SaaS I wish existed when I started.\n\nAs **Head of Product at LegacyX**, I lead the development of AI tools that help entrepreneurs scale, blending business strategy with end-to-end technical execution.",
   avatarUrl: "/Headshot.png",
   skills: {
     aiTools: [
@@ -56,9 +56,7 @@ export const DATA = {
       "SaaS Product Development",
     ],
   },
-  navbar: [
-    { href: "mailto:hb@hbgoodies.com", icon: MailIcon, label: "Email" },
-  ],
+  navbar: [],
   contact: {
     email: "",
     tel: "",
@@ -81,6 +79,13 @@ export const DATA = {
         name: "LinkedIn",
         url: "https://www.linkedin.com/in/hasaam-bhatti-62a1501b9/",
         icon: Icons.linkedin,
+
+        navbar: true,
+      },
+      Email: {
+        name: "Email",
+        url: "mailto:hb@hbgoodies.com",
+        icon: Icons.email,
 
         navbar: true,
       },
@@ -108,13 +113,6 @@ export const DATA = {
         icon: Icons.globe,
         navbar: false,
       },
-      email: {
-        name: "Send Email",
-        url: "mailto:hb@hbgoodies.com",
-        icon: Icons.email,
-
-        navbar: false,
-      },
     },
   },
 
@@ -129,7 +127,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "Find FBA winners fast. Research, validate, and source — in minutes.",
+        "Find winners fast — research, validate, and source in minutes.",
     },
     
     {
@@ -142,7 +140,7 @@ export const DATA = {
       start: "2025",
       end: undefined,
       description:
-        "Answers that scale. AI assistant for courses — powering 4,000+ students.",
+        "Answers that scale — AI assistant for courses, powering 4,000+ students.",
     },
     {
       company: "LegacyX",
@@ -154,7 +152,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "Learn it, ship it, scale it. Coaching for 1,000+ sellers with in‑house services.",
+        "Learn it, ship it, scale it — coaching for 1,000+ sellers with in-house services.",
     },
     {
       company: "HB Goodies",
@@ -166,7 +164,7 @@ export const DATA = {
       start: "2023",
       end: "Present",
       description:
-        "A multi‑brand studio turning insights into defensible Amazon brands.",
+        "A multi-brand studio turning insights into defensible Amazon brands.",
     },
     {
       company: "Hire Flow",
@@ -196,7 +194,7 @@ export const DATA = {
       dates: "Oct 2025 – Present",
       active: true,
       description:
-        "8-hour product research → 30-second AI chats. Production MCP server bringing Amazon & Alibaba intelligence to Claude — TypeScript + Zod validation, exponential backoff, multi-layer caching, published to npm.",
+        "Turns 8-hour product research into 30-second AI chats. Production MCP for Amazon & Alibaba intel — TypeScript, Zod, exponential backoff, multi-layer caching, npm-published.",
       technologies: [
         "TypeScript",
         "MCP SDK",
@@ -226,7 +224,7 @@ export const DATA = {
       dates: "Aug 2025 – Present",
       active: true,
       description:
-        "Discord ticket system for coaches: auto-creates private support threads for new members, adds admins, syncs status, and logs to Google Sheets. Includes buttons for solve/reopen and real-time updates.",
+        "Auto-creates private support threads, adds admins, syncs status, logs to Sheets. Buttons for solve/reopen with real-time updates.",
       technologies: ["Node.js", "Discord.js", "Google Sheets API"],
       links: [],
       image: "/Discord.png",
@@ -238,7 +236,7 @@ export const DATA = {
       dates: "Aug 2025 – Present",
       active: true,
       description:
-        "Companion to Launch Fast: overlays product intelligence on Amazon (search/listing pages) with analytics, keyword insights, supplier sourcing, and real‑time data. Built with Manifest v3 and a speed‑first UX.",
+        "On-page Amazon intelligence with analytics, keyword insights, supplier sourcing, and real-time data. Manifest v3, speed-first UX.",
       technologies: ["Manifest v3", "React", "Supabase", "Tailwind"],
       links: [
         {
@@ -256,7 +254,7 @@ export const DATA = {
       dates: "Sep 2025 – Present",
       active: true,
       description:
-        "GitHub Action that turns merged PRs into a daily Notion changelog with GPT summaries — timezone‑aware, idempotent, schema‑aware, and linked back to each PR.",
+        "Merges → daily Notion changelog with GPT summaries. Timezone-aware, idempotent, schema-aware, links back to each PR.",
       technologies: ["GitHub Actions", "Notion API", "OpenAI GPT", "TypeScript"],
       links: [
         {
@@ -279,7 +277,7 @@ export const DATA = {
       dates: "July 2025",
       active: true,
       description:
-        "General‑purpose leaderboard: auth, proof‑backed submissions, admin review, and monthly/all‑time rankings. Drop‑in Next.js/React app with Supabase.",
+        "Drop-in Next.js/Supabase app: auth, proof-backed submissions, admin review, monthly & all-time rankings.",
       technologies: [
         "Next.js",
         "TypeScript",
@@ -304,7 +302,7 @@ export const DATA = {
       dates: "May 2025",
       active: true,
       description:
-        "Open‑source Python + Playwright script that auto‑posts two Kijiji ads daily, refreshes to hold #1 in category, and handles media/logs — cron‑ready.",
+        "Open-source Python + Playwright. Auto-posts two ads daily, keeps #1 via refresh, handles media & logs — cron-ready.",
       technologies: ["Python", "Playwright", "Cron"],
       links: [
         {
@@ -367,7 +365,7 @@ export const DATA = {
       dates: "Mar 2025",
       active: true,
       description:
-        "Reverse‑engineered ATS APIs to ship a Tampermonkey helper: quick nav, smart search, and one‑click file downloads — all inline.",
+        "Reverse-engineered ATS endpoints to ship a Tampermonkey helper: quick nav, smart search, and one-click file downloads — all inline.",
       technologies: ["JavaScript", "Tampermonkey", "Userscript"],
       links: [
         { type: "Source", href: "https://github.com/BlockchainHB/atsnavigation", icon: <Icons.github className="size-3" /> },
@@ -381,7 +379,7 @@ export const DATA = {
       dates: "2025",
       active: true,
       description:
-        "Two research sprints proving end‑to‑end AI/MCP scraping at scale — thousands of social posts → NLP synthesis → actionable go‑to‑market insights. Includes code, datasets, and reports.",
+        "End-to-end AI/MCP scraping at scale — thousands of social posts → NLP synthesis → actionable go-to-market insights. Includes code, datasets, and reports.",
       technologies: ["Python", "Scrapy", "LangChain", "Supabase", "NLP"],
       links: [
         { type: "FBA Case Study", href: "https://github.com/BlockchainHB/amazon-fba-ai-saas-research", icon: <Icons.github className="size-3" /> },
