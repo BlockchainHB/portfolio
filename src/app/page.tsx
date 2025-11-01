@@ -61,14 +61,22 @@ export default function Page() {
                   <AvatarFallback>{DATA.initials}</AvatarFallback>
                 </Avatar>
               </BlurFade>
-              <div>
+              <div className="flex flex-col">
                 <BlurFade staggerIndex={1}>
                   <h1 className="type-h1 text-balance hero-name">{DATA.name.split("(")[0].trim()}</h1>
+                </BlurFade>
+                <BlurFade staggerIndex={2}>
+                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hero-subheading">
+                    <span className="h-px w-6 bg-slate-300 dark:bg-slate-600" />
+                    <span>Full Stack Dev</span>
+                    <span className="text-slate-300 dark:text-slate-600">|</span>
+                    <span>Toronto, ON</span>
+                  </div>
                 </BlurFade>
               </div>
             </div>
             <div className="mt-2">
-              <BlurFade staggerIndex={2}>
+              <BlurFade staggerIndex={3}>
                 <Markdown className="prose-sm max-w-[64ch] text-slate-600 dark:text-slate-400 text-pretty font-sans dark:prose-invert hero-summary [&>p]:mb-3 [&>p:last-child]:mb-0">
                   {DATA.summary}
                 </Markdown>
