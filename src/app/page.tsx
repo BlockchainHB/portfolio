@@ -53,10 +53,10 @@ export default function Page() {
     <main className="min-h-[100dvh]">
       <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
-          <div className="hero-parallax pb-6 border-b border-slate-200 dark:border-slate-700">
+          <div className="hero-parallax pb-6 border-b border-border">
             <div className="flex items-center gap-3">
               <BlurFade staggerIndex={0}>
-                <Avatar className="size-14 border hero-avatar">
+                <Avatar className="size-14 border border-border hero-avatar">
                   <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                   <AvatarFallback>{DATA.initials}</AvatarFallback>
                 </Avatar>
@@ -69,7 +69,7 @@ export default function Page() {
             </div>
             <div className="mt-2">
               <BlurFade staggerIndex={2}>
-                <Markdown className="prose-sm max-w-[64ch] text-slate-600 dark:text-slate-400 text-pretty font-sans dark:prose-invert hero-summary [&>p]:mb-3 [&>p:last-child]:mb-0">
+                <Markdown className="prose-sm max-w-[64ch] text-muted-foreground text-pretty font-sans dark:prose-invert hero-summary [&>p]:mb-3 [&>p:last-child]:mb-0">
                   {DATA.summary}
                 </Markdown>
               </BlurFade>
@@ -104,8 +104,8 @@ export default function Page() {
                 ))}
               </div>
               <BlurFade delay={BLUR_FADE_DELAY * 2.5}>
-                <p className="mt-6 text-sm text-slate-600 dark:text-slate-400">
-                  Follow my builds on X → <Link href="https://x.com/automatingwork" className="text-blue-500 hover:underline">@automatingwork</Link>
+                <p className="mt-6 text-sm text-muted-foreground">
+                  Follow my builds on X → <Link href="https://x.com/automatingwork" className="text-accent hover:underline">@automatingwork</Link>
                 </p>
               </BlurFade>
             </Section>
@@ -130,7 +130,7 @@ export default function Page() {
             <Section title="Recent Builds" className="mt-8">
               <div className="space-y-8">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">Production software I've shipped.</p>
+                  <p className="text-sm text-muted-foreground">Production software I've shipped.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
@@ -174,7 +174,7 @@ export default function Page() {
             <Section title="Playbooks & Insights" className="mt-8">
               <div className="space-y-6">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">Sharing what actually works when building SaaS with AI</p>
+                  <p className="text-sm text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-4">
                 <TweetCard
@@ -201,7 +201,7 @@ export default function Page() {
             <Section title="Tools I Build With" className="mt-8">
               <div className="space-y-6">
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
-                  <p className="text-sm text-zinc-600">Tools I use to ship AI products fast</p>
+                  <p className="text-sm text-muted-foreground">Tools I use to ship AI products fast</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                   <Marquee pauseOnHover className="[--duration:40s] [--gap:2rem] sm:[--gap:3rem]" repeat={6}>
@@ -224,12 +224,12 @@ export default function Page() {
               <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
                   <div className="space-y-4">
-                    <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">Let&apos;s Build Together</h3>
+                    <h3 className="text-xl font-medium tracking-tight">Let&apos;s Build Together</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
                       disabled={!isCalLoaded}
                       className={cn(
-                        "inline-flex h-9 items-center justify-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
+                        "inline-flex h-9 items-center justify-center border border-border bg-card px-6 text-sm font-medium text-foreground hover:bg-secondary hover:border-accent transition-colors",
                         !isCalLoaded && "opacity-50 cursor-not-allowed"
                       )}
                     >
@@ -240,7 +240,7 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
                   <p className="text-sm text-muted-foreground">
                     Prefer to message?{" "}
-                    <Link href={DATA.contact.social.X.url} className="text-blue-500 hover:underline">
+                    <Link href={DATA.contact.social.X.url} className="text-accent hover:underline">
                       Reach out on X
                     </Link>
                   </p>
@@ -275,16 +275,16 @@ export default function Page() {
                     aria-modal="true"
                     aria-labelledby="cal-modal-title"
                   >
-                    <div className="relative w-full max-w-[900px] h-[85vh] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="relative w-full max-w-[900px] h-[85vh] sm:h-[600px] bg-card border border-border shadow-2xl overflow-hidden">
                       <h2 id="cal-modal-title" className="sr-only">Schedule a call</h2>
 
                       {/* Close button */}
                       <button
                         onClick={() => setIsCalOpen(false)}
-                        className="absolute top-2 right-2 z-10 p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        className="absolute top-2 right-2 z-10 p-1.5 hover:bg-secondary transition-colors"
                         aria-label="Close"
                       >
-                        <svg className="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
