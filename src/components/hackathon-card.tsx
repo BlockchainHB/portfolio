@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 interface Props {
@@ -24,37 +23,39 @@ export function HackathonCard({
   links,
 }: Props) {
   return (
-    <li className="relative ml-10 py-4">
-      <div className="absolute -left-16 top-2 flex items-center justify-center bg-card">
-        <Avatar className="border border-border size-12 m-auto">
+    <li className="relative ml-8 py-3">
+      <div className="absolute -left-12 top-3 flex items-center justify-center">
+        <Avatar className="size-8">
           <AvatarImage src={image} alt={title} className="object-contain" />
-          <AvatarFallback>{title[0]}</AvatarFallback>
+          <AvatarFallback className="text-[10px]">{title[0]}</AvatarFallback>
         </Avatar>
       </div>
-      <div className="flex flex-1 flex-col justify-start gap-1">
+      <div className="flex flex-1 flex-col justify-start gap-0.5">
         {dates && (
-          <time className="text-xs text-muted-foreground font-sans">{dates}</time>
+          <time className="text-[11px] text-muted-foreground">{dates}</time>
         )}
-        <div className="flex items-start justify-between gap-2">
-          <h2 className="font-semibold leading-none font-sans">{title}</h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-[13px] font-medium leading-tight">{title}</h2>
           {links && links.length > 0 && (
-            <div className="flex flex-row items-start gap-1">
+            <div className="flex flex-row items-center gap-2">
               {links?.map((link, idx) => (
-                <Link href={link.href} key={idx}>
-                  <Badge key={idx} title={link.title} className="flex gap-1 px-2 py-1 text-[10px]">
-                    {link.icon}
-                    {link.title}
-                  </Badge>
+                <Link
+                  href={link.href}
+                  key={idx}
+                  title={link.title}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.icon}
                 </Link>
               ))}
             </div>
           )}
         </div>
         {location && (
-          <p className="text-sm text-muted-foreground font-sans">{location}</p>
+          <p className="text-[12px] text-muted-foreground">{location}</p>
         )}
         {description && (
-          <span className="font-sans text-sm text-muted-foreground">
+          <span className="text-[12px] text-muted-foreground line-clamp-2">
             {description}
           </span>
         )}

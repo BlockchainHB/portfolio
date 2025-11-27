@@ -51,12 +51,12 @@ export default function Page() {
 
   return (
     <main className="min-h-[100dvh]">
-      <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="space-y-4 sm:space-y-6">
-          <div className="hero-parallax pb-6 border-b border-border">
+      <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
+        <div className="space-y-6">
+          <div className="hero-parallax pb-5 border-b border-border">
             <div className="flex items-center gap-3">
               <BlurFade staggerIndex={0}>
-                <Avatar className="size-14 border border-border hero-avatar">
+                <Avatar className="size-12 border border-border hero-avatar">
                   <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                   <AvatarFallback>{DATA.initials}</AvatarFallback>
                 </Avatar>
@@ -64,12 +64,13 @@ export default function Page() {
               <div>
                 <BlurFade staggerIndex={1}>
                   <h1 className="type-h1 text-balance hero-name">{DATA.name.split("(")[0].trim()}</h1>
+                  <p className="text-[12px] text-muted-foreground mt-0.5">Full Stack Dev · Toronto, ON</p>
                 </BlurFade>
               </div>
             </div>
-            <div className="mt-2">
+            <div className="mt-3">
               <BlurFade staggerIndex={2}>
-                <Markdown className="prose-sm max-w-[64ch] text-muted-foreground text-pretty font-sans dark:prose-invert hero-summary [&>p]:mb-3 [&>p:last-child]:mb-0">
+                <Markdown className="text-[12px] max-w-[56ch] text-muted-foreground text-pretty font-sans leading-relaxed dark:prose-invert hero-summary [&>p]:mb-2 [&>p:last-child]:mb-0">
                   {DATA.summary}
                 </Markdown>
               </BlurFade>
@@ -77,11 +78,11 @@ export default function Page() {
           </div>
           <div>
             <Section title="Currently Building">
-              <div className="flex min-h-0 flex-col gap-y-3">
+              <div className="flex min-h-0 flex-col gap-y-2">
                 {(() => {
-                  const priority = ["Launch Fast", "Second Brain", "LegacyX", "HB Goodies"];
+                  const priority = ["Launch Fast", "LegacyX", "HB Goodies"];
                   const ordered = [...DATA.work]
-                    .filter((w) => w.company !== "Hire Flow")
+                    .filter((w) => w.company !== "Hire Flow" && w.company !== "Second Brain")
                     .sort((a, b) => priority.indexOf(a.company) - priority.indexOf(b.company));
                   return ordered;
                 })().map((work, id) => (
@@ -92,27 +93,20 @@ export default function Page() {
                       href={work.href}
                       image={work.logoUrl}
                       bareImage={true}
-                      ctaLabel={
-                        work.company === "Launch Fast"
-                          ? "Sign up"
-                          : work.company === "Second Brain"
-                          ? "Book Demo"
-                          : "Learn more"
-                      }
                     />
                   </BlurFade>
                 ))}
               </div>
               <BlurFade delay={BLUR_FADE_DELAY * 2.5}>
-                <p className="mt-6 text-sm text-muted-foreground">
+                <p className="mt-4 text-[12px] text-muted-foreground">
                   Follow my builds on X → <Link href="https://x.com/automatingwork" className="text-accent hover:underline">@automatingwork</Link>
                 </p>
               </BlurFade>
             </Section>
-            
+
             {DATA.education && DATA.education.length > 0 && (
-              <Section title="Education" className="mt-8">
-                <div className="flex min-h-0 flex-col gap-y-3">
+              <Section title="Education" className="mt-6">
+                <div className="flex min-h-0 flex-col gap-y-2">
                   {DATA.education.map((education, id) => (
                     <BlurFade key={education.school} delay={BLUR_FADE_DELAY * 3 + id * 0.05} staggerIndex={id}>
                       <ListRow
@@ -127,10 +121,10 @@ export default function Page() {
                 </div>
               </Section>
             )}
-            <Section title="Recent Builds" className="mt-8">
-              <div className="space-y-8">
+            <Section title="Recent Builds" className="mt-6">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-muted-foreground">Production software I've shipped.</p>
+                  <p className="text-[12px] text-muted-foreground">Production software I've shipped.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
@@ -171,12 +165,12 @@ export default function Page() {
                 </BlurFade>
               </div>
             </Section>
-            <Section title="Playbooks & Insights" className="mt-8">
-              <div className="space-y-6">
+            <Section title="Playbooks & Insights" className="mt-6">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
+                  <p className="text-[12px] text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
                 </BlurFade>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                 <TweetCard
                   href="https://x.com/automatingwork/status/1931189077732192523"
                   content="Transform your vibe marketing research by retaining deep insights across multiple chat sessions and LLMs using Pinecone vector indexes 🧠"
@@ -198,38 +192,38 @@ export default function Page() {
                 </div>
               </div>
             </Section>
-            <Section title="Tools I Build With" className="mt-8">
-              <div className="space-y-6">
+            <Section title="Tools I Build With" className="mt-6">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
-                  <p className="text-sm text-muted-foreground">Tools I use to ship AI products fast</p>
+                  <p className="text-[12px] text-muted-foreground">Tools I use to ship AI products fast</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
-                  <Marquee pauseOnHover className="[--duration:40s] [--gap:2rem] sm:[--gap:3rem]" repeat={6}>
-                    <Image src="/Marquee/Cursor.png" alt="Cursor" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/Claude.png" alt="Claude" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/v0.png" alt="v0" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/n8n.png" alt="n8n" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/ChatGPT.png" alt="ChatGPT" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/next.png" alt="Next.js" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/python.png" alt="Python" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/javascript.png" alt="JavaScript" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/railways.png" alt="Railway" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/Notion.png" alt="Notion" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
-                    <Image src="/Marquee/clickup.png" alt="ClickUp" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
+                  <Marquee pauseOnHover className="[--duration:40s] [--gap:1.5rem] sm:[--gap:2rem]" repeat={6}>
+                    <Image src="/Marquee/Cursor.png" alt="Cursor" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/Claude.png" alt="Claude" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/v0.png" alt="v0" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/n8n.png" alt="n8n" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/ChatGPT.png" alt="ChatGPT" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/next.png" alt="Next.js" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/python.png" alt="Python" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/javascript.png" alt="JavaScript" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/railways.png" alt="Railway" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/Notion.png" alt="Notion" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
+                    <Image src="/Marquee/clickup.png" alt="ClickUp" width={24} height={24} className="hover:scale-110 transition-all sm:w-7 sm:h-7" />
                   </Marquee>
                 </BlurFade>
               </div>
             </Section>
-            <Section className="mt-8 pb-24">
-              <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
+            <Section className="mt-6 pb-20">
+              <div className="grid items-center justify-center gap-4 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-medium tracking-tight">Let&apos;s Build Together</h3>
+                  <div className="space-y-3">
+                    <h3 className="text-[16px] font-medium tracking-tight">Let&apos;s Build Together</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
                       disabled={!isCalLoaded}
                       className={cn(
-                        "inline-flex h-9 items-center justify-center border border-border bg-card px-6 text-sm font-medium text-foreground hover:bg-secondary hover:border-accent transition-colors",
+                        "inline-flex h-8 items-center justify-center border border-border bg-card px-5 text-[12px] font-medium text-foreground hover:bg-secondary hover:border-accent transition-colors",
                         !isCalLoaded && "opacity-50 cursor-not-allowed"
                       )}
                     >
@@ -238,7 +232,7 @@ export default function Page() {
                   </div>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[12px] text-muted-foreground">
                     Prefer to message?{" "}
                     <Link href={DATA.contact.social.X.url} className="text-accent hover:underline">
                       Reach out on X

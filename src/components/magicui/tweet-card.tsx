@@ -60,18 +60,18 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
       }}
     >
       <article className="w-full overflow-hidden border border-border bg-card transition-colors hover:border-accent">
-        <div className="flex items-center gap-2 p-3">
-          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-border">
+        <div className="flex items-center gap-2 p-2.5">
+          <div className="relative h-6 w-6 overflow-hidden rounded-full border border-border">
             <Image src={avatar} alt={authorName} fill className="object-cover" />
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-medium text-foreground leading-none">{authorName}</div>
-            <div className="text-xs text-muted-foreground">@{authorHandle}</div>
+            <div className="text-[12px] font-medium text-foreground leading-none">{authorName}</div>
+            <div className="text-[11px] text-muted-foreground">@{authorHandle}</div>
           </div>
         </div>
-        <div className="px-3 pb-3 text-sm text-foreground line-clamp-4">{content}</div>
+        <div className="px-2.5 pb-2.5 text-[12px] text-foreground line-clamp-3">{content}</div>
         {video && (
-          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden border border-border">
+          <div className="relative mx-2.5 mb-2.5 aspect-[16/9] overflow-hidden border border-border">
             <video
               ref={videoRef}
               className="w-full h-full object-cover"
@@ -113,11 +113,11 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
           </div>
         )}
         {media && !video && (
-          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden border border-border">
+          <div className="relative mx-2.5 mb-2.5 aspect-[16/9] overflow-hidden border border-border">
             <Image src={media} alt="tweet media" fill className="object-cover transition-[filter] duration-300 [filter:blur(12px)] data-[loaded=true]:[filter:blur(0px)]" onLoadingComplete={(img) => { (img as any).dataset.loaded = "true"; }} />
           </div>
         )}
-        <div className="flex items-center justify-between px-3 pb-3 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-between px-2.5 pb-2.5 text-[10px] text-muted-foreground">
           <span className="group-hover:text-foreground">View on X</span>
           {views && <span>{views}</span>}
         </div>

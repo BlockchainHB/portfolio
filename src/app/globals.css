@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Typography system - Design System: Inter font, professional tone */
+/* Typography system - Clean, minimal Inter font */
 @layer utilities {
-  .type-h1 { @apply text-[22.5px] leading-[1.2] tracking-[-0.01em] font-semibold text-foreground; }
-  .type-h2 { @apply text-[16.875px] leading-[1.3] tracking-normal font-medium text-foreground; }
-  .type-body { @apply text-[14px] leading-[1.6] text-foreground; }
-  .type-meta { @apply text-[14px] leading-[1.5] text-muted-foreground; }
-  .type-micro { @apply text-[12px] leading-[1.5] text-muted-foreground; }
-  .measure { max-width: 68ch; }
+  .type-h1 { @apply text-[20px] leading-[1.2] tracking-[-0.02em] font-semibold text-foreground; }
+  .type-h2 { @apply text-[11px] leading-[1.3] tracking-[0.08em] uppercase font-medium text-muted-foreground; }
+  .type-body { @apply text-[13px] leading-[1.5] text-foreground; }
+  .type-meta { @apply text-[12px] leading-[1.4] text-muted-foreground; }
+  .type-micro { @apply text-[11px] leading-[1.4] text-muted-foreground; }
+  .measure { max-width: 60ch; }
 }
 
 @layer base {
