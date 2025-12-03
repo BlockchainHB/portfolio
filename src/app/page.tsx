@@ -51,35 +51,35 @@ export default function Page() {
 
   return (
     <main className="min-h-[100dvh]">
-      <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-2xl px-5 sm:px-6">
         <div>
-          {/* Hero */}
-          <div className="pt-12 pb-12">
+          {/* Hero - Apple-style tight grouping */}
+          <div className="pt-8 sm:pt-12 pb-6 sm:pb-8">
             <BlurFade staggerIndex={0}>
-              <Avatar className="size-16 border">
+              <Avatar className="size-14 sm:size-16 border">
                 <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                 <AvatarFallback>{DATA.initials}</AvatarFallback>
               </Avatar>
             </BlurFade>
             <BlurFade staggerIndex={1}>
-              <h1 className="mt-4 text-[14px] font-medium text-foreground">
+              <h1 className="mt-3 text-[14px] font-medium text-foreground">
                 {DATA.name.split("(")[0].trim()}
               </h1>
-              <p className="mt-1 text-[12.8px] text-muted-foreground">
+              <p className="mt-0.5 text-[12.8px] text-muted-foreground">
                 Builder · Founder
               </p>
             </BlurFade>
             <BlurFade staggerIndex={2}>
-              <p className="mt-3 text-[12.8px] text-muted-foreground max-w-lg leading-relaxed">
+              <p className="mt-2 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed">
                 I build AI-powered tools for e-commerce and SaaS. Founder of Launch Fast, Head of Product at LegacyX, and running multiple Amazon brands through HB Goodies.
               </p>
             </BlurFade>
           </div>
 
-          {/* Sections */}
-          <div className="space-y-12">
+          {/* Sections - Apple-style: big gaps between, tight inside */}
+          <div className="space-y-10 sm:space-y-12">
             <Section title="Currently Building">
-              <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-3">
                 {(() => {
                   const priority = ["Launch Fast", "LegacyX", "HB Goodies"];
                   const ordered = [...DATA.work]
@@ -119,7 +119,7 @@ export default function Page() {
               </Section>
             )}
             <Section title="Recent Builds">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
                   <p className="text-[12.8px] text-muted-foreground">Production software I've shipped.</p>
                 </BlurFade>
@@ -163,11 +163,11 @@ export default function Page() {
               </div>
             </Section>
             <Section title="Playbooks & Insights">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
                   <p className="text-[12.8px] text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
                 </BlurFade>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                 <TweetCard
                   href="https://x.com/automatingwork/status/1931189077732192523"
                   content="Transform your vibe marketing research by retaining deep insights across multiple chat sessions and LLMs using Pinecone vector indexes 🧠"
@@ -190,7 +190,7 @@ export default function Page() {
               </div>
             </Section>
             <Section title="Tools I Build With">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   <p className="text-[12.8px] text-muted-foreground">Tools I use to ship AI products fast</p>
                 </BlurFade>
@@ -212,9 +212,9 @@ export default function Page() {
               </div>
             </Section>
             <Section className="pb-24">
-              <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
+              <div className="grid items-center justify-center gap-4 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <h3 className="text-[14px] font-medium">Let&apos;s Build Together</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
