@@ -59,19 +59,19 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
         }
       }}
     >
-      <article className="w-full overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 transition-colors hover:border-slate-300 dark:hover:border-slate-600">
+      <article className="w-full overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-ring/50">
         <div className="flex items-center gap-2 p-3">
-          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-slate-200 dark:border-slate-600">
+          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-border">
             <Image src={avatar} alt={authorName} fill className="object-cover" />
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-medium text-slate-900 dark:text-slate-100 leading-none">{authorName}</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">@{authorHandle}</div>
+            <div className="text-[12.8px] font-medium text-foreground leading-none">{authorName}</div>
+            <div className="text-[11px] text-muted-foreground">@{authorHandle}</div>
           </div>
         </div>
-        <div className="px-3 pb-3 text-sm text-slate-800 dark:text-slate-200 line-clamp-4">{content}</div>
+        <div className="px-3 pb-3 text-[12.8px] text-foreground/90 line-clamp-4">{content}</div>
         {video && (
-          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden rounded-md border border-slate-200 dark:border-slate-600">
+          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden rounded-md border border-border">
             <video
               ref={videoRef}
               className="w-full h-full object-cover"
@@ -113,12 +113,12 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
           </div>
         )}
         {media && !video && (
-          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden rounded-md border border-slate-200 dark:border-slate-600">
+          <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden rounded-md border border-border">
             <Image src={media} alt="tweet media" fill className="object-cover transition-[filter] duration-300 [filter:blur(12px)] data-[loaded=true]:[filter:blur(0px)]" onLoadingComplete={(img) => { (img as any).dataset.loaded = "true"; }} />
           </div>
         )}
-        <div className="flex items-center justify-between px-3 pb-3 text-[11px] text-slate-500 dark:text-slate-400">
-          <span className="group-hover:text-slate-600 dark:group-hover:text-slate-300">View on X</span>
+        <div className="flex items-center justify-between px-3 pb-3 text-[11px] text-muted-foreground">
+          <span className="group-hover:text-foreground transition-colors">View on X</span>
           {views && <span>{views}</span>}
         </div>
       </article>

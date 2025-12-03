@@ -57,10 +57,10 @@ export function SkillsSection({
 
       <div className="mt-3 flex flex-wrap gap-1">
         {visible.map((skill) => (
-          <span key={skill} className="inline-flex items-center rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-600">{skill}</span>
+          <span key={skill} className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">{skill}</span>
         ))}
         {overflow > 0 && (
-          <span className="inline-flex items-center rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-600">+{overflow} more</span>
+          <span className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">+{overflow} more</span>
         )}
       </div>
     </div>

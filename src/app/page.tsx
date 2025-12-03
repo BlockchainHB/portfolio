@@ -51,67 +51,58 @@ export default function Page() {
 
   return (
     <main className="min-h-[100dvh]">
-      <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="space-y-4 sm:space-y-6">
-          <div className="hero-parallax pb-6 border-b border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-              <BlurFade staggerIndex={0}>
-                <Avatar className="size-14 border hero-avatar">
-                  <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                  <AvatarFallback>{DATA.initials}</AvatarFallback>
-                </Avatar>
-              </BlurFade>
-              <div>
-                <BlurFade staggerIndex={1}>
-                  <h1 className="type-h1 text-balance hero-name">{DATA.name.split("(")[0].trim()}</h1>
-                </BlurFade>
-              </div>
-            </div>
-            <div className="mt-2">
-              <BlurFade staggerIndex={2}>
-                <Markdown className="prose-sm max-w-[64ch] text-slate-600 dark:text-slate-400 text-pretty font-sans dark:prose-invert hero-summary [&>p]:mb-3 [&>p:last-child]:mb-0">
-                  {DATA.summary}
-                </Markdown>
-              </BlurFade>
-            </div>
+      <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
+        <div>
+          {/* Hero */}
+          <div className="pt-12 pb-12">
+            <BlurFade staggerIndex={0}>
+              <Avatar className="size-16 border">
+                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
+                <AvatarFallback>{DATA.initials}</AvatarFallback>
+              </Avatar>
+            </BlurFade>
+            <BlurFade staggerIndex={1}>
+              <h1 className="mt-4 text-[14px] font-medium text-foreground">
+                {DATA.name.split("(")[0].trim()}
+              </h1>
+              <p className="mt-1 text-[12.8px] text-muted-foreground">
+                Builder · Founder
+              </p>
+            </BlurFade>
+            <BlurFade staggerIndex={2}>
+              <p className="mt-3 text-[12.8px] text-muted-foreground max-w-lg leading-relaxed">
+                I build AI-powered tools for e-commerce and SaaS. Founder of Launch Fast, Head of Product at LegacyX, and running multiple Amazon brands through HB Goodies.
+              </p>
+            </BlurFade>
           </div>
-          <div>
+
+          {/* Sections */}
+          <div className="space-y-12">
             <Section title="Currently Building">
-              <div className="flex min-h-0 flex-col gap-y-3">
+              <div className="flex flex-col gap-y-4">
                 {(() => {
-                  const priority = ["Launch Fast", "Second Brain", "LegacyX", "HB Goodies"];
+                  const priority = ["Launch Fast", "LegacyX", "HB Goodies"];
                   const ordered = [...DATA.work]
-                    .filter((w) => w.company !== "Hire Flow")
+                    .filter((w) => w.company !== "Hire Flow" && w.company !== "Second Brain")
                     .sort((a, b) => priority.indexOf(a.company) - priority.indexOf(b.company));
                   return ordered;
                 })().map((work, id) => (
                   <BlurFade key={work.company} delay={BLUR_FADE_DELAY * 2 + id * 0.05} staggerIndex={id}>
-                    <ListRow
-                      title={work.company}
-                      description={work.description}
-                      href={work.href}
-                      image={work.logoUrl}
-                      bareImage={true}
-                      ctaLabel={
-                        work.company === "Launch Fast"
-                          ? "Sign up"
-                          : work.company === "Second Brain"
-                          ? "Book Demo"
-                          : "Learn more"
-                      }
-                    />
+                    <Link href={work.href} className="group block">
+                      <div className="text-[12.8px] font-medium text-foreground group-hover:text-primary transition-colors">
+                        {work.company}
+                      </div>
+                      <div className="text-[12.8px] text-muted-foreground mt-1">
+                        {work.description}
+                      </div>
+                    </Link>
                   </BlurFade>
                 ))}
               </div>
-              <BlurFade delay={BLUR_FADE_DELAY * 2.5}>
-                <p className="mt-6 text-sm text-slate-600 dark:text-slate-400">
-                  Follow my builds on X → <Link href="https://x.com/automatingwork" className="text-blue-500 hover:underline">@automatingwork</Link>
-                </p>
-              </BlurFade>
             </Section>
             
             {DATA.education && DATA.education.length > 0 && (
-              <Section title="Education" className="mt-8">
+              <Section title="Education">
                 <div className="flex min-h-0 flex-col gap-y-3">
                   {DATA.education.map((education, id) => (
                     <BlurFade key={education.school} delay={BLUR_FADE_DELAY * 3 + id * 0.05} staggerIndex={id}>
@@ -127,10 +118,10 @@ export default function Page() {
                 </div>
               </Section>
             )}
-            <Section title="Recent Builds" className="mt-8">
-              <div className="space-y-8">
+            <Section title="Recent Builds">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">Production software I've shipped.</p>
+                  <p className="text-[12.8px] text-muted-foreground">Production software I've shipped.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
@@ -171,10 +162,10 @@ export default function Page() {
                 </BlurFade>
               </div>
             </Section>
-            <Section title="Playbooks & Insights" className="mt-8">
-              <div className="space-y-6">
+            <Section title="Playbooks & Insights">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-sm text-zinc-600">Sharing what actually works when building SaaS with AI</p>
+                  <p className="text-[12.8px] text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-4">
                 <TweetCard
@@ -198,10 +189,10 @@ export default function Page() {
                 </div>
               </div>
             </Section>
-            <Section title="Tools I Build With" className="mt-8">
-              <div className="space-y-6">
+            <Section title="Tools I Build With">
+              <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
-                  <p className="text-sm text-zinc-600">Tools I use to ship AI products fast</p>
+                  <p className="text-[12.8px] text-muted-foreground">Tools I use to ship AI products fast</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                   <Marquee pauseOnHover className="[--duration:40s] [--gap:2rem] sm:[--gap:3rem]" repeat={6}>
@@ -220,16 +211,16 @@ export default function Page() {
                 </BlurFade>
               </div>
             </Section>
-            <Section className="mt-8 pb-24">
+            <Section className="pb-24">
               <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">Let&apos;s Build Together</h3>
+                  <div className="space-y-3">
+                    <h3 className="text-[14px] font-medium">Let&apos;s Build Together</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
                       disabled={!isCalLoaded}
                       className={cn(
-                        "inline-flex h-9 items-center justify-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors",
+                        "inline-flex h-8 items-center justify-center rounded-md border border-border bg-card px-4 text-[12.8px] font-medium text-foreground hover:bg-accent transition-colors",
                         !isCalLoaded && "opacity-50 cursor-not-allowed"
                       )}
                     >
@@ -238,74 +229,74 @@ export default function Page() {
                   </div>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[12.8px] text-muted-foreground">
                     Prefer to message?{" "}
-                    <Link href={DATA.contact.social.X.url} className="text-blue-500 hover:underline">
+                    <Link href={DATA.contact.social.X.url} className="text-primary hover:underline">
                       Reach out on X
                     </Link>
                   </p>
                 </BlurFade>
               </div>
             </Section>
-
-            {/* Cal.com Modal */}
-            <AnimatePresence>
-              {isCalOpen && (
-                <>
-                  {/* Backdrop */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={() => setIsCalOpen(false)}
-                    className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
-                  />
-
-                  {/* Modal */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    transition={{ type: "spring", duration: 0.4, bounce: 0.25 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                    onClick={(e) => {
-                      if (e.target === e.currentTarget) setIsCalOpen(false);
-                    }}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby="cal-modal-title"
-                  >
-                    <div className="relative w-full max-w-[900px] h-[85vh] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden">
-                      <h2 id="cal-modal-title" className="sr-only">Schedule a call</h2>
-
-                      {/* Close button */}
-                      <button
-                        onClick={() => setIsCalOpen(false)}
-                        className="absolute top-2 right-2 z-10 p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                        aria-label="Close"
-                      >
-                        <svg className="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-
-                      {/* Cal embed */}
-                      <Cal
-                        calLink="hasaam/30min"
-                        style={{ width: "100%", height: "100%" }}
-                        config={{
-                          layout: "month_view",
-                          theme: "auto"
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </div>
         </div>
       </div>
+
+      {/* Cal.com Modal */}
+      <AnimatePresence>
+        {isCalOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCalOpen(false)}
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", duration: 0.4, bounce: 0.25 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setIsCalOpen(false);
+              }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="cal-modal-title"
+            >
+              <div className="relative w-full max-w-[900px] h-[85vh] sm:h-[600px] bg-card rounded-xl shadow-2xl overflow-hidden">
+                <h2 id="cal-modal-title" className="sr-only">Schedule a call</h2>
+
+                {/* Close button */}
+                <button
+                  onClick={() => setIsCalOpen(false)}
+                  className="absolute top-2 right-2 z-10 p-2 rounded-md hover:bg-accent transition-colors"
+                  aria-label="Close"
+                >
+                  <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                {/* Cal embed */}
+                <Cal
+                  calLink="hasaam/30min"
+                  style={{ width: "100%", height: "100%" }}
+                  config={{
+                    layout: "month_view",
+                    theme: "auto"
+                  }}
+                />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
       <Navbar onCalendarClick={() => setIsCalOpen(true)} />
     </main>
   );

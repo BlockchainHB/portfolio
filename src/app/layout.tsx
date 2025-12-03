@@ -3,17 +3,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion-provider";
 import { Analytics } from "@vercel/analytics/react";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-  fallback: ["system-ui", "arial"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -87,8 +79,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(fontSans.variable, fontSans.className)}>
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
         <script
           defer
           data-website-id="68e0d3e320ff399f48a39d93"
@@ -98,11 +91,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6",
-          fontSans.variable,
-          fontSans.className
-        )}
+        className="min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6"
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider delayDuration={0}>

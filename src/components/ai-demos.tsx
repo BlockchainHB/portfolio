@@ -18,12 +18,12 @@ export function AIDemos({ demos }: { demos: Demo[] }) {
         {demos.map((d) => (
           <li key={d.href} className="w-[220px] flex-shrink-0">
             <Link href={d.href} target="_blank" className="block group">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md border border-slate-200 bg-white">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md border border-border bg-card">
                 <Image src={d.thumb} alt={d.title} fill className="object-cover" />
               </div>
-              <div className="mt-2 text-xs text-slate-600 line-clamp-2">{d.title}</div>
+              <div className="mt-2 text-xs text-muted-foreground line-clamp-2">{d.title}</div>
               {d.views && (
-                <div className="text-[11px] text-slate-500 mt-1">{d.views} views</div>
+                <div className="text-[11px] text-muted-foreground mt-1">{d.views} views</div>
               )}
             </Link>
           </li>

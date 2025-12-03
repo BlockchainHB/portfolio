@@ -18,8 +18,8 @@ export function TweetCarousel({ items }: { items: TweetCardProps[] }) {
 
   return (
     <div className="relative">
-      <div className="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white/90 to-transparent pointer-events-none" />
-      <div className="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white/90 to-transparent pointer-events-none" />
+      <div className="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-background/90 to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-background/90 to-transparent pointer-events-none" />
       <div
         ref={ref}
         className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] snap-x snap-mandatory"
@@ -37,7 +37,7 @@ export function TweetCarousel({ items }: { items: TweetCardProps[] }) {
           type="button"
           aria-label="Previous"
           onClick={scrollLeft}
-          className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+          className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-accent"
         >
           <ChevronLeftIcon className="h-4 w-4" />
         </button>
@@ -47,7 +47,7 @@ export function TweetCarousel({ items }: { items: TweetCardProps[] }) {
           type="button"
           aria-label="Next"
           onClick={scrollRight}
-          className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+          className="pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-accent"
         >
           <ChevronRightIcon className="h-4 w-4" />
         </button>

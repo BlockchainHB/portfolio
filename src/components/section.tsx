@@ -18,7 +18,7 @@ export function Section({
     <section className={"relative " + (className ?? "")}>{
       showProgress && (
         <div aria-hidden className="pointer-events-none absolute inset-y-0 -left-3 w-[2px] overflow-hidden">
-          <div className="h-full w-full origin-top bg-slate-200 dark:bg-slate-700 opacity-70" />
+          <div className="h-full w-full origin-top bg-border opacity-70" />
         </div>
       )
     }
@@ -29,7 +29,7 @@ export function Section({
           </BlurFade>
         </div>
       )}
-      <div className="mt-4">{children}</div>
+      <div className="mt-3">{children}</div>
     </section>
   );
 }
