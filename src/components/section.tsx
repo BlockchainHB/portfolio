@@ -29,7 +29,7 @@ export function Section({
           </BlurFade>
         </div>
       )}
-      <div className="mt-3">{children}</div>
+      <div className="mt-2">{children}</div>
     </section>
   );
 }
