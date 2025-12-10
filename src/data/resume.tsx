@@ -63,7 +63,7 @@ export const DATA = {
     social: {
       X: {
         name: "X",
-        url: "https://x.com/automatingwork",
+        url: "https://x.com/hasaamb",
         icon: Icons.x,
 
         navbar: true,

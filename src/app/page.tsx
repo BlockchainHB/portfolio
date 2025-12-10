@@ -192,7 +192,7 @@ export default function Page() {
             <BlurFade staggerIndex={3}>
               <div className="flex items-center gap-2 mt-4">
                 <Link
-                  href="https://x.com/hasaamb"
+                  href={DATA.contact.social.X.url}
                   className="inline-flex items-center justify-center h-8 px-3 rounded-full border border-border/40 text-[12px] font-medium text-foreground hover:bg-accent/50 transition-colors gap-1.5"
                 >
                   <Icons.x className="size-3" />
