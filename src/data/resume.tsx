@@ -122,12 +122,12 @@ export const DATA = {
       href: "https://launchfastlegacyx.com/",
       badges: [],
       location: "Toronto, Canada",
-      title: "Founder & Lead Developer",
+      title: "Founding Engineer",
       logoUrl: "/launchfast-logo.jpg",
       start: "2024",
       end: "Present",
       description:
-        "Find winners fast — research, validate, and source in minutes.",
+        "AI-powered product research and PPC optimization for Amazon sellers. Find winners, validate faster, save on ads.",
     },
     
     {
@@ -152,7 +152,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "Learn it, ship it, scale it — coaching for 1,000+ sellers with in-house services.",
+        "The leading Amazon FBA coaching ecosystem — course, weekly calls, product selection, logistics, sourcing, photography, and ads automation.",
     },
     {
       company: "HB Goodies",
@@ -189,12 +189,31 @@ export const DATA = {
   }>,
   projects: [
     {
+      title: "Leo",
+      href: "https://x.com/hasaamb/status/1997334608250073241",
+      dates: "Dec 2025",
+      active: true,
+      description:
+        "CLI agent built on the Claude Agent SDK. Multi-agent architecture with subagents, MCP tool execution, skills system, and slash commands. Powers Launch Fast's SEO blog pipeline.",
+      technologies: [
+        "Claude Agent SDK",
+        "TypeScript",
+        "Ink (React CLI)",
+        "MCP",
+        "Supabase",
+        "Sanity CMS",
+      ],
+      links: [],
+      image: "/leo.png",
+      video: "",
+    },
+    {
       title: "Launch Fast MCP Server",
-      href: "https://github.com/BlockchainHB/launchfastmcp",
+      href: "https://www.npmjs.com/package/launchfast-mcp",
       dates: "Oct 2025 – Present",
       active: true,
       description:
-        "Turns 8-hour product research into 30-second AI chats. Production MCP for Amazon & Alibaba intel — TypeScript, Zod, exponential backoff, multi-layer caching, npm-published.",
+        "Built a Model Context Protocol server that turns 8-hour product research into 30-second Claude chats. Three tools: Amazon market analysis with A10-F1 grading, keyword intelligence for 1-10 ASINs, and Alibaba supplier scoring.",
       technologies: [
         "TypeScript",
         "MCP SDK",
@@ -210,8 +229,8 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
         {
-          type: "npm Package",
-          href: "https://www.npmjs.com/package/@launchfast/mcp",
+          type: "npm",
+          href: "https://www.npmjs.com/package/launchfast-mcp",
           icon: <Icons.globe className="size-3" />,
         },
       ],
@@ -224,7 +243,7 @@ export const DATA = {
       dates: "Aug 2025 – Present",
       active: true,
       description:
-        "Auto-creates private support threads, adds admins, syncs status, logs to Sheets. Buttons for solve/reopen with real-time updates.",
+        "Built a support system for LegacyX's Discord. Auto-creates private threads, assigns admins, syncs ticket status to Google Sheets. Buttons for solve/reopen with real-time logging.",
       technologies: ["Node.js", "Discord.js", "Google Sheets API"],
       links: [],
       image: "/Discord.png",
@@ -232,11 +251,11 @@ export const DATA = {
     },
     {
       title: "Launch Fast Chrome Extension",
-      href: "https://chromewebstore.google.com/detail/launchfast-product-intell/aaanahdkbajinekpffbddfimfcnagbkm",
+      href: "https://chromewebstore.google.com/detail/launch-fast-amazon-fba-re/aaanahdkbajinekpffbddfimfcnagbkm",
       dates: "Aug 2025 – Present",
       active: true,
       description:
-        "On-page Amazon intelligence with analytics, keyword insights, supplier sourcing, and real-time data. Manifest v3, speed-first UX.",
+        "Chrome extension for Amazon sellers. Injects product analytics, keyword data, and supplier matches directly on Amazon pages. Manifest v3, optimized for speed.",
       technologies: ["Manifest v3", "React", "Supabase", "Tailwind"],
       links: [
         {
@@ -254,11 +273,11 @@ export const DATA = {
       dates: "Sep 2025 – Present",
       active: true,
       description:
-        "Merges → daily Notion changelog with GPT summaries. Timezone-aware, idempotent, schema-aware, links back to each PR.",
+        "GitHub Action that syncs merged PRs to a Notion changelog. GPT-summarizes each merge, groups by day, links back to source. Published on GitHub Marketplace.",
       technologies: ["GitHub Actions", "Notion API", "OpenAI GPT", "TypeScript"],
       links: [
         {
-          type: "Repository",
+          type: "Source",
           href: "https://github.com/BlockchainHB/github-merge-notion-agent",
           icon: <Icons.github className="size-3" />,
         },
@@ -272,37 +291,12 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Leaderboard Kit",
-      href: "https://github.com/BlockchainHB/fba-ranker",
-      dates: "July 2025",
-      active: true,
-      description:
-        "Drop-in Next.js/Supabase app: auth, proof-backed submissions, admin review, monthly & all-time rankings.",
-      technologies: [
-        "Next.js",
-        "TypeScript",
-        "Supabase (Postgres, Auth, Storage, RLS)",
-        "TailwindCSS",
-        "shadcn/ui",
-      ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/BlockchainHB/fba-ranker",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "/leaderboard.png",
-      video: "",
-    },
-    // Research projects consolidated under Market Intelligence below
-    {
       title: "Kijiji Post Automation",
       href: "https://github.com/BlockchainHB/KijijiBot",
       dates: "May 2025",
       active: true,
       description:
-        "Open-source Python + Playwright. Auto-posts two ads daily, keeps #1 via refresh, handles media & logs — cron-ready.",
+        "Open-source bot that auto-posts and refreshes Kijiji ads to maintain top placement. Python + Playwright, runs on cron.",
       technologies: ["Python", "Playwright", "Cron"],
       links: [
         {
@@ -320,7 +314,7 @@ export const DATA = {
       dates: "May 2025",
       active: true,
       description:
-        "Serverless Model Context Protocol server on Cloudflare Workers with job market intelligence tools (LinkedIn/Indeed scrapers), Apify integration, streaming SSE, Zod-typed tools, and edge-scaled performance.",
+        "Serverless MCP server on Cloudflare Workers for job market research. LinkedIn/Indeed scrapers via Apify, streaming SSE, edge-scaled. Built for Hire Flow.",
       technologies: [
         "TypeScript",
         "Cloudflare Workers",
@@ -340,7 +334,7 @@ export const DATA = {
       dates: "Feb 2025",
       active: true,
       description:
-        "Discord bot that monitors Twitter accounts for Solana token mentions and tracks wallet transactions in real-time with Helius webhooks, VIP alerts, and token analytics.",
+        "Discord bot that monitors crypto influencers for Solana token mentions. Tracks wallets via Helius webhooks, sends VIP alerts over SMS. Built during the memecoin wave.",
       technologies: [
         "Node.js",
         "Discord.js",
@@ -365,7 +359,7 @@ export const DATA = {
       dates: "Mar 2025",
       active: true,
       description:
-        "Reverse-engineered ATS endpoints to ship a Tampermonkey helper: quick nav, smart search, and one-click file downloads — all inline.",
+        "Tampermonkey script that adds keyboard shortcuts and one-click downloads to Njoyn ATS. Reverse-engineered their endpoints to speed up government job applications.",
       technologies: ["JavaScript", "Tampermonkey", "Userscript"],
       links: [
         { type: "Source", href: "https://github.com/BlockchainHB/atsnavigation", icon: <Icons.github className="size-3" /> },
@@ -374,15 +368,15 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Market Intelligence — AI/MCP Research",
+      title: "Market Intelligence Research",
       href: "https://github.com/BlockchainHB/amazon-fba-ai-saas-research",
       dates: "2025",
       active: true,
       description:
-        "End-to-end AI/MCP scraping at scale — thousands of social posts → NLP synthesis → actionable go-to-market insights. Includes code, datasets, and reports.",
+        "Scraped thousands of Reddit/Twitter posts to validate Launch Fast and Hire Flow. NLP synthesis into go-to-market reports. Code, datasets, and findings all open-source.",
       technologies: ["Python", "Scrapy", "LangChain", "Supabase", "NLP"],
       links: [
-        { type: "FBA Case Study", href: "https://github.com/BlockchainHB/amazon-fba-ai-saas-research", icon: <Icons.github className="size-3" /> },
+        { type: "FBA Study", href: "https://github.com/BlockchainHB/amazon-fba-ai-saas-research", icon: <Icons.github className="size-3" /> },
         { type: "Recruiting Study", href: "https://github.com/BlockchainHB/hireflow", icon: <Icons.github className="size-3" /> },
       ],
       image: "/market intelligence.png",
@@ -394,7 +388,7 @@ export const DATA = {
       dates: "2024–2025",
       active: true,
       description:
-        "Unfinished but exploratory builds: a Twitter influencer scraping + auto-post engine, and LyricAI — generating lyric videos from songs with captions. Prototypes showcasing rapid AI tool application.",
+        "Unfinished explorations: Twitter influencer scraper + auto-post engine, LyricAI for generating lyric videos with captions. Prototypes that pushed my AI tooling skills.",
       technologies: ["Python", "Next.js", "OpenAI", "FFmpeg"],
       links: [],
       image: "",

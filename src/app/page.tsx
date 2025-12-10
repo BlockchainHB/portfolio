@@ -14,12 +14,112 @@ import { Section } from "@/components/section";
 import { ListRow } from "@/components/list-row";
 import { TweetCard } from "@/components/magicui/tweet-card";
 import Cal, { getCalApi } from "@calcom/embed-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/navbar";
+import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
 
 const BLUR_FADE_DELAY = 0.04;
+
+// Inline company link with hover animation - industry-level optimizations
+function CompanyLink({ name, href, logo }: { name: string; href: string; logo: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  const handleMouseEnter = () => {
+    // Cancel any pending leave timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    // Cancel any pending RAF
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+    // Use RAF for smoother state update aligned with browser paint
+    rafRef.current = requestAnimationFrame(() => {
+      setIsHovered(true);
+    });
+  };
+
+  const handleMouseLeave = () => {
+    // Debounce leave with 150ms delay to prevent flicker
+    timeoutRef.current = setTimeout(() => {
+      rafRef.current = requestAnimationFrame(() => {
+        setIsHovered(false);
+      });
+    }, 150);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <Link
+      href={href}
+      className="inline items-baseline"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Logo container - GPU-accelerated with will-change and transform */}
+      <span
+        className="inline-flex items-center justify-center overflow-hidden align-middle"
+        style={{
+          height: '1em',
+          verticalAlign: '-0.15em',
+          width: isHovered ? '18px' : '0px',
+          marginRight: isHovered ? '2px' : '0px',
+          transition: 'width 250ms cubic-bezier(0.4, 0, 0.2, 1), margin 250ms cubic-bezier(0.4, 0, 0.2, 1)',
+          willChange: 'width, margin',
+          contain: 'layout style',
+        }}
+      >
+        <Image
+          src={logo}
+          alt={name}
+          width={14}
+          height={14}
+          className="rounded-[3px] shrink-0"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? 'scale(1)' : 'scale(0.8)',
+            transition: 'opacity 200ms ease-out, transform 200ms ease-out',
+            willChange: 'opacity, transform',
+          }}
+        />
+      </span>
+      {/* Text with background pill - GPU composited */}
+      <span
+        className="relative font-medium"
+        style={{
+          color: isHovered ? 'hsl(var(--primary))' : 'hsl(var(--foreground))',
+          transition: 'color 200ms ease-out',
+        }}
+      >
+        {/* Background pill - GPU-accelerated opacity */}
+        <span
+          className="absolute -inset-x-1.5 -inset-y-0.5 rounded-md -z-10"
+          style={{
+            backgroundColor: 'hsl(var(--primary) / 0.1)',
+            opacity: isHovered ? 1 : 0,
+            transform: 'translateZ(0)', // Force GPU layer
+            transition: 'opacity 200ms ease-out',
+            willChange: 'opacity',
+            pointerEvents: 'none',
+          }}
+        />
+        {name}
+      </span>
+    </Link>
+  );
+}
 
 export default function Page() {
   const [isCalOpen, setIsCalOpen] = useState(false);
@@ -55,24 +155,71 @@ export default function Page() {
         <div>
           {/* Hero - Apple-style tight grouping */}
           <div className="pt-8 sm:pt-12 pb-6 sm:pb-8">
-            <BlurFade staggerIndex={0}>
-              <Avatar className="size-14 sm:size-16 border">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
-            </BlurFade>
-            <BlurFade staggerIndex={1}>
-              <h1 className="mt-3 text-[14px] font-medium text-foreground">
-                {DATA.name.split("(")[0].trim()}
-              </h1>
-              <p className="mt-0.5 text-[12.8px] text-muted-foreground">
-                Builder · Founder
-              </p>
-            </BlurFade>
+            {/* Header row with avatar, name and theme toggle */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <BlurFade staggerIndex={0}>
+                  <Avatar className="size-14 sm:size-16 border">
+                    <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
+                    <AvatarFallback>{DATA.initials}</AvatarFallback>
+                  </Avatar>
+                </BlurFade>
+                <BlurFade staggerIndex={1}>
+                  <div>
+                    <h1 className="text-[14px] font-medium text-foreground">
+                      {DATA.name.split("(")[0].trim()}
+                    </h1>
+                    <p className="mt-0.5 text-[12.8px] text-muted-foreground italic">
+                      Builder | Internet Raised
+                    </p>
+                  </div>
+                </BlurFade>
+              </div>
+              <BlurFade staggerIndex={1}>
+                <ModeToggle />
+              </BlurFade>
+            </div>
+
             <BlurFade staggerIndex={2}>
-              <p className="mt-2 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed">
-                I build AI-powered tools for e-commerce and SaaS. Founder of Launch Fast, Head of Product at LegacyX, and running multiple Amazon brands through HB Goodies.
-              </p>
+              <div className="mt-4 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed space-y-3">
+                <p>Full-stack dev turning problems into products with AI. Currently building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — the research tool Amazon sellers actually need.</p>
+                <p>Spent the last decade solo-founding on the internet. Crypto, e-commerce, now physical products. As Head of Product at <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I lead AI enablement for one of the largest info-businesses in the space. Under <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" />, I run a portfolio of Amazon brands solving real problems.</p>
+                <p>These days I'm deep in the AI rabbit hole — building agent harnesses, pushing agentic coding, and shipping faster than ever.</p>
+              </div>
+            </BlurFade>
+
+            {/* Social icons row */}
+            <BlurFade staggerIndex={3}>
+              <div className="flex items-center gap-2 mt-4">
+                <Link
+                  href="https://x.com/hasaamb"
+                  className="inline-flex items-center justify-center h-8 px-3 rounded-full border border-border/40 text-[12px] font-medium text-foreground hover:bg-accent/50 transition-colors gap-1.5"
+                >
+                  <Icons.x className="size-3" />
+                  <span>Twitter</span>
+                </Link>
+                <Link
+                  href={DATA.contact.social.LinkedIn.url}
+                  className="inline-flex items-center justify-center h-8 px-3 rounded-full border border-border/40 text-[12px] font-medium text-foreground hover:bg-accent/50 transition-colors gap-1.5"
+                >
+                  <Icons.linkedin className="size-3" />
+                  <span>LinkedIn</span>
+                </Link>
+                <Link
+                  href={DATA.contact.social.GitHub.url}
+                  className="inline-flex items-center justify-center h-8 px-3 rounded-full border border-border/40 text-[12px] font-medium text-foreground hover:bg-accent/50 transition-colors gap-1.5"
+                >
+                  <Icons.github className="size-3" />
+                  <span>GitHub</span>
+                </Link>
+                <Link
+                  href={DATA.contact.social.Email.url}
+                  className="inline-flex items-center justify-center h-8 px-3 rounded-full border border-border/40 text-[12px] font-medium text-foreground hover:bg-accent/50 transition-colors gap-1.5"
+                >
+                  <Icons.email className="size-3" />
+                  <span>Mail</span>
+                </Link>
+              </div>
             </BlurFade>
           </div>
 
@@ -90,7 +237,7 @@ export default function Page() {
                   <BlurFade key={work.company} delay={BLUR_FADE_DELAY * 2 + id * 0.05} staggerIndex={id}>
                     <Link href={work.href} className="group block">
                       <div className="text-[12.8px] font-medium text-foreground group-hover:text-primary transition-colors">
-                        {work.company}
+                        {work.company} <span className="text-muted-foreground font-normal">| {work.title.replace("Head of Product Development", "Head of Product")}</span>
                       </div>
                       <div className="text-[12.8px] text-muted-foreground mt-1">
                         {work.description}
@@ -126,14 +273,13 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
+                      "leo",
                       "launch fast mcp server",
                       "launch fast chrome extension",
                       "notion changelog agent",
                       "discord ticket tool",
                       "kijiji post automation",
                       "njoyn navigator",
-                      "leaderboard kit",
-                      "market intelligence",
                     ];
                     const selected = DATA.projects
                       .filter((p) => keep.some((k) => p.title.toLowerCase().includes(k)))
@@ -152,6 +298,7 @@ export default function Page() {
                               dates={""}
                               location=""
                               image={p.image}
+                              href={p.href}
                               links={p.links as any}
                             />
                           </BlurFade>
@@ -178,13 +325,13 @@ export default function Page() {
                   video="https://video.twimg.com/amplify_video/1931188967434579968/vid/avc1/1880x1080/uiUsUQREhO_lQKFi.mp4?tag=21"
                 />
                 <TweetCard
-                  href="https://x.com/automatingwork/status/1941521710374670658"
-                  content="Most founders waste weeks building products nobody wants. So I made this video showing my exact method to validate SaaS ideas in hours"
+                  href="https://x.com/i/status/1986870530406850648"
+                  content="Custom commands in Cursor are a game-changer. After 12 months building Launch Fast, I created workflows like /commit-feature and /setup-feature that handle entire processes—from simple automation to agent mode delegation."
                   authorName="Hasaam Bhatti"
                   authorHandle="automatingwork"
                   avatar="/Headshot.png"
                   media="/vid 2.png"
-                  video="https://video.twimg.com/amplify_video/1941521534700474368/vid/avc1/3538x2160/FQ0Fea1Kjt4uvBJD.mp4?tag=21"
+                  video="https://video.twimg.com/amplify_video/1986870141225668608/vid/avc1/3840x2160/OofRMeKkEd5IM0cT.mp4?tag=21"
                 />
                 </div>
               </div>
@@ -211,7 +358,7 @@ export default function Page() {
                 </BlurFade>
               </div>
             </Section>
-            <Section className="pb-24">
+            <Section className="pb-12">
               <div className="grid items-center justify-center gap-4 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
                   <div className="space-y-2">
@@ -297,7 +444,6 @@ export default function Page() {
           </>
         )}
       </AnimatePresence>
-      <Navbar onCalendarClick={() => setIsCalOpen(true)} />
     </main>
   );
 }
