@@ -10,10 +10,10 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: "Hasaam Bhatti — AI Engineer & Founder",
+    default: "Hasaam Bhatti",
     template: `%s | Hasaam Bhatti`,
   },
-  description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can. Toronto-based, decade of FBA + SaaS experience.",
+  description: "Builder. Full-stack dev turning problems into products with AI.",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
   manifest: "/favicons/manifest.json",
   openGraph: {
-    title: "Hasaam Bhatti — AI Engineer & Founder",
-    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    title: "Hasaam Bhatti",
+    description: "Builder. Full-stack dev turning problems into products with AI.",
     url: DATA.url,
     siteName: "Hasaam Bhatti",
     locale: "en_US",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Hasaam Bhatti — AI Engineer & Founder',
+        alt: 'Hasaam Bhatti',
       },
     ],
   },
@@ -63,9 +63,9 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Hasaam Bhatti — AI Engineer & Founder",
+    title: "Hasaam Bhatti",
     card: "summary_large_image",
-    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    description: "Builder. Full-stack dev turning problems into products with AI.",
   },
   verification: {
     google: "",

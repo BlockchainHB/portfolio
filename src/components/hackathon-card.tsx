@@ -7,6 +7,7 @@ interface Props {
   dates: string;
   location: string;
   image?: string;
+  href?: string;
   links?: readonly {
     icon: React.ReactNode;
     title: string;
@@ -20,6 +21,7 @@ export function HackathonCard({
   dates,
   location,
   image,
+  href,
   links,
 }: Props) {
   return (
@@ -35,7 +37,13 @@ export function HackathonCard({
           <time className="text-[11px] text-muted-foreground">{dates}</time>
         )}
         <div className="flex items-start justify-between gap-2">
-          <h2 className="text-[12.8px] font-medium leading-tight">{title}</h2>
+          {href && href !== "#" ? (
+            <Link href={href} className="text-[12.8px] font-medium leading-tight hover:text-primary transition-colors">
+              {title}
+            </Link>
+          ) : (
+            <h2 className="text-[12.8px] font-medium leading-tight">{title}</h2>
+          )}
           {links && links.length > 0 && (
             <div className="flex flex-row items-center gap-2">
               {links?.map((link, idx) => (
