@@ -69,7 +69,7 @@ export function TweetCard({ href, content, authorName, authorHandle, avatar, med
             <div className="text-[11px] text-muted-foreground">@{authorHandle}</div>
           </div>
         </div>
-        <div className="px-3 pb-3 text-[12.8px] text-foreground/90 line-clamp-4">{content}</div>
+        <div className="px-3 pb-3 text-[12.8px] text-foreground/90 line-clamp-4 overflow-hidden">{content}</div>
         {video && (
           <div className="relative mx-3 mb-3 aspect-[16/9] overflow-hidden rounded-md border border-border">
             <video
