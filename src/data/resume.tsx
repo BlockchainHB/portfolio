@@ -190,7 +190,7 @@ export const DATA = {
   projects: [
     {
       title: "Leo",
-      href: "https://x.com/hasaamb/status/1997334608250073241",
+      href: "https://github.com/BlockchainHB/leo",
       dates: "Dec 2025",
       active: true,
       description:
