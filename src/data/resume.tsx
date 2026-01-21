@@ -203,7 +203,13 @@ export const DATA = {
         "Supabase",
         "Sanity CMS",
       ],
-      links: [],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/leo",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
       image: "/leo.png",
       video: "",
     },
