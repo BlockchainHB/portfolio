@@ -33,7 +33,7 @@ export function ListRow({
         <div className="flex items-start gap-3">
           {image && (
             <div className={bareImage ? "relative h-8 w-8" : "relative h-8 w-8 overflow-hidden rounded-md border border-border bg-card"}>
-              <Image src={image} alt="" fill sizes="32px" className="object-contain transition-transform duration-150 [transition-timing-function:var(--ease-standard)] group-hover:translate-x-[10px]" />
+              <Image src={image} alt={`${title} logo`} fill sizes="32px" className="object-contain transition-transform duration-150 [transition-timing-function:var(--ease-standard)] group-hover:translate-x-[10px]" />
             </div>
           )}
           <div>
@@ -56,5 +56,4 @@ export function ListRow({
     </Wrapper>
   );
 }
-
 
