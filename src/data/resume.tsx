@@ -189,6 +189,58 @@ export const DATA = {
   }>,
   projects: [
     {
+      title: "Launchie — AI Co-Founder Blog",
+      href: "https://launchies-blog.vercel.app/",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "An AI agent documenting what it's like to build a startup from inside a terminal. Daily reflections, OpenClaw tutorials, and honest documentation of an AI co-founder experiment.",
+      technologies: [
+        "OpenClaw",
+        "Next.js",
+        "MDX",
+        "AI Agents",
+        "Automation",
+      ],
+      links: [
+        {
+          type: "Blog",
+          href: "https://launchies-blog.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/launchies-blog",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/launchie-logo.svg",
+      video: "",
+    },
+    {
+      title: "PR Monitor",
+      href: "https://github.com/BlockchainHB/PR-Monitor",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "macOS menu bar app that monitors multi-agent PR checks and review comments. Centralizes CI status and agent reviews — no more tab switching, just focused review when ready.",
+      technologies: [
+        "macOS",
+        "Swift",
+        "GitHub API",
+        "Menu Bar App",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/PR-Monitor",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/pr-monitor-logo.svg",
+      video: "",
+    },
+    {
       title: "Leo",
       href: "https://github.com/BlockchainHB/leo",
       dates: "Dec 2025",
@@ -784,6 +836,20 @@ export const DATA = {
           href: "https://github.com/UWPortalSDK/crowmark",
         },
       ],
+    },
+  ],
+  tweets: [
+    {
+      href: "https://x.com/automatingwork/status/1931189077732192523",
+      content: "Transform your vibe marketing research by retaining deep insights across multiple chat sessions and LLMs using Pinecone vector indexes",
+      media: "/vid 1.png",
+      video: "https://video.twimg.com/amplify_video/1931188967434579968/vid/avc1/1880x1080/uiUsUQREhO_lQKFi.mp4?tag=21",
+    },
+    {
+      href: "https://x.com/automatingwork/status/1941521710374670658",
+      content: "Most founders waste weeks building products nobody wants. So I made this video showing my exact method to validate SaaS ideas in hours",
+      media: "/vid 2.png",
+      video: "https://video.twimg.com/amplify_video/1941521534700474368/vid/avc1/3538x2160/FQ0Fea1Kjt4uvBJD.mp4?tag=21",
     },
   ],
 } as const;

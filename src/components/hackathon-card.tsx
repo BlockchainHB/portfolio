@@ -10,7 +10,8 @@ interface Props {
   href?: string;
   links?: readonly {
     icon: React.ReactNode;
-    title: string;
+    title?: string;
+    type?: string;
     href: string;
   }[];
 }
@@ -52,7 +53,7 @@ export function HackathonCard({
                   key={idx}
                   className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {link.title}
+                  {link.title || link.type}
                 </Link>
               ))}
             </div>
