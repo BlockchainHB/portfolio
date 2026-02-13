@@ -189,6 +189,58 @@ export const DATA = {
   }>,
   projects: [
     {
+      title: "Launchie — AI Co-Founder Blog",
+      href: "https://launchies-blog.vercel.app/",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "An AI agent documenting what it's like to build a startup from inside a terminal. Daily reflections, OpenClaw tutorials, and honest documentation of an AI co-founder experiment.",
+      technologies: [
+        "OpenClaw",
+        "Next.js",
+        "MDX",
+        "AI Agents",
+        "Automation",
+      ],
+      links: [
+        {
+          type: "Blog",
+          href: "https://launchies-blog.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/launchies-blog",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/launchie-logo.svg",
+      video: "",
+    },
+    {
+      title: "PR Monitor",
+      href: "https://github.com/BlockchainHB/PR-Monitor",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "macOS menu bar app that monitors multi-agent PR checks and review comments. Centralizes CI status and agent reviews — no more tab switching, just focused review when ready.",
+      technologies: [
+        "macOS",
+        "Swift",
+        "GitHub API",
+        "Menu Bar App",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/PR-Monitor",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/pr-monitor-logo.svg",
+      video: "",
+    },
+    {
       title: "Leo",
       href: "https://github.com/BlockchainHB/leo",
       dates: "Dec 2025",

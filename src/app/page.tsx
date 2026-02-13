@@ -148,12 +148,14 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
+                      "launchie",
+                      "leo",
+                      "pr monitor",
                       "launch fast mcp server",
                       "launch fast chrome extension",
                       "notion changelog agent",
                       "discord ticket tool",
                       "kijiji post automation",
-                      "njoyn navigator",
                       "leaderboard kit",
                       "market intelligence",
                     ];
