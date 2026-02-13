@@ -838,4 +838,18 @@ export const DATA = {
       ],
     },
   ],
+  tweets: [
+    {
+      href: "https://x.com/automatingwork/status/1931189077732192523",
+      content: "Transform your vibe marketing research by retaining deep insights across multiple chat sessions and LLMs using Pinecone vector indexes",
+      media: "/vid 1.png",
+      video: "https://video.twimg.com/amplify_video/1931188967434579968/vid/avc1/1880x1080/uiUsUQREhO_lQKFi.mp4?tag=21",
+    },
+    {
+      href: "https://x.com/automatingwork/status/1941521710374670658",
+      content: "Most founders waste weeks building products nobody wants. So I made this video showing my exact method to validate SaaS ideas in hours",
+      media: "/vid 2.png",
+      video: "https://video.twimg.com/amplify_video/1941521534700474368/vid/avc1/3538x2160/FQ0Fea1Kjt4uvBJD.mp4?tag=21",
+    },
+  ],
 } as const;
