@@ -22,6 +22,15 @@ import { cn } from "@/lib/utils";
 
 const BLUR_FADE_DELAY = 0.04;
 
+function CompanyLink({ name, href, logo }: { name: string; href: string; logo: string }) {
+  return (
+    <Link href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-foreground hover:underline">
+      <Image src={logo} alt={name} width={14} height={14} className="rounded-sm inline-block" />
+      {name}
+    </Link>
+  );
+}
+
 export default function Page() {
   const [isCalOpen, setIsCalOpen] = useState(false);
   const [isCalLoaded, setIsCalLoaded] = useState(false);
