@@ -182,9 +182,9 @@ export default function Page() {
 
             <BlurFade staggerIndex={2}>
               <div className="mt-4 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed space-y-3">
-                <p>Full-stack dev turning problems into products with AI. Currently building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — the research tool Amazon sellers actually need.</p>
-                <p>Spent the last decade solo-founding on the internet. Crypto, e-commerce, now physical products. As Head of Product at <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I lead AI enablement for one of the largest info-businesses in the space. Under <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" />, I run a portfolio of Amazon brands solving real problems.</p>
-                <p>These days I'm deep in the AI rabbit hole — building agent harnesses, pushing agentic coding, and shipping faster than ever.</p>
+                <p>I write code and sell things on the internet. Right now I'm building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — product research for Amazon sellers who'd rather not guess.</p>
+                <p>I've been starting things online for about a decade. Crypto, e-commerce, now physical products on Amazon. At <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I build the AI tools behind their FBA coaching program. <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" /> is my own portfolio of Amazon brands.</p>
+                <p>Lately I write more code with AI than without it. Agents, MCP servers, CLI tools. Most of what's on this page was built that way.</p>
               </div>
             </BlurFade>
 
@@ -268,7 +268,7 @@ export default function Page() {
             <Section title="Recent Builds">
               <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-[12.8px] text-muted-foreground">Production software I've shipped.</p>
+                  <p className="text-[12.8px] text-muted-foreground">Software I built and people actually use.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
@@ -312,7 +312,7 @@ export default function Page() {
             <Section title="Playbooks & Insights">
               <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-[12.8px] text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
+                  <p className="text-[12.8px] text-muted-foreground">Notes from building SaaS with AI tools</p>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-3">
                 <TweetCard
@@ -338,9 +338,6 @@ export default function Page() {
             </Section>
             <Section title="Tools I Build With">
               <div className="space-y-3">
-                <BlurFade delay={BLUR_FADE_DELAY * 6}>
-                  <p className="text-[12.8px] text-muted-foreground">Tools I use to ship AI products fast</p>
-                </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                   <Marquee pauseOnHover className="[--duration:40s] [--gap:2rem] sm:[--gap:3rem]" repeat={6}>
                     <Image src="/Marquee/Cursor.png" alt="Cursor" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
@@ -362,7 +359,7 @@ export default function Page() {
               <div className="grid items-center justify-center gap-4 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
                   <div className="space-y-2">
-                    <h3 className="text-[14px] font-medium">Let&apos;s Build Together</h3>
+                    <h3 className="text-[14px] font-medium">Got something to build?</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
                       disabled={!isCalLoaded}
@@ -377,9 +374,9 @@ export default function Page() {
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
                   <p className="text-[12.8px] text-muted-foreground">
-                    Prefer to message?{" "}
+                    Or just{" "}
                     <Link href={DATA.contact.social.X.url} className="text-primary hover:underline">
-                      Reach out on X
+                      DM me on X
                     </Link>
                   </p>
                 </BlurFade>

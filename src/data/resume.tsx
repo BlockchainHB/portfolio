@@ -8,7 +8,7 @@ export const DATA = {
   location: "Toronto, ON Canada",
   locationLink: "https://www.google.com/maps/place/Toronto,+ON,+Canada",
   description:
-    "Full-stack AI builder, automation architect & multi-brand founder. I build products fast — from SaaS to Amazon FBA — blending code, commerce.",
+    "Founder and developer building AI tools for Amazon sellers. Launch Fast, LegacyX, HB Goodies.",
   summary:
     "Founder @Launch Fast — building AI systems for e-commerce & SaaS — faster than teams can.\n\nOver the last decade, I've built ventures from the ground up — from scaling FBA brands to shipping production-grade software. My philosophy is simple: the best products are born from real, painful problems.\n\nAfter mastering the Amazon marketplace, I taught myself to code and built **Launch Fast** — the all-in-one intelligence SaaS I wish existed when I started.\n\nAs **Head of Product at LegacyX**, I lead the development of AI tools that help entrepreneurs scale, blending business strategy with end-to-end technical execution.",
   avatarUrl: "/Headshot.png",
@@ -127,7 +127,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "AI-powered product research and PPC optimization for Amazon sellers. Find winners, validate faster, save on ads.",
+        "Product research and ad optimization for Amazon sellers. Pulls market data, scores products, and cuts the guesswork.",
     },
     
     {
@@ -152,7 +152,7 @@ export const DATA = {
       start: "2024",
       end: "Present",
       description:
-        "The leading Amazon FBA coaching ecosystem — course, weekly calls, product selection, logistics, sourcing, photography, and ads automation.",
+        "Amazon FBA coaching program with course, live calls, sourcing, and ads. I build the software that ties it together.",
     },
     {
       company: "HB Goodies",
@@ -164,7 +164,7 @@ export const DATA = {
       start: "2023",
       end: "Present",
       description:
-        "A multi-brand studio turning insights into defensible Amazon brands.",
+        "My own Amazon brands. Products I found gaps for, sourced, and sell.",
     },
     {
       company: "Hire Flow",
