@@ -56,26 +56,39 @@ export default function Page() {
       </a>
       <div id="main-content" className="mx-auto w-full max-w-2xl px-4 sm:px-6">
         <div>
-          {/* Hero */}
-          <div className="pt-12 pb-12">
-            <BlurFade staggerIndex={0}>
-              <Avatar className="size-16 border">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
-            </BlurFade>
-            <BlurFade staggerIndex={1}>
-              <h1 className="mt-4 text-[14px] font-medium text-foreground">
-                {`${DATA.name.split("(")[0].trim()} - AI Engineer & Founder`}
-              </h1>
-              <p className="mt-1 text-[12.8px] text-muted-foreground">
-                Builder · Founder
-              </p>
-            </BlurFade>
+          {/* Hero - Apple-style tight grouping */}
+          <div className="pt-8 sm:pt-12 pb-6 sm:pb-8">
+            {/* Header row with avatar, name and theme toggle */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <BlurFade staggerIndex={0}>
+                  <Avatar className="size-14 sm:size-16 border">
+                    <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
+                    <AvatarFallback>{DATA.initials}</AvatarFallback>
+                  </Avatar>
+                </BlurFade>
+                <BlurFade staggerIndex={1}>
+                  <div>
+                    <h1 className="text-[14px] font-medium text-foreground">
+                      {DATA.name.split("(")[0].trim()}
+                    </h1>
+                    <p className="mt-0.5 text-[12.8px] text-muted-foreground italic">
+                      Builder | Internet Raised
+                    </p>
+                  </div>
+                </BlurFade>
+              </div>
+              <BlurFade staggerIndex={1}>
+                <ModeToggle />
+              </BlurFade>
+            </div>
+
             <BlurFade staggerIndex={2}>
-              <p className="mt-3 text-[12.8px] text-muted-foreground max-w-lg leading-relaxed">
-                I build AI-powered tools for e-commerce and SaaS. Founder of Launch Fast, Head of Product at LegacyX, and running multiple Amazon brands through HB Goodies.
-              </p>
+              <div className="mt-4 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed space-y-3">
+                <p>I write code and sell things on the internet. Right now I'm building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — product research for Amazon sellers who'd rather not guess.</p>
+                <p>I've been starting things online for about a decade. Crypto, e-commerce, now physical products on Amazon. At <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I build the AI tools behind their FBA coaching program. <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" /> is my own portfolio of Amazon brands.</p>
+                <p>Lately I write more code with AI than without it. Agents, MCP servers, CLI tools. Most of what's on this page was built that way.</p>
+              </div>
             </BlurFade>
             <BlurFade staggerIndex={3}>
               <nav aria-label="Section navigation" className="mt-4 flex flex-wrap gap-2">
@@ -143,21 +156,18 @@ export default function Page() {
             <Section id="recent-builds" title="Recent Builds">
               <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-[12.8px] text-muted-foreground">Production software I've shipped.</p>
+                  <p className="text-[12.8px] text-muted-foreground">Software I built and people actually use.</p>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
-                      "launchie",
-                      "leo",
-                      "pr monitor",
-                      "launch fast mcp server",
                       "launch fast chrome extension",
+                      "launch fast mcp server",
+                      "leo",
+                      "launchie",
+                      "pr monitor",
                       "notion changelog agent",
-                      "discord ticket tool",
                       "kijiji post automation",
-                      "leaderboard kit",
-                      "market intelligence",
                     ];
                     const selected = DATA.projects
                       .filter((p) => keep.some((k) => p.title.toLowerCase().includes(k)))
@@ -189,7 +199,7 @@ export default function Page() {
             <Section id="insights" title="Playbooks & Insights">
               <div className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                  <p className="text-[12.8px] text-muted-foreground">Sharing what actually works when building SaaS with AI</p>
+                  <p className="text-[12.8px] text-muted-foreground">Notes from building SaaS with AI tools</p>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-4">
                   {DATA.tweets.map((tweet, idx) => (
@@ -207,11 +217,8 @@ export default function Page() {
                 </div>
               </div>
             </Section>
-            <Section id="toolstack" title="Tools I Build With">
-              <div className="space-y-4">
-                <BlurFade delay={BLUR_FADE_DELAY * 6}>
-                  <p className="text-[12.8px] text-muted-foreground">Tools I use to ship AI products fast</p>
-                </BlurFade>
+            <Section title="Tools I Build With">
+              <div className="space-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                   <Marquee pauseOnHover className="[--duration:40s] [--gap:2rem] sm:[--gap:3rem]" repeat={3}>
                     <Image src="/Marquee/Cursor.png" alt="Cursor" width={32} height={32} className="hover:scale-110 transition-all sm:w-10 sm:h-10" />
@@ -232,8 +239,8 @@ export default function Page() {
             <Section id="contact" className="pb-24">
               <div className="grid items-center justify-center gap-6 px-0 text-center w-full">
                 <BlurFade delay={BLUR_FADE_DELAY * 8}>
-                  <div className="space-y-3">
-                    <h3 className="text-[14px] font-medium">Let&apos;s Build Together</h3>
+                  <div className="space-y-2">
+                    <h3 className="text-[14px] font-medium">Got something to build?</h3>
                     <button
                       onClick={() => setIsCalOpen(true)}
                       disabled={!isCalLoaded}
@@ -248,9 +255,9 @@ export default function Page() {
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
                   <p className="text-[12.8px] text-muted-foreground">
-                    Prefer to message?{" "}
+                    Or just{" "}
                     <Link href={DATA.contact.social.X.url} className="text-primary hover:underline">
-                      Reach out on X
+                      DM me on X
                     </Link>
                   </p>
                 </BlurFade>
