@@ -14,7 +14,7 @@ import { Section } from "@/components/section";
 import { ListRow } from "@/components/list-row";
 import { TweetCard } from "@/components/magicui/tweet-card";
 import Cal, { getCalApi } from "@calcom/embed-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/navbar";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -23,10 +23,91 @@ import { cn } from "@/lib/utils";
 const BLUR_FADE_DELAY = 0.04;
 
 function CompanyLink({ name, href, logo }: { name: string; href: string; logo: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+    rafRef.current = requestAnimationFrame(() => {
+      setIsHovered(true);
+    });
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      rafRef.current = requestAnimationFrame(() => {
+        setIsHovered(false);
+      });
+    }, 150);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
   return (
-    <Link href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-foreground hover:underline">
-      <Image src={logo} alt={name} width={14} height={14} className="rounded-sm inline-block" />
-      {name}
+    <Link
+      href={href}
+      className="inline items-baseline"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <span
+        className="inline-flex items-center justify-center overflow-hidden align-middle"
+        style={{
+          height: '1em',
+          verticalAlign: '-0.15em',
+          width: isHovered ? '18px' : '0px',
+          marginRight: isHovered ? '2px' : '0px',
+          transition: 'width 250ms cubic-bezier(0.4, 0, 0.2, 1), margin 250ms cubic-bezier(0.4, 0, 0.2, 1)',
+          willChange: 'width, margin',
+          contain: 'layout style',
+        }}
+      >
+        <Image
+          src={logo}
+          alt={name}
+          width={14}
+          height={14}
+          className="rounded-[3px] shrink-0"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? 'scale(1)' : 'scale(0.8)',
+            transition: 'opacity 200ms ease-out, transform 200ms ease-out',
+            willChange: 'opacity, transform',
+          }}
+        />
+      </span>
+      <span
+        className="relative font-medium"
+        style={{
+          color: isHovered ? 'hsl(var(--primary))' : 'hsl(var(--foreground))',
+          transition: 'color 200ms ease-out',
+        }}
+      >
+        <span
+          className="absolute -inset-x-1.5 -inset-y-0.5 rounded-md -z-10"
+          style={{
+            backgroundColor: 'hsl(var(--primary) / 0.1)',
+            opacity: isHovered ? 1 : 0,
+            transform: 'translateZ(0)',
+            transition: 'opacity 200ms ease-out',
+            willChange: 'opacity',
+            pointerEvents: 'none',
+          }}
+        />
+        {name}
+      </span>
     </Link>
   );
 }
@@ -95,7 +176,7 @@ export default function Page() {
 
             <BlurFade staggerIndex={2}>
               <div className="mt-4 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed space-y-3">
-                <p>I write code and sell things on the internet. Right now I'm building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — product research for Amazon sellers who'd rather not guess.</p>
+                <p>I write code and sell things on the internet. Right now I'm building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" />, product research for Amazon sellers who'd rather not guess.</p>
                 <p>I've been starting things online for about a decade. Blockchain Development, Amazon FBA, and now Agents & Software. At <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I build the AI tools behind their FBA coaching program. <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" /> is my own portfolio of Amazon brands.</p>
                 <p>Lately I write more code with AI than without it. Agents, MCP servers, CLI tools. Most of what's on this page was built that way.</p>
               </div>
