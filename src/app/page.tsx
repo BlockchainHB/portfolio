@@ -17,6 +17,7 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/navbar";
+import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
 
 const BLUR_FADE_DELAY = 0.04;
