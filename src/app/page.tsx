@@ -273,13 +273,13 @@ export default function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 6}>
                   {(() => {
                     const keep = [
-                      "leo",
-                      "launch fast mcp server",
                       "launch fast chrome extension",
+                      "launch fast mcp server",
+                      "leo",
+                      "launchie",
+                      "pr monitor",
                       "notion changelog agent",
-                      "discord ticket tool",
                       "kijiji post automation",
-                      "njoyn navigator",
                     ];
                     const selected = DATA.projects
                       .filter((p) => keep.some((k) => p.title.toLowerCase().includes(k)))

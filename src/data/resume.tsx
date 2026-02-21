@@ -189,6 +189,58 @@ export const DATA = {
   }>,
   projects: [
     {
+      title: "Launchie",
+      href: "https://launchie.io",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "An OpenClaw virtual agent acting as AI co-founder — handles code, research, strategy, and operations from inside a terminal. Writes daily reflections and tutorials about building a startup with no persistent memory.",
+      technologies: [
+        "OpenClaw",
+        "Next.js",
+        "MDX",
+        "AI Agents",
+        "Automation",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://launchie.io",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/launchies-blog",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/launchie-logo.svg",
+      video: "",
+    },
+    {
+      title: "PR Monitor",
+      href: "https://github.com/BlockchainHB/PR-Monitor",
+      dates: "Feb 2026",
+      active: true,
+      description:
+        "macOS menu bar app that monitors multi-agent PR checks and review comments. Centralizes CI status and agent reviews — no more tab switching, just focused review when ready.",
+      technologies: [
+        "macOS",
+        "Swift",
+        "GitHub API",
+        "Menu Bar App",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/BlockchainHB/PR-Monitor",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/pr-monitor-logo.svg",
+      video: "",
+    },
+    {
       title: "Leo",
       href: "https://github.com/BlockchainHB/leo",
       dates: "Dec 2025",
