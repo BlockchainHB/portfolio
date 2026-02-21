@@ -96,7 +96,7 @@ export default function Page() {
             <BlurFade staggerIndex={2}>
               <div className="mt-4 text-[12.8px] text-muted-foreground max-w-[65ch] leading-relaxed space-y-3">
                 <p>I write code and sell things on the internet. Right now I'm building <CompanyLink name="Launch Fast" href="https://launchfastlegacyx.com/" logo="/launchfast-logo.jpg" /> — product research for Amazon sellers who'd rather not guess.</p>
-                <p>I've been starting things online for about a decade. Crypto, e-commerce, now physical products on Amazon. At <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I build the AI tools behind their FBA coaching program. <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" /> is my own portfolio of Amazon brands.</p>
+                <p>I've been starting things online for about a decade. Blockchain Development, Amazon FBA, and now Agents & Software. At <CompanyLink name="LegacyX" href="https://legacyxfba.com/" logo="/legacyx.png" />, I build the AI tools behind their FBA coaching program. <CompanyLink name="HB Goodies" href="https://hbgoodies.com/" logo="/zensweat.png" /> is my own portfolio of Amazon brands.</p>
                 <p>Lately I write more code with AI than without it. Agents, MCP servers, CLI tools. Most of what's on this page was built that way.</p>
               </div>
             </BlurFade>
