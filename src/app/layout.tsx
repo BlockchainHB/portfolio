@@ -1,19 +1,23 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion-provider";
 import { Analytics } from "@vercel/analytics/react";
 
+const SITE_URL = "https://hasaamb.com";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(DATA.url),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
   title: {
-    default: "Hasaam Bhatti",
+    default: "Hasaam Bhatti — AI Engineer & Founder",
     template: `%s | Hasaam Bhatti`,
   },
-  description: "Builder. Full-stack dev turning problems into products with AI.",
+  description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can. Toronto-based, decade of FBA + SaaS experience.",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -36,18 +40,18 @@ export const metadata: Metadata = {
   },
   manifest: "/favicons/manifest.json",
   openGraph: {
-    title: "Hasaam Bhatti",
-    description: "Builder. Full-stack dev turning problems into products with AI.",
-    url: DATA.url,
+    title: "Hasaam Bhatti — AI Engineer & Founder",
+    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    url: SITE_URL,
     siteName: "Hasaam Bhatti",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: '/og-image.png',
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: 'Hasaam Bhatti',
+        alt: "Hasaam Bhatti - AI Engineer & Founder",
       },
     ],
   },
@@ -63,13 +67,10 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Hasaam Bhatti",
+    title: "Hasaam Bhatti — AI Engineer & Founder",
     card: "summary_large_image",
-    description: "Builder. Full-stack dev turning problems into products with AI.",
-  },
-  verification: {
-    google: "",
-    yandex: "",
+    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    images: ["/opengraph-image"],
   },
 };
 
@@ -82,16 +83,49 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+        <link rel="preload" href="/Headshot.png" as="image" />
         <script
           defer
           data-website-id="68e0d3e320ff399f48a39d93"
-          data-domain="Hasaamb.com"
+          data-domain="hasaamb.com"
           data-allow-localhost="true"
           src="https://datafa.st/js/script.js"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Hasaam Bhatti",
+              url: "https://hasaamb.com",
+              image: "https://hasaamb.com/Headshot.png",
+              jobTitle: "AI Engineer & Founder",
+              worksFor: [
+                {
+                  "@type": "Organization",
+                  name: "Launch Fast",
+                  url: "https://launchfastlegacyx.com",
+                },
+                {
+                  "@type": "Organization",
+                  name: "LegacyX",
+                  url: "https://legacyxfba.com",
+                },
+              ],
+              sameAs: [
+                "https://x.com/automatingwork",
+                "https://github.com/BlockchainHB",
+                "https://www.linkedin.com/in/hasaam-bhatti-62a1501b9/",
+              ],
+              description:
+                "Full-stack AI builder, automation architect & multi-brand founder. Building AI systems for e-commerce & SaaS.",
+            }),
+          }}
+        />
       </head>
       <body
-        className="min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-5 sm:px-6"
+        className="min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6"
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider delayDuration={0}>

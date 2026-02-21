@@ -2,12 +2,14 @@ import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 
 export function Section({
+  id,
   title,
   children,
   className,
   sticky = false,
   showProgress = false,
 }: {
+  id?: string;
   title?: string;
   children: React.ReactNode;
   className?: string;
@@ -15,7 +17,7 @@ export function Section({
   showProgress?: boolean;
 }) {
   return (
-    <section className={"relative " + (className ?? "")}>{
+    <section id={id} className={"relative " + (className ?? "")}>{
       showProgress && (
         <div aria-hidden className="pointer-events-none absolute inset-y-0 -left-3 w-[2px] overflow-hidden">
           <div className="h-full w-full origin-top bg-border opacity-70" />
@@ -29,9 +31,8 @@ export function Section({
           </BlurFade>
         </div>
       )}
-      <div className="mt-2">{children}</div>
+      <div className="mt-3">{children}</div>
     </section>
   );
 }
-
 
