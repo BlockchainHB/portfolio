@@ -16,7 +16,6 @@ import { TweetCard } from "@/components/magicui/tweet-card";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/navbar";
 import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
 
@@ -182,23 +181,22 @@ export default function Page() {
               </div>
             </BlurFade>
             <BlurFade staggerIndex={3}>
-              <nav aria-label="Section navigation" className="mt-4 flex flex-wrap gap-2">
-                <Link href="#currently-building" className="rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground">
-                  Currently Building
-                </Link>
-                <Link href="#recent-builds" className="rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground">
-                  Recent Builds
-                </Link>
-                <Link href="#insights" className="rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground">
-                  Insights
-                </Link>
-                <Link href="#toolstack" className="rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground">
-                  Toolstack
-                </Link>
-                <Link href="#contact" className="rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground">
-                  Contact
-                </Link>
-              </nav>
+              <div className="mt-4 flex items-center gap-2">
+                {Object.entries(DATA.contact.social)
+                  .filter(([_, social]) => social.navbar)
+                  .map(([name, social]) => (
+                    <Link
+                      key={name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <social.icon className="size-3" />
+                      {name}
+                    </Link>
+                  ))}
+              </div>
             </BlurFade>
           </div>
 
@@ -413,7 +411,6 @@ export default function Page() {
           </>
         )}
       </AnimatePresence>
-      <Navbar onCalendarClick={() => setIsCalOpen(true)} />
     </main>
   );
 }
