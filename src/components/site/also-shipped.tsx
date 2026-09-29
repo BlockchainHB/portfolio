@@ -42,11 +42,13 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
           <li key={item.id}>
             <a
               href={item.href}
-              className="shadow-tile flex h-[132px] flex-col justify-between rounded-tile bg-tile px-5 pb-[18px] pt-4 transition-transform duration-150 ease-out active:scale-[0.96]"
+              className="shadow-tile group flex h-[132px] flex-col justify-between rounded-tile bg-tile px-5 pb-[18px] pt-4 transition-transform duration-150 ease-out active:scale-[0.96]"
             >
               <span className="flex items-center justify-between">
                 <ProjectMark mark={item.mark} size={32} />
-                <span className="text-xs text-subtle">{item.year} ↗</span>
+                <span className="text-xs text-subtle">
+                  {item.year} <span className="arrow-out">↗</span>
+                </span>
               </span>
               <span className="flex flex-col gap-0.5">
                 <span className="text-base text-ink">{item.name}</span>
@@ -60,7 +62,10 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
       <ul className="shadow-tile mx-4 mt-6 flex flex-col rounded-tile bg-tile px-4 py-1 lg:hidden">
         {items.map((item, i) => (
           <li key={item.id} className={cn(i > 0 && "border-t border-border")}>
-            <a href={item.href} className="flex items-center gap-3 py-3">
+            <a
+              href={item.href}
+              className="-mx-2 flex items-center gap-3 rounded-[20px] px-2 py-3 transition-colors duration-150 ease-out active:bg-fill"
+            >
               <ProjectMark mark={item.mark} size={32} />
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate text-base text-ink">{item.name}</span>

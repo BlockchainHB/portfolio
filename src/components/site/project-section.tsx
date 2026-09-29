@@ -8,7 +8,12 @@ const CELL = "calc((100cqw - 48px) / 4)";
 
 export function ProjectSection({ project, first }: { project: Project; first?: boolean }) {
   return (
-    <section aria-labelledby={`${project.id}-title`} className={cn(!first && "pt-12 lg:pt-24")}>
+    <section
+      id={project.id}
+      aria-labelledby={`${project.id}-title`}
+      // Jumping here (hero tiles link to #id) lands the heading 48px from the top, padding or not
+      className={cn(first ? "scroll-mt-12" : "pt-12 lg:-scroll-mt-12 lg:pt-24")}
+    >
       <DesktopProject project={project} />
       <MobileProject project={project} />
     </section>
@@ -34,10 +39,10 @@ function DesktopProject({ project }: { project: Project }) {
             {project.visit && (
               <a
                 href={project.visit}
-                className="text-ink transition-opacity duration-150 ease-out hover:opacity-70"
+                className="group inline-flex text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
                 aria-label={`Visit ${project.name}`}
               >
-                Visit ↗
+                Visit&nbsp;<span className="arrow-out">↗</span>
               </a>
             )}
           </div>

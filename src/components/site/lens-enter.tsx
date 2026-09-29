@@ -17,3 +17,13 @@ export function LensEnter({ children }: { children: React.ReactNode }) {
 
   return <div className={animate ? "lens-enter" : undefined}>{children}</div>;
 }
+
+/*
+ * The other half: the home entrance runs on the first page load only.
+ * Coming back to All from a lens gets the lens swap instead, not a replay.
+ * The server renders data-intro too, so the CSS runs before hydration.
+ */
+export function IntroGate({ children }: { children: React.ReactNode }) {
+  const [intro] = useState(() => !hasNavigated);
+  return <div data-intro={intro ? "" : undefined}>{children}</div>;
+}

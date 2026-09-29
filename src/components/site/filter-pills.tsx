@@ -35,7 +35,7 @@ export function FilterPills({ id, compact = false }: { id: string; compact?: boo
                 className={cn(
                   "relative flex h-9 items-center rounded-full text-sm transition-[color,transform] duration-150 ease-out active:scale-[0.96]",
                   compact ? "px-[9px]" : "px-4",
-                  active ? "text-ink" : "text-body [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
+                  active ? "text-ink" : "text-body hover:text-ink",
                 )}
               >
                 {item.label}

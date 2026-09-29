@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Copy } from "lucide-react";
 import { CONTACT } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -39,17 +40,23 @@ export function Footer() {
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
         <div className="flex flex-col gap-1.5">
           <p className="text-md text-body">Say hello</p>
-          <a
-            href={`mailto:${CONTACT.email}`}
-            className="text-2xl font-light text-ink transition-opacity duration-150 ease-out hover:opacity-70"
-          >
-            {CONTACT.email}
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href={`mailto:${CONTACT.email}`}
+              className="text-2xl font-light text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
+            >
+              {CONTACT.email}
+            </a>
+            <CopyEmail />
+          </div>
         </div>
         <ul className="flex items-center gap-6 lg:pb-1">
           {SOCIAL.map((s) => (
             <li key={s.label}>
-              <a href={s.href} className="group flex items-center gap-2 text-md text-ink">
+              <a
+                href={s.href}
+                className="flex items-center gap-2 text-md text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
+              >
                 <span className="shadow-tile flex size-7 items-center justify-center rounded-lg bg-tile text-ink dark:bg-selected">
                   <svg width={s.size} height={s.size} viewBox={s.viewBox} aria-hidden>
                     <path d={s.path} fill={s.fill} />
@@ -67,6 +74,54 @@ export function Footer() {
         <ThemeToggle />
       </div>
     </footer>
+  );
+}
+
+/*
+ * Copies the address for people who don't use a mail app. The icon swaps
+ * copy → check (the static cue) and back after two seconds.
+ */
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(t);
+  }, [copied]);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT.email);
+      setCopied(true);
+    } catch {
+      // Clipboard blocked: the mailto link beside it still works.
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      aria-label="Copy email address"
+      className="shadow-tile flex size-7 items-center justify-center rounded-lg bg-tile text-body transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96] dark:bg-selected"
+    >
+      <AnimatePresence initial={false} mode="popLayout">
+        <motion.span
+          key={copied ? "check" : "copy"}
+          initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+          className="flex"
+        >
+          {copied ? <Check size={14} strokeWidth={1.5} className="text-ink" /> : <Copy size={14} strokeWidth={1.5} />}
+        </motion.span>
+      </AnimatePresence>
+      <span role="status" className="sr-only">
+        {copied ? "Email address copied" : ""}
+      </span>
+    </button>
   );
 }
 

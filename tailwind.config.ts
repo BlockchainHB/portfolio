@@ -2,6 +2,8 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
+  // hover: styles only apply on devices that can hover, so taps never leave a stuck hover state
+  future: { hoverOnlyWhenSupported: true },
   content: ["./src/**/*.{ts,tsx,mdx}"],
   theme: {
     extend: {
