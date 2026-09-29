@@ -105,8 +105,9 @@ function FeaturedCard({ card }: { card: LensCard }) {
   return (
     <article className="shadow-tile flex flex-col rounded-tile bg-tile p-2 lg:flex-row">
       <CardVisual card={card} featured />
-      {/* Label, title and line stay together at the bottom of the column */}
-      <div className="flex flex-1 flex-col justify-end gap-4 px-4 pb-4 pt-5 lg:px-6 lg:pb-7">
+      {/* Reads from the top, level with the visual. 8px card padding + 24px here
+          puts the text 32px from the card's top and left edges alike. */}
+      <div className="flex flex-1 flex-col gap-4 px-4 pb-4 pt-5 lg:p-6">
         <Label card={card} />
         <div className="flex flex-col gap-3">
           <h2 className="text-xl font-light">{card.title}</h2>

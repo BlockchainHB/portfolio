@@ -378,7 +378,7 @@ export const LENS_CARDS: Record<Lens, LensCard[]> = {
       id: "approval",
       ...LF,
       title: "Approval flow for ads changes",
-      line: "Launchie writes proposed ads changes to a change set and checks it against a policy: up to 50 changes, a 24-hour expiry and a 3-day cooldown. You approve the set in the iOS app during an MFA session, on a route Launchie's token can't call. The apply engine re-reads live values, skips stale items and applies the rest in small batches.",
+      line: "Launchie proposes ads changes as a set, checked against a policy. You approve it in the iOS app under MFA, and the apply engine re-reads live values, skips stale items and applies the rest in small batches.",
       visual: { type: "svg", slug: "lf-launchie-approval" },
     },
     {
