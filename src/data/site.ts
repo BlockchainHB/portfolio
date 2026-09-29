@@ -6,36 +6,53 @@
 
 export type Lens = "interface" | "systems" | "agents" | "brand" | "product";
 
-export const LENSES: { slug: Lens; label: string; title: string; line: string }[] = [
+// seoTitle and description are for search results and link previews: they
+// name the projects, since the page's own heading and line don't.
+export const LENSES: { slug: Lens; label: string; title: string; line: string; seoTitle: string; description: string }[] = [
   {
     slug: "interface",
     label: "Interface",
     title: "Interface",
     line: "Interfaces I've designed and built, from a menu bar to a dashboard.",
+    seoTitle: "Interface design and front-end work",
+    description:
+      "Interfaces Hasaam Bhatti designed and built: the Launch Fast web app, iOS app and Chrome extension, the GymCreatives studio, and native iPhone and Mac apps.",
   },
   {
     slug: "systems",
     label: "Systems",
     title: "Systems",
     line: "How each system works, with the limits and numbers from its code.",
+    seoTitle: "System design and architecture",
+    description:
+      "How the systems behind Launch Fast, GymCreatives and Hasaam Bhatti's native apps work: Durable Objects, Inngest fan-out, a shared MCP tool layer and vision QA.",
   },
   {
     slug: "agents",
     label: "Agents",
     title: "Agents",
     line: "Agents I've built, from the terminal to the iPhone.",
+    seoTitle: "AI agents for Amazon sellers and gyms",
+    description:
+      "AI agents Hasaam Bhatti built: Launchie, which runs the Amazon ads loop for Launch Fast sellers, and the GymCreatives agent that turns a chat into an on-brand post.",
   },
   {
     slug: "brand",
     label: "Brand",
     title: "Brand",
     line: "Brands I've built, from the design language to the box.",
+    seoTitle: "Brand identity and packaging",
+    description:
+      "Brands Hasaam Bhatti built from the design language to the box: Launch Fast, GymCreatives, and the Zen Sweat and Flag Runner products on Amazon.",
   },
   {
     slug: "product",
     label: "Product",
     title: "Product",
     line: "Products I've launched on Amazon, from the gap to the box.",
+    seoTitle: "Physical products launched on Amazon",
+    description:
+      "Products Hasaam Bhatti found, designed and launched on Amazon: Zen Sweat, a portable steam sauna, and Flag Runner, a no-drill truck bed flag mount.",
   },
 ];
 

@@ -14,45 +14,55 @@ export function ProjectSection({ project, first }: { project: Project; first?: b
       // Jumping here (hero tiles link to #id) lands the heading 48px from the top, padding or not
       className={cn(first ? "scroll-mt-12" : "pt-12 lg:-scroll-mt-12 lg:pt-24")}
     >
+      <ProjectHeader project={project} />
       <DesktopProject project={project} />
       <MobileProject project={project} />
     </section>
   );
 }
 
+/*
+ * One header for both layouts, so the page has one h2 per project.
+ * Mobile:  mark | name          Desktop:  mark | name         | role  Visit ↗
+ *          mark | role                    mark | description  |
+ *          description
+ */
+function ProjectHeader({ project }: { project: Project }) {
+  const mobileMeta = project.mobileMeta ?? project.meta;
+
+  return (
+    <header className="mx-auto grid w-full max-w-content grid-cols-[auto_1fr] items-center gap-x-3.5 gap-y-0.5 px-4 [grid-template-areas:'mark_name''mark_meta''desc_desc'] lg:grid-cols-[auto_1fr_auto] lg:gap-x-4 lg:px-0 lg:[grid-template-areas:'mark_name_side''mark_desc_side']">
+      <ProjectMark mark={project.mark} size={56} className="[grid-area:mark] lg:!size-12" />
+      <h2 id={`${project.id}-title`} className="self-end text-xl font-light [grid-area:name]">
+        {project.name}
+      </h2>
+      {mobileMeta && <p className="self-start text-md text-body [grid-area:meta] lg:hidden">{mobileMeta}</p>}
+      <p className="mt-3.5 text-base text-body [grid-area:desc] lg:mt-0 lg:self-start">{project.description}</p>
+      {(project.meta || project.visit) && (
+        <div className="hidden shrink-0 items-center gap-5 self-end pl-4 text-md [grid-area:side] lg:flex">
+          {project.meta && <span className="text-body">{project.meta}</span>}
+          {project.visit && (
+            <a
+              href={project.visit}
+              className="group inline-flex text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
+              aria-label={`Visit ${project.name}`}
+            >
+              Visit&nbsp;<span className="arrow-out">↗</span>
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+  );
+}
+
 function DesktopProject({ project }: { project: Project }) {
   return (
-    <div className="mx-auto hidden w-full max-w-content flex-col gap-12 lg:flex">
-      <header className="flex items-end justify-between gap-8">
-        <div className="flex items-center gap-4">
-          <ProjectMark mark={project.mark} size={48} />
-          <div className="flex flex-col gap-0.5">
-            <h2 id={`${project.id}-title`} className="text-xl font-light">
-              {project.name}
-            </h2>
-            <p className="text-base text-body">{project.description}</p>
-          </div>
-        </div>
-        {(project.meta || project.visit) && (
-          <div className="flex shrink-0 items-center gap-5 text-md">
-            {project.meta && <span className="text-body">{project.meta}</span>}
-            {project.visit && (
-              <a
-                href={project.visit}
-                className="group inline-flex text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
-                aria-label={`Visit ${project.name}`}
-              >
-                Visit&nbsp;<span className="arrow-out">↗</span>
-              </a>
-            )}
-          </div>
-        )}
-      </header>
-
+    <div className="mx-auto hidden w-full max-w-content flex-col pt-12 lg:flex">
       <div className="[container-type:inline-size]">
         <div className="grid grid-cols-4 gap-4" style={{ gridAutoRows: CELL }}>
           {project.tiles.map((tile, i) => (
-            <MediaTile key={tile.slug} tile={tile} priority={project.id === "launch-fast" && i < 2} />
+            <MediaTile key={tile.slug} tile={tile} project={project.name} priority={project.id === "launch-fast" && i < 2} />
           ))}
         </div>
       </div>
@@ -60,7 +70,7 @@ function DesktopProject({ project }: { project: Project }) {
   );
 }
 
-function MediaTile({ tile, priority }: { tile: Tile; priority?: boolean }) {
+function MediaTile({ tile, project, priority }: { tile: Tile; project: string; priority?: boolean }) {
   const { col, row, w, h } = tile.place;
   const sizes = w === 2 ? "(min-width: 1200px) 576px, 50vw" : "(min-width: 1200px) 280px, 25vw";
 
@@ -72,7 +82,7 @@ function MediaTile({ tile, priority }: { tile: Tile; priority?: boolean }) {
       <ThemeImage
         light={`/work/home/${tile.slug}-light.webp`}
         dark={`/work/home/${tile.slug}-dark.webp`}
-        alt={tile.label}
+        alt={`${project}: ${tile.label}`}
         sizes={sizes}
         priority={priority}
       />
@@ -86,23 +96,9 @@ function MediaTile({ tile, priority }: { tile: Tile; priority?: boolean }) {
 function MobileProject({ project }: { project: Project }) {
   const order = MOBILE_ORDER[project.id] ?? project.tiles.map((t) => t.slug);
   const tiles = order.map((slug) => project.tiles.find((t) => t.slug === slug)!).filter(Boolean);
-  const meta = project.mobileMeta ?? project.meta;
 
   return (
-    <div className="flex flex-col gap-6 lg:hidden">
-      <header className="flex flex-col gap-4 px-4">
-        <div className="flex items-center gap-3.5">
-          <ProjectMark mark={project.mark} size={56} />
-          <div className="flex min-w-0 flex-col gap-0.5">
-            <h2 id={`${project.id}-title-m`} className="text-xl font-light">
-              {project.name}
-            </h2>
-            {meta && <p className="text-md text-body">{meta}</p>}
-          </div>
-        </div>
-        <p className="text-base text-body">{project.description}</p>
-      </header>
-
+    <div className="flex flex-col pt-6 lg:hidden">
       {/* Swipe rail: 300x360 tiles, the next one peeks in */}
       <ul className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-1">
         {tiles.map((tile) => (
@@ -111,7 +107,7 @@ function MobileProject({ project }: { project: Project }) {
               <ThemeImage
                 light={`/work/mobile/${tile.slug}-light.webp`}
                 dark={`/work/mobile/${tile.slug}-dark.webp`}
-                alt={tile.caption}
+                alt={`${project.name}: ${tile.caption}`}
                 sizes="300px"
               />
             </div>

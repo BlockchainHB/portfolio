@@ -224,6 +224,10 @@
     scale 150ms var(--ease-out);
 }
 
+.hero-label::after {
+  content: attr(data-label);
+}
+
 .hero-label[data-at="above"] {
   bottom: calc(100% + 14px);
   transform-origin: 50% 100%;

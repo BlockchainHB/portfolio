@@ -3,10 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
-const SITE_URL = "https://hasaamb.com";
-const DESCRIPTION =
-  "I'm Hasaam, in Toronto. I take products from idea to shelf, from the backend to the box.";
+import { DESCRIPTION, HOME_TITLE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // SF Pro comes from the system on Apple devices; Inter stands in everywhere else.
 const inter = Inter({
@@ -16,14 +13,17 @@ const inter = Inter({
   display: "swap",
 });
 
+// Pages set their own canonical, description and social preview (pageMetadata).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  alternates: { canonical: SITE_URL },
   title: {
-    default: "Hasaam Bhatti",
-    template: "%s | Hasaam Bhatti",
+    default: HOME_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
   description: DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -35,21 +35,7 @@ export const metadata: Metadata = {
     shortcut: ["/favicon.ico"],
   },
   manifest: "/favicons/manifest.json",
-  openGraph: {
-    title: "Hasaam Bhatti",
-    description: DESCRIPTION,
-    url: SITE_URL,
-    siteName: "Hasaam Bhatti",
-    locale: "en_US",
-    type: "website",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hasaam Bhatti" }],
-  },
-  twitter: {
-    title: "Hasaam Bhatti",
-    card: "summary_large_image",
-    description: DESCRIPTION,
-    images: ["/opengraph-image"],
-  },
+  twitter: { card: "summary_large_image", creator: "@hasaamb" },
   robots: { index: true, follow: true },
 };
 
@@ -70,26 +56,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           data-domain="hasaamb.com"
           data-allow-localhost="true"
           src="https://datafa.st/js/script.js"
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Hasaam Bhatti",
-              url: SITE_URL,
-              image: `${SITE_URL}/Headshot.png`,
-              jobTitle: "Co-founder and engineer",
-              worksFor: [{ "@type": "Organization", name: "Launch Fast", url: "https://launchfastlegacyx.com" }],
-              sameAs: [
-                "https://x.com/hasaamb",
-                "https://github.com/BlockchainHB",
-                "https://www.linkedin.com/in/hasaam-bhatti-62a1501b9/",
-              ],
-              description: DESCRIPTION,
-            }),
-          }}
         />
       </head>
       <body className="min-h-screen bg-page font-sans text-ink">

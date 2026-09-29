@@ -89,9 +89,8 @@ function Tile({
   return (
     <a href={t.href} aria-hidden tabIndex={-1} className="hero-item absolute" style={style}>
       {tile}
-      <span className="hero-label" data-at={labelAt}>
-        {t.label}
-      </span>
+      {/* The name is drawn from data-label by CSS, so it isn't text inside the h1 */}
+      <span className="hero-label" data-at={labelAt} data-label={t.label} />
     </a>
   );
 }
@@ -122,7 +121,7 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as React.CSSProperties;
 function Stack({ tiles, enterAt, labelAt }: { tiles: StackTile[]; enterAt: number; labelAt: "above" | "below" }) {
   const anchor = tiles[tiles.length - 1];
   return (
-    <span className="hero-stack intro-rise relative block h-[60px] w-[142px] shrink-0" style={delay(enterAt)}>
+    <span className="hero-stack intro-rise relative hidden h-[60px] w-[142px] shrink-0 lg:block" style={delay(enterAt)}>
       {tiles.map((t) => (
         <Tile key={t.name} t={t} anchor={anchor} px={52} radius={12} shadow={tileShadow} labelAt={labelAt} />
       ))}
@@ -130,7 +129,7 @@ function Stack({ tiles, enterAt, labelAt }: { tiles: StackTile[]; enterAt: numbe
   );
 }
 
-const INTRO = "I'm Hasaam, in Toronto. I take products from idea to shelf, from the backend to the box.";
+const INTRO = "I'm Hasaam Bhatti, in Toronto. I take products from idea to shelf, from the backend to the box.";
 
 // Fetch the stack icons with the HTML, so the fan never opens on blank tiles.
 const ICONS = ["beamlet-app", "hbbag-app", ...["gc", "lf", "flagrunner", "zensweat"].flatMap((n) => [`${n}-ink`, `${n}-white`])];
@@ -138,46 +137,39 @@ const ICONS = ["beamlet-app", "hbbag-app", ...["gc", "lf", "flagrunner", "zenswe
 export function Hero() {
   for (const icon of ICONS) preload(`/icons/${icon}.png`, { as: "image" });
 
+  // One h1 for both layouts. Desktop: a zig-zag, each line ends or starts
+  // with its stack. Mobile: the stacks hide and a hand of five tiles fans out
+  // above the statement.
   return (
-    <section className="mx-auto w-full max-w-content">
-      {/* Desktop: a zig-zag, each line ends or starts with its stack */}
-      <div className="hidden flex-col items-center gap-7 pb-24 pt-28 lg:flex">
-        {/* Each stack sits like a word: 10px gap plus sidebearing and tile inset ≈ one word space (0.26em) */}
-        <h1 className="flex flex-col items-center gap-1 text-3xl font-light">
-          <span className="flex items-center gap-2.5">
-            <span className="intro-rise" style={delay(0)}>
-              I build software
-            </span>
-            <Stack tiles={SOFTWARE} enterAt={60} labelAt="above" />
-          </span>
-          <span className="flex items-center gap-2.5">
-            <Stack tiles={THINGS} enterAt={160} labelAt="below" />
-            <span className="intro-rise" style={delay(100)}>
-              and sell things
-            </span>
-          </span>
-        </h1>
-        <p className="intro-rise text-balance max-w-[600px] text-center text-lg font-light text-body" style={delay(200)}>
-          {INTRO}
-        </p>
-      </div>
+    <section className="mx-auto flex w-full max-w-content flex-col items-center gap-5 pb-12 pt-16 lg:gap-7 lg:pb-24 lg:pt-28">
+      <span aria-hidden className="intro-rise relative block h-24 w-[260px] lg:hidden" style={delay(0)}>
+        {FAN.map((t) => (
+          <Tile key={t.name} t={t} anchor={FAN[FAN.length - 1]} px={56} radius={13} shadow={fanShadow} />
+        ))}
+      </span>
 
-      {/* Mobile: a hand of five tiles that fans out above the statement */}
-      <div className="flex flex-col items-center gap-5 pb-12 pt-16 lg:hidden">
-        <span className="intro-rise relative block h-24 w-[260px]" style={delay(0)}>
-          {FAN.map((t) => (
-            <Tile key={t.name} t={t} anchor={FAN[FAN.length - 1]} px={56} radius={13} shadow={fanShadow} />
-          ))}
+      {/* Each stack sits like a word: 10px gap plus sidebearing and tile inset ≈ one word space (0.26em) */}
+      <h1 className="flex flex-col items-center text-center text-hero font-light lg:gap-1 lg:text-3xl">
+        <span className="flex items-center gap-2.5">
+          {/* Mobile brings the statement in as one piece, after the fan */}
+          <span className="intro-rise [--delay:100ms] lg:[--delay:0ms]">I build software</span>
+          <Stack tiles={SOFTWARE} enterAt={60} labelAt="above" />
+        </span>{" "}
+        {/* The space keeps the text "software and", not "softwareand"; flex ignores it */}
+        <span className="flex items-center gap-2.5">
+          <Stack tiles={THINGS} enterAt={160} labelAt="below" />
+          <span className="intro-rise" style={delay(100)}>
+            and sell things
+          </span>
         </span>
-        <h1 className="intro-rise text-center text-hero font-light" style={delay(100)}>
-          I build software
-          <br />
-          and sell things
-        </h1>
-        <p className="intro-rise text-balance max-w-[320px] text-center text-base text-body" style={delay(200)}>
-          {INTRO}
-        </p>
-      </div>
+      </h1>
+
+      <p
+        className="intro-rise text-balance max-w-[320px] text-center text-base text-body lg:max-w-[600px] lg:text-lg lg:font-light"
+        style={delay(200)}
+      >
+        {INTRO}
+      </p>
     </section>
   );
 }
