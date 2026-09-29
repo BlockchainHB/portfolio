@@ -15,7 +15,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | Home, mobile | Done. Copy rewritten and verified |
 | Expanded card, desktop and mobile | Done. Its background page still shows old tag labels ("Interface \| Systems") on tiles; remove them |
 | Filter lens pages (Interface, Systems, Agents, Brand, Product) | Done. Copy rewritten and verified |
-| Screenshots | PR Monitor, Daily Hadith and Beamlet use fresh light and dark captures; the product photos are real. Launch Fast and GymCreatives are placeholders |
+| Screenshots | Real everywhere except: Launch Fast web dashboard and Chrome extension, and all GymCreatives tiles (each needs a signed-in session; see Next steps) |
+| Launch Fast imagery | iOS Home and Launchie screens (exported from the "Launch Fast Designs" Paper file, extended to full height), the MCP Research Products widget (real widget bundle rendered with repo fixture data, light and dark), and the "Run Launch Fast from inside Claude" onboarding email render |
 | Native apps tiles | Real screenshots on all three, light and dark. Daily Hadith is two phone frames (home and translation) on sage. Beamlet's panel sits on peach and PR Monitor's on blue, both running off the tile edge. In dark mode the tints are deep green, warm brown and navy. App icons are in the filter-page labels |
 | PR Monitor tiles | The panel sits on a soft blue tile (`linear-gradient(160deg, #E9F0F9, #D2DFF0)`; dark `#1A2536 → #0E141D`), bleeding off the edge the way Beamlet's does. The Native apps row reads sage, peach, blue. The app icon is in the filter-page labels |
 | Code | Not started |
@@ -23,8 +24,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 ## Next steps
 
 1. **Swap in screenshots** (Hasaam is bringing these). Placeholders still in Paper:
-   - Launch Fast: dashboard (web app), iOS app, MCP UI, Chrome extension, email
-   - GymCreatives: chat workspace, auto post image
+   - Launch Fast: web dashboard (1440×900 @2x, light and dark, logged in to prod or a v2-main preview) and the Chrome extension on a live Amazon page
+   - GymCreatives (branch `hasaam/v2-qa-youtube-tool`, dark-only app): chat thread with a returned post, Auto Posts results, Account → Brand, an agent question with choices, and the model picker. Use a non-admin demo account. Existing QA shots are in `~/dev/GymCreatives_App/.context/v2-sprint-qa/` but show dev badges, admin links and real gym data
    - Nice to have: dark-mode screenshots and transparent product cutouts for the dark artboard, and the real Zen Sweat and Flag Runner logo files
 2. Remove the leftover tag labels behind the expanded cards.
 3. Set each project's media tile color from its real screenshots.
