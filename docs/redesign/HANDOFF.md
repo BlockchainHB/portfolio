@@ -15,7 +15,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | Home, mobile | Done. Copy rewritten and verified |
 | Expanded card, desktop and mobile | Done. Its background page still shows old tag labels ("Interface \| Systems") on tiles; remove them |
 | Filter lens pages (Interface, Systems, Agents, Brand, Product) | Done. Copy rewritten and verified |
-| Screenshots | PR Monitor, Daily Hadith, Beamlet and the product photos are real. Launch Fast and GymCreatives are placeholders |
+| Screenshots | PR Monitor, Daily Hadith and Beamlet use fresh light and dark captures; the product photos are real. Launch Fast and GymCreatives are placeholders |
+| Native apps tiles | Real screenshots on all three, light and dark. Daily Hadith is two phone frames (home and translation) on sage. Beamlet's panel sits on peach and PR Monitor's on blue, both running off the tile edge. In dark mode the tints are deep green, warm brown and navy. App icons are in the filter-page labels |
 | PR Monitor tiles | The panel sits on a soft blue tile (`linear-gradient(160deg, #E9F0F9, #D2DFF0)`; dark `#1A2536 → #0E141D`), bleeding off the edge the way Beamlet's does. The Native apps row reads sage, peach, blue. The app icon is in the filter-page labels |
 | Code | Not started |
 
@@ -105,7 +106,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | `assets/products/zen-sweat.png`, `flag-runner.png` | Amazon main product images |
 | `assets/hero-icons/*` | Zen Sweat and Flag Runner logo tiles cropped from the product photos. The logo is shifted left or right so overlapping icons in the hero stack don't cover it |
 | `assets/screenshots/pr-monitor/*` | Portfolio-specific PR Monitor renders: light and dark panels (720×846 @2x, transparent, no shadow), a full-length light panel, and the 1024 app icon. Source: `~/Documents/PR-Monitor/docs/screenshots/portfolio/`. The fictional repos are lumen-labs/* |
-| `assets/screenshots/daily-hadith/*` | From the daily-hadith-ios README |
+| `assets/screenshots/daily-hadith/*` | Raw iPhone 17 Pro screens, 1206×2622, light and dark: home, listen and translation (Hadith 026). The app icon is square, so round it in the layout. Source: `~/Documents/Daily Hadith App/docs/screenshots/portfolio/` |
+| `assets/screenshots/beamlet/*` | Beamlet panel in the Online state, light and dark (680×973 @2x, transparent, no shadow), plus the 1024 coral icon. Source: `~/dev/claude remote control/docs/images/portfolio/` |
 | `assets/social/*.svg` | X and GitHub (simple-icons), LinkedIn (bootstrap-icons) |
 
 `public/zensweat.png` is the HB Goodies bag icon. It has transparent padding, so it's cropped with `background-size: 124%`.
