@@ -96,7 +96,7 @@ export const PROJECTS: Project[] = [
     id: "launch-fast",
     name: "Launch Fast",
     description: "Research, ads and sourcing for Amazon sellers. Built because I needed it as one.",
-    meta: "Founder and engineer | 2024 to now",
+    meta: "Co-founder and engineer",
     visit: "https://launchfastlegacyx.com",
     mark: MARKS.launchFast,
     tiles: [
@@ -115,9 +115,9 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "physical",
-    name: "Physical products",
-    description: "My Amazon brands. I found the gap, designed the product and the brand, and launched them.",
-    meta: "HB Goodies | 2023 to now",
+    name: "HB Goodies",
+    description: "My Amazon brand. I found each gap, designed the product and its brand, and launched it.",
+    meta: "Operator",
     mark: MARKS.hbGoodies,
     tiles: [
       { slug: "zen-sweat", label: "Zen Sweat", caption: "Zen Sweat", place: { col: 1, row: 1, w: 2, h: 2 } },
@@ -127,8 +127,8 @@ export const PROJECTS: Project[] = [
   {
     id: "gymcreatives",
     name: "GymCreatives",
-    description: "An AI studio that makes on-brand posts for CrossFit gyms.",
-    meta: "Built end to end, with MediaLaunch",
+    description: "An AI studio that makes on-brand posts for CrossFit gyms, built with MediaLaunch.",
+    meta: "CTO and lead engineer",
     visit: "https://gymcreatives.com",
     mark: MARKS.gymCreatives,
     tiles: [

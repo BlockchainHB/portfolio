@@ -38,9 +38,11 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 
 ## Decisions
 
+**Project headers.** The meta line is the role only, no dates: Launch Fast "Co-founder and engineer", HB Goodies "Operator", GymCreatives "CTO and lead engineer" (MediaLaunch is credited in the description).
+
 **Positioning.** The site's one job is to show work: products built end to end, software and physical. The one-liner is "I build software and sell things". Audience: builders on X, collaborators, recruiters. No CTAs, no metrics, no hackathon history.
 
-**Layout.** Apple-style bento. The hero is a centered statement with icon stacks. Then one cluster per project: Launch Fast, Physical products (Zen Sweat and Flag Runner), GymCreatives, Native apps (Daily Hadith, Beamlet, PR Monitor). Then an Also shipped index, then the footer.
+**Layout.** Apple-style bento. The hero is a centered statement with icon stacks. Then one cluster per project: Launch Fast, HB Goodies (Zen Sweat and Flag Runner), GymCreatives, Native apps (Daily Hadith, Beamlet, PR Monitor). Then an Also shipped index, then the footer.
 
 **Tags are hidden metadata.** Angle tags (Interface, Systems, Agents, Brand, Product) are never shown on cards. They only drive the filter.
 
@@ -102,10 +104,10 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 
 ## Verified facts
 
-- **Launch Fast:** research, ads and sourcing for Amazon sellers, built as a seller. Founder and engineer, 2024 to now. Every surface (web app, iOS app in TestFlight, Chrome extension, MCP) shares one Next.js backend on Supabase and Prisma, with Upstash Redis, Stripe and the AI SDK.
+- **Launch Fast:** research, ads and sourcing for Amazon sellers, built as a seller. Co-founder and engineer. Every surface (web app, iOS app in TestFlight, Chrome extension, MCP) shares one Next.js backend on Supabase and Prisma, with Upstash Redis, Stripe and the AI SDK.
 - **Launchie:** the agent in the Launch Fast iOS app and Discord, running on Cloudflare Durable Objects. It answers questions about ads, products and suppliers from the seller's Launch Fast data, and can change and manage PPC campaigns.
-- **GymCreatives:** built end to end with MediaLaunch. Each chat thread's agent runs on the Cloudflare Agents SDK and Durable Objects. Convex stores posts, credits, approvals and brands. A brand holds logo, colors, fonts and voice, discovered from the gym's site or Instagram. The app also uses Clerk, Gemini through the AI SDK, and Vercel Blob.
-- **Physical products (HB Goodies, 2023 to now):**
+- **GymCreatives:** CTO and lead engineer, built with MediaLaunch. Each chat thread's agent runs on the Cloudflare Agents SDK and Durable Objects. Convex stores posts, credits, approvals and brands. A brand holds logo, colors, fonts and voice, discovered from the gym's site or Instagram. The app also uses Clerk, Gemini through the AI SDK, and Vercel Blob.
+- **HB Goodies (Amazon brand, 2023 to now; role: operator):**
   - Zen Sweat is a portable steam sauna with no assembly, and a foot massager comes in the box.
   - Flag Runner is a no-drill truck bed flag mount that clamps on and ships in its own case. Its product photo has a typo: "CASE IICLUDED".
 - **Native apps:**

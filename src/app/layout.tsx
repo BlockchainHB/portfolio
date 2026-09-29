@@ -80,7 +80,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               name: "Hasaam Bhatti",
               url: SITE_URL,
               image: `${SITE_URL}/Headshot.png`,
-              jobTitle: "Founder and engineer",
+              jobTitle: "Co-founder and engineer",
               worksFor: [{ "@type": "Organization", name: "Launch Fast", url: "https://launchfastlegacyx.com" }],
               sameAs: [
                 "https://x.com/hasaamb",
