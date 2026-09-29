@@ -16,6 +16,7 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | Expanded card, desktop and mobile | Done. Its background page still shows old tag labels ("Interface \| Systems") on tiles; remove them |
 | Filter lens pages (Interface, Systems, Agents, Brand, Product) | Done. Copy rewritten and verified |
 | Screenshots | PR Monitor, Daily Hadith, Beamlet and the product photos are real. Launch Fast and GymCreatives are placeholders |
+| PR Monitor tiles | The panel sits on a soft blue tile (`linear-gradient(160deg, #E9F0F9, #D2DFF0)`; dark `#1A2536 → #0E141D`), bleeding off the edge the way Beamlet's does. The Native apps row reads sage, peach, blue. The app icon is in the filter-page labels |
 | Code | Not started |
 
 ## Next steps
@@ -103,7 +104,7 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | --- | --- |
 | `assets/products/zen-sweat.png`, `flag-runner.png` | Amazon main product images |
 | `assets/hero-icons/*` | Zen Sweat and Flag Runner logo tiles cropped from the product photos. The logo is shifted left or right so overlapping icons in the hero stack don't cover it |
-| `assets/screenshots/pr-monitor.png` | From the PR-Monitor README |
+| `assets/screenshots/pr-monitor/*` | Portfolio-specific PR Monitor renders: light and dark panels (720×846 @2x, transparent, no shadow), a full-length light panel, and the 1024 app icon. Source: `~/Documents/PR-Monitor/docs/screenshots/portfolio/`. The fictional repos are lumen-labs/* |
 | `assets/screenshots/daily-hadith/*` | From the daily-hadith-ios README |
 | `assets/social/*.svg` | X and GitHub (simple-icons), LinkedIn (bootstrap-icons) |
 
