@@ -90,13 +90,13 @@ export function Hero() {
     <section className="mx-auto w-full max-w-content">
       {/* Desktop: a zig-zag, each line ends or starts with its stack */}
       <div className="hidden flex-col items-center gap-7 pb-24 pt-28 lg:flex">
-        {/* Both lines share one width, so the zig-zag's outer edges line up */}
-        <h1 className="flex w-[484px] flex-col gap-1 text-3xl font-light">
-          <span className="flex items-center justify-between gap-5">
+        {/* Each stack sits like a word: 10px gap plus sidebearing and tile inset ≈ one word space (0.26em) */}
+        <h1 className="flex flex-col items-center gap-1 text-3xl font-light">
+          <span className="flex items-center gap-2.5">
             I build software
             <Stack tiles={SOFTWARE} />
           </span>
-          <span className="flex items-center justify-between gap-5">
+          <span className="flex items-center gap-2.5">
             <Stack tiles={THINGS} />
             and sell things
           </span>

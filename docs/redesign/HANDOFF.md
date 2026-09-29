@@ -54,7 +54,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 
 **Hero icon stacks.**
 - Desktop: a zig-zag. "I build software" ends with a stack of Launch Fast, GymCreatives and Beamlet. "and sell things" starts with a stack of Flag Runner, Zen Sweat and HB Goodies. The icon nearest the text sits on top.
-- Stack spec: 52px tiles on a 44px step, tilts of −4, 2 and 6 degrees, a 2px ring in the page color, and a soft shadow.
+- Stack spec: 52px tiles on a 44px step, tilts of −4, 2 and 6 degrees, a 2px ring in the page color, and a soft shadow. Marks are centered on their tiles and may tuck under the next tile.
+- Spacing: each stack sits one word space from its text. The flex gap is 10px; with the 2px tile inset it measures 12px, the headline's 11.8px word space. Each line is centered on its own, and the edges aren't forced to align.
 - Mobile: a fan of five 56px tiles above a 40/44 headline, tilted −20, −10, 0, 10 and 20 degrees, with Launch Fast in the center.
 
 **Footer.** Say hello, the email, and social links (a 28px floating icon tile plus a label; brand glyphs, not Lucide). Then the copyright line and an Auto / Light / Dark theme toggle.
