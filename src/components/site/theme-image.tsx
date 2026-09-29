@@ -23,6 +23,7 @@ export function ThemeImage({ light, dark, alt, sizes, className, priority }: Pro
         fill
         sizes={sizes}
         priority={priority}
+        quality={90}
         className={cn("object-cover dark:hidden", className)}
       />
       <Image
@@ -31,6 +32,7 @@ export function ThemeImage({ light, dark, alt, sizes, className, priority }: Pro
         fill
         sizes={sizes}
         priority={priority}
+        quality={90}
         className={cn("hidden object-cover dark:block", className)}
       />
     </>
