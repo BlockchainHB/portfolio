@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CONTACT, PROJECTS } from "@/data/site";
 
-export const SITE_URL = "https://hasaamb.com";
+// The live host: the bare domain redirects here, so canonicals must point at www.
+export const SITE_URL = "https://www.hasaamb.com";
 export const SITE_NAME = "Hasaam Bhatti";
 export const HOME_TITLE = `${SITE_NAME}: Software engineer and founder, Toronto`;
 
