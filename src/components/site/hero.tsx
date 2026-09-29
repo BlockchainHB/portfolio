@@ -13,7 +13,6 @@ type StackTile = {
   kind: "app" | "mark";
   name: string;
   size?: number; // mark share of the tile, in %
-  position?: string; // background-position, to keep a wordmark visible under the next tile
 };
 
 const tileShadow = "shadow-[inset_0_0_0_1px_var(--image-outline),0_0_0_2px_var(--page),0_2px_8px_#00000014]";
@@ -41,7 +40,7 @@ function Tile({ t, px, radius, shadow }: { t: StackTile; px: number; radius: num
   }
 
   const layer = "absolute inset-0 bg-no-repeat";
-  const bg = { backgroundSize: `${t.size}%`, backgroundPosition: t.position ?? "50%" };
+  const bg = { backgroundSize: `${t.size}%`, backgroundPosition: "50%" };
   return (
     <span aria-hidden className={cn("absolute overflow-hidden bg-mark-tile", shadow)} style={style}>
       <span className={cn(layer, "dark:hidden")} style={{ ...bg, backgroundImage: `url(/icons/${t.name}-ink.png)` }} />
@@ -61,14 +60,14 @@ const SOFTWARE: StackTile[] = [
 ];
 
 const THINGS: StackTile[] = [
-  { kind: "mark", name: "flagrunner", size: 68, position: "22%", left: 2, top: 4, rotate: -6 },
-  { kind: "mark", name: "zensweat", size: 62, position: "22%", left: 44, top: 4, rotate: -2 },
+  { kind: "mark", name: "flagrunner", size: 68, left: 2, top: 4, rotate: -6 },
+  { kind: "mark", name: "zensweat", size: 62, left: 44, top: 4, rotate: -2 },
   { kind: "app", name: "hbbag", left: 88, top: 4, rotate: 4 },
 ];
 
 const FAN: StackTile[] = [
   { kind: "app", name: "beamlet", left: 15, top: 33, rotate: -20 },
-  { kind: "mark", name: "zensweat", size: 60, position: "96%", left: 192, top: 14, rotate: 20 },
+  { kind: "mark", name: "zensweat", size: 60, left: 192, top: 14, rotate: 20 },
   { kind: "mark", name: "gc", size: 54, left: 58, top: 17, rotate: -10 },
   { kind: "app", name: "hbbag", left: 147, top: 7, rotate: 10 },
   { kind: "mark", name: "lf", size: 62, left: 102, top: 8, rotate: 0 },
@@ -91,12 +90,13 @@ export function Hero() {
     <section className="mx-auto w-full max-w-content">
       {/* Desktop: a zig-zag, each line ends or starts with its stack */}
       <div className="hidden flex-col items-center gap-7 pb-24 pt-28 lg:flex">
-        <h1 className="flex flex-col items-center gap-1 text-3xl font-light">
-          <span className="flex items-center gap-5">
+        {/* Both lines share one width, so the zig-zag's outer edges line up */}
+        <h1 className="flex w-[484px] flex-col gap-1 text-3xl font-light">
+          <span className="flex items-center justify-between gap-5">
             I build software
             <Stack tiles={SOFTWARE} />
           </span>
-          <span className="flex items-center gap-5">
+          <span className="flex items-center justify-between gap-5">
             <Stack tiles={THINGS} />
             and sell things
           </span>
