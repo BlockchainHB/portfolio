@@ -19,6 +19,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | Launch Fast imagery | iOS Home and Launchie screens (exported from the "Launch Fast Designs" Paper file, extended to full height), the MCP Research Products widget (real widget bundle rendered with repo fixture data, light and dark), and the "Run Launch Fast from inside Claude" onboarding email render |
 | Native apps tiles | Real screenshots on all three, light and dark. Daily Hadith is two phone frames (home and translation) on sage. Beamlet's panel sits on peach and PR Monitor's on blue, both running off the tile edge. In dark mode the tints are deep green, warm brown and navy. App icons are in the filter-page labels |
 | PR Monitor tiles | The panel sits on a soft blue tile (`linear-gradient(160deg, #E9F0F9, #D2DFF0)`; dark `#1A2536 → #0E141D`), bleeding off the edge the way Beamlet's does. The Native apps row reads sage, peach, blue. The app icon is in the filter-page labels |
+| Systems diagrams | Redrawn in direction A, "Beams": brand-logo circles, curved gradient beams into one glowing hero tile, dashed = async. Rules and per-diagram specs are in the Claude Doc "System diagram guide". Light on every light artboard. The dark reference is the artboard "Filter \| Systems \| Dark" |
+| Brand kit (GymCreatives brand memory) | One component used on home, mobile, Agents, Brand and Systems: the Ironside CrossFit logo tile, 4 swatches, Oswald "Aa" and voice chips. The dark variant is on the dark home and the dark Systems artboard |
 | Code | Not started |
 
 ## Next steps
@@ -60,6 +62,9 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 - **Color:**
   - Light: page #F7F7F7, tile #FFFFFF, text #292929 / #5D5D5D / #767676. No accent color; the work brings the color.
   - Dark: page #111111, tile #1B1B1B, text #EDEDED / #A1A1A1 / #888888. Tiles use a 1px white 8% ring instead of shadows.
+  - **Every visual follows the site theme.** Nothing is dark in light mode just because the product is (GymCreatives and Cloudflare cards included). In light mode, placeholders are white windows on #EEEEEE with a #292929 chat bubble. The one exception is a real screenshot of a dark-only app (GymCreatives); frame it on a light tile.
+  - Diagrams, light: canvas #F3F5F9, circles #FFFFFF with shadow `#0000000F 0 0 0 1px, #0000001A 0 6px 16px`, beam base #0000001A, async dashes #00000033, icons #1D1D1F.
+  - Diagrams, dark: canvas #141414 (Daily Hadith #131714 → #0F1A14), circles #262626 with `#FFFFFF1A 0 0 0 1px, #00000080 0 6px 16px`, hero tiles #1F1F1F with a stronger accent ring, beam base #FFFFFF1A, async dashes #FFFFFF40, mono icons white. Accents brighten: blue #5B8CFF → violet #A78BFA, Daily Hadith green #2FA376.
 - **Grid:** four 280px cells with a 16px gap, in a 1168px container.
 - **Corners:** tile radius 28. Media is inset 8 with radius 20 (concentric).
 - **Shadow:** `#0000000F 0 0 0 1px, #0000000F 0 1px 2px -1px, #0000000A 0 2px 4px`.
@@ -126,6 +131,8 @@ The IDs are stable, so find things fast with `find_nodes` or these:
   - Expanded card | Mobile | Web app `17H-0`
   - Filter | Interface `348-0`
   - Filter | Systems `3BU-0`
+  - Filter | Systems | Dark `4P1-0` (mono icons use `filter: invert(1)` in Paper; in code, use `currentColor`)
+  - Diagram directions `43Y-0` (A vs B comparison, reference only)
   - Filter | Agents `2HY-0`
   - Filter | Brand `3K1-0`
   - Filter | Product `3MM-0`
