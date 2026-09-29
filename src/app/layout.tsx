@@ -1,23 +1,29 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import "./globals.css";
-import { MotionProvider } from "@/components/motion-provider";
 import { Analytics } from "@vercel/analytics/react";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
 const SITE_URL = "https://hasaamb.com";
+const DESCRIPTION =
+  "I'm Hasaam, in Toronto. I take products from idea to shelf, from the backend to the box.";
+
+// SF Pro comes from the system on Apple devices; Inter stands in everywhere else.
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: SITE_URL,
-  },
+  alternates: { canonical: SITE_URL },
   title: {
-    default: "Hasaam Bhatti — AI Engineer & Founder",
-    template: `%s | Hasaam Bhatti`,
+    default: "Hasaam Bhatti",
+    template: "%s | Hasaam Bhatti",
   },
-  description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can. Toronto-based, decade of FBA + SaaS experience.",
+  description: DESCRIPTION,
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -25,65 +31,39 @@ export const metadata: Metadata = {
       { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicons/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: [
-      { url: "/favicons/apple-icon-180x180.png", sizes: "180x180", type: "image/png" },
-      { url: "/favicons/apple-icon-152x152.png", sizes: "152x152", type: "image/png" },
-      { url: "/favicons/apple-icon-144x144.png", sizes: "144x144", type: "image/png" },
-      { url: "/favicons/apple-icon-120x120.png", sizes: "120x120", type: "image/png" },
-      { url: "/favicons/apple-icon-114x114.png", sizes: "114x114", type: "image/png" },
-      { url: "/favicons/apple-icon-76x76.png", sizes: "76x76", type: "image/png" },
-      { url: "/favicons/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
-      { url: "/favicons/apple-icon-60x60.png", sizes: "60x60", type: "image/png" },
-      { url: "/favicons/apple-icon-57x57.png", sizes: "57x57", type: "image/png" },
-    ],
+    apple: [{ url: "/favicons/apple-icon-180x180.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"],
   },
   manifest: "/favicons/manifest.json",
   openGraph: {
-    title: "Hasaam Bhatti — AI Engineer & Founder",
-    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    title: "Hasaam Bhatti",
+    description: DESCRIPTION,
     url: SITE_URL,
     siteName: "Hasaam Bhatti",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Hasaam Bhatti - AI Engineer & Founder",
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hasaam Bhatti" }],
   },
   twitter: {
-    title: "Hasaam Bhatti — AI Engineer & Founder",
+    title: "Hasaam Bhatti",
     card: "summary_large_image",
-    description: "Founder @Launch Fast. I build production AI systems for e-commerce & SaaS — faster than teams can.",
+    description: DESCRIPTION,
     images: ["/opengraph-image"],
   },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f7f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#111111" },
+  ],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
-        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
-        <link rel="preload" href="/Headshot.png" as="image" />
         <script
           defer
           data-website-id="68e0d3e320ff399f48a39d93"
@@ -98,42 +78,25 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Hasaam Bhatti",
-              url: "https://hasaamb.com",
-              image: "https://hasaamb.com/Headshot.png",
-              jobTitle: "AI Engineer & Founder",
-              worksFor: [
-                {
-                  "@type": "Organization",
-                  name: "Launch Fast",
-                  url: "https://launchfastlegacyx.com",
-                },
-                {
-                  "@type": "Organization",
-                  name: "LegacyX",
-                  url: "https://legacyxfba.com",
-                },
-              ],
+              url: SITE_URL,
+              image: `${SITE_URL}/Headshot.png`,
+              jobTitle: "Founder and engineer",
+              worksFor: [{ "@type": "Organization", name: "Launch Fast", url: "https://launchfastlegacyx.com" }],
               sameAs: [
-                "https://x.com/automatingwork",
+                "https://x.com/hasaamb",
                 "https://github.com/BlockchainHB",
                 "https://www.linkedin.com/in/hasaam-bhatti-62a1501b9/",
               ],
-              description:
-                "Full-stack AI builder, automation architect & multi-brand founder. Building AI systems for e-commerce & SaaS.",
+              description: DESCRIPTION,
             }),
           }}
         />
       </head>
-      <body
-        className="min-h-screen bg-background font-sans antialiased max-w-[720px] mx-auto py-6 sm:py-10 px-4 sm:px-6"
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TooltipProvider delayDuration={0}>
-            <MotionProvider>
-              {children}
-              <Analytics />
-            </MotionProvider>
-          </TooltipProvider>
+      <body className="min-h-screen bg-page font-sans text-ink">
+        {/* disableTransitionOnChange: a theme flip snaps instead of smearing every transition at once */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

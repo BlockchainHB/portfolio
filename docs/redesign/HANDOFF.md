@@ -21,7 +21,8 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | PR Monitor tiles | The panel sits on a soft blue tile (`linear-gradient(160deg, #E9F0F9, #D2DFF0)`; dark `#1A2536 → #0E141D`), bleeding off the edge the way Beamlet's does. The Native apps row reads sage, peach, blue. The app icon is in the filter-page labels |
 | Systems diagrams | Rebuilt with the diagram-design skill (hasaam-portfolio skin): nine cards, each a different form. The featured card is the Launchie approval swimlane; the rest are Launchie on Cloudflare (deployment), Inngest fan-out, tool layer stack, GymCreatives agent sequence, image-quality flowchart, model registry matrix, Daily Hadith Urdu comparison and PR Monitor fan-in. Source SVGs and generator: `systems-diagrams/`; facts: `systems-research/`. Live on "Filter \| Systems" and "Filter \| Systems \| Dark". The Agents page featured Launchie card uses the same system (a loop with a seller-memory hub). The older "Beams" style survives only on the "Diagram directions" board |
 | Brand kit (GymCreatives brand memory) | One component used on home, mobile, Agents, Brand and Systems: the Ironside CrossFit logo tile, 4 swatches, Oswald "Aa" and voice chips. The dark variant is on the dark home and the dark Systems artboard |
-| Code | Not started |
+| Dark artboards | Every page now has a dark twin in Paper, placed under its light artboard: Home — Mobile \| Dark, Filter \| Interface / Agents / Brand / Product \| Dark (Systems already had one). Expanded cards are still light only |
+| Code | Built on branch `redesign`. Routes: `/` plus one lens route each (`/interface`, `/systems`, `/agents`, `/brand`, `/product`). All copy lives in `src/data/site.ts`; components in `src/components/site/`. Tile and card visuals are Paper exports (`public/work/{home,mobile,lens}/<slug>-{light,dark}.webp`, 2x); Systems diagrams are the SVGs from `systems-diagrams/`. Theme images swap with the `.dark` class, so there's no flash. Not built yet: expanded cards (preview windows) and the tile hover + |
 
 ## Next steps
 
@@ -31,7 +32,9 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
    - Nice to have: dark-mode screenshots and transparent product cutouts for the dark artboard, and the real Zen Sweat and Flag Runner logo files
 2. Remove the leftover tag labels behind the expanded cards.
 3. Set each project's media tile color from its real screenshots.
-4. Build it in code (Next.js app in this repo), with the Paper file and `tokens.json` as the source.
+4. Build the expanded cards (preview windows) in code, then add the tile hover + and click.
+5. Re-exporting a visual: hide the tile's Pill (and Hover +) with `display: none`, export the tile or card Visual at 2x webp (it lands in ~/Downloads under the node name), move it to `public/work/...`, then set the pill back to `display: flex`. Mobile rails need `flexWrap: wrap` while exporting, or clipped tiles come out black.
+6. Local dev: the shell sets `NODE_ENV=production`, which breaks Tailwind in `next dev`. Run `env -u NODE_ENV pnpm dev`.
 
 ## Decisions
 
