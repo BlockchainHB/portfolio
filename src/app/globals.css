@@ -110,6 +110,14 @@
     outline-offset: -1px;
   }
 
+  /* Die-cut sticker: a tight contact shadow on light, a deeper one on dark so the white edge sits on the page */
+  .sticker {
+    filter: drop-shadow(0 0.5px 0.5px oklch(0 0 0 / 0.16)) drop-shadow(0 1px 2px oklch(0 0 0 / 0.1));
+  }
+  .dark .sticker {
+    filter: drop-shadow(0 1px 2px oklch(0 0 0 / 0.5));
+  }
+
   .text-balance {
     text-wrap: balance;
   }

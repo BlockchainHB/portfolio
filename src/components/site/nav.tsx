@@ -10,11 +10,19 @@ export function Nav() {
           On the name only the text fades; a photo dimmed on hover just looks washed out. */}
       <Link
         href="/"
-        className="group flex items-center gap-2.5 text-base text-ink transition-transform duration-150 ease-out active:scale-[0.96] lg:w-60"
+        className="group flex items-center gap-2 text-base text-ink transition-transform duration-150 ease-out active:scale-[0.96] lg:w-60"
       >
-        <span className="image-outline relative size-7 shrink-0 overflow-hidden rounded-full">
-          <Image src="/Headshot.png" alt="" fill sizes="28px" className="object-cover" priority />
-        </span>
+        {/* A die-cut sticker: the white edge keeps dark hair off a dark page, the shadow lifts it off a light one.
+            Hover peels it a few degrees. */}
+        <Image
+          src="/me-sticker.png"
+          alt=""
+          width={20}
+          height={26}
+          quality={90}
+          priority
+          className="sticker h-[26px] w-auto shrink-0 transition-transform duration-200 ease-out motion-safe:group-hover:-rotate-6 motion-safe:group-hover:scale-[1.06]"
+        />
         <span className="transition-opacity duration-150 ease-out group-hover:opacity-70">Hasaam Bhatti</span>
       </Link>
 
