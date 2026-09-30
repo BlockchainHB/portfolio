@@ -43,7 +43,7 @@ export const LENSES: { slug: Lens; label: string; title: string; line: string; s
     line: "Brands I've built, from the design language to the box.",
     seoTitle: "Brand identity and packaging",
     description:
-      "Brands Hasaam Bhatti built from the design language to the box: Launch Fast, GymCreatives, and the Zen Sweat and Flag Runner products on Amazon.",
+      "Brands Hasaam Bhatti built from the design language to the box: Launch Fast, and the Zen Sweat and Flag Runner products on Amazon.",
   },
   {
     slug: "product",
@@ -69,8 +69,8 @@ export const MARKS = {
   gymCreatives: { kind: "mono", name: "gc", size: 54 },
   mcp: { kind: "mono", name: "mcp", size: 56 },
   github: { kind: "mono", name: "github", size: 60 },
-  zenSweat: { kind: "mono", name: "zensweat", size: 70 },
-  flagRunner: { kind: "mono", name: "flagrunner", size: 72 },
+  zenSweat: { kind: "app", name: "zensweat" },
+  flagRunner: { kind: "app", name: "flagrunner" },
   claude: { kind: "color", name: "claude", size: 60 },
   chrome: { kind: "color", name: "chrome", size: 62 },
   leo: { kind: "color", name: "leo", size: 66 },
@@ -501,13 +501,6 @@ export const LENS_CARDS: Record<Lens, LensCard[]> = {
       title: "The Launch Fast design language",
       line: "One type scale, palette and set of components, carried into every email.",
       visual: { type: "image", slug: "brand-launch-fast" },
-    },
-    {
-      id: "gc-on-brand",
-      ...GC,
-      title: "Every post on brand",
-      line: "Brand memory keeps each gym's colors, fonts and voice in every post.",
-      visual: { type: "image", slug: "brand-gymcreatives" },
     },
     {
       id: "zen-sweat",
