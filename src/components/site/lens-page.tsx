@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ALSO_SHIPPED, LENS_CARDS, LENSES, type Lens, type LensCard } from "@/data/site";
 import { AlsoShipped } from "./also-shipped";
+import { FilterPills } from "./filter-pills";
 import { ProjectMark } from "./project-mark";
 import { ThemeImage } from "./theme-image";
 import { cn } from "@/lib/utils";
@@ -15,10 +16,16 @@ export function LensPage({ lens }: { lens: Lens }) {
 
   return (
     <>
-      <header className="mx-auto flex max-w-content flex-col items-center gap-4 px-4 pb-10 pt-12 text-center lg:px-0 lg:pb-16 lg:pt-24">
+      <header className="mx-auto flex max-w-content flex-col items-center gap-4 px-4 pb-12 pt-12 text-center lg:px-0 lg:pb-16 lg:pt-24">
         <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
         <p className="text-balance text-base font-light text-body lg:text-lg">{meta.line}</p>
       </header>
+
+      {/* Mobile: the filter sits under the heading, where it sits under the hero on
+          All, so switching lenses keeps the same order. Desktop has it in the nav. */}
+      <div className="flex justify-center px-4 pb-8 lg:hidden">
+        <FilterPills id="mobile" compact />
+      </div>
 
       <div className="mx-auto flex max-w-content flex-col gap-4 px-4 lg:px-0">
         {featured && <FeaturedCard card={featured} />}

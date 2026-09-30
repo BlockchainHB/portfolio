@@ -188,7 +188,7 @@ export const PROJECTS: Project[] = [
 
 // Mobile rails keep their own order (the strongest tile first).
 export const MOBILE_ORDER: Record<string, string[]> = {
-  "launch-fast": ["lf-web-app", "lf-ios-app", "lf-launchie", "lf-brand", "lf-mcp", "lf-chrome"],
+  "launch-fast": ["lf-web-app", "lf-ios-app", "lf-launchie", "lf-mcp", "lf-chrome", "lf-brand"],
   physical: ["zen-sweat", "flag-runner"],
   gymcreatives: ["gc-chat", "gc-agent", "gc-auto-posts", "gc-brand-memory", "gc-models"],
   native: ["daily-hadith", "beamlet", "pr-monitor"],

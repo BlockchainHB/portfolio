@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { FilterPills } from "@/components/site/filter-pills";
 import { JsonLd } from "@/components/site/json-ld";
 import { LensPage } from "@/components/site/lens-page";
 import { LENS_CARDS, LENSES, type Lens } from "@/data/site";
@@ -54,9 +53,6 @@ export default function Page({ params }: Props) {
   return (
     <>
       <JsonLd graph={graph} />
-      <div className="flex justify-center px-4 pt-6 lg:hidden">
-        <FilterPills id="mobile" compact />
-      </div>
       <LensPage lens={lens.slug as Lens} />
     </>
   );
