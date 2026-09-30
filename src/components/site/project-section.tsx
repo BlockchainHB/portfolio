@@ -1,4 +1,6 @@
+import { PREVIEWS } from "@/data/previews";
 import { MOBILE_ORDER, type Project, type Tile } from "@/data/site";
+import { PreviewTrigger } from "./preview-trigger";
 import { ProjectMark } from "./project-mark";
 import { ThemeImage } from "./theme-image";
 import { cn } from "@/lib/utils";
@@ -73,10 +75,11 @@ function DesktopProject({ project }: { project: Project }) {
 function MediaTile({ tile, project, priority }: { tile: Tile; project: string; priority?: boolean }) {
   const { col, row, w, h } = tile.place;
   const sizes = w === 2 ? "(min-width: 1200px) 576px, 50vw" : "(min-width: 1200px) 280px, 25vw";
+  const opens = Boolean(PREVIEWS[tile.slug]);
 
   return (
     <figure
-      className="shadow-tile relative overflow-hidden rounded-tile bg-fill"
+      className={cn("shadow-tile relative overflow-hidden rounded-tile bg-fill", opens && "bento-tile")}
       style={{ gridColumn: `${col} / span ${w}`, gridRow: `${row} / span ${h}` }}
     >
       <ThemeImage
@@ -89,6 +92,7 @@ function MediaTile({ tile, project, priority }: { tile: Tile; project: string; p
       <figcaption className="absolute left-3 top-3 rounded-full bg-pill px-3 py-[7px] text-sm text-ink backdrop-blur-md">
         {tile.label}
       </figcaption>
+      {opens && <PreviewTrigger slug={tile.slug} label={`Open ${project}: ${tile.caption}`} />}
     </figure>
   );
 }
@@ -103,13 +107,21 @@ function MobileProject({ project }: { project: Project }) {
       <ul className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-1">
         {tiles.map((tile) => (
           <li key={tile.slug} className="flex w-[300px] shrink-0 snap-start flex-col gap-3">
-            <div className="shadow-tile relative h-[360px] w-[300px] overflow-hidden rounded-tile bg-fill">
+            <div
+              className={cn(
+                "shadow-tile relative h-[360px] w-[300px] overflow-hidden rounded-tile bg-fill",
+                PREVIEWS[tile.slug] && "bento-tile",
+              )}
+            >
               <ThemeImage
                 light={`/work/mobile/${tile.slug}-light.webp`}
                 dark={`/work/mobile/${tile.slug}-dark.webp`}
                 alt={`${project.name}: ${tile.caption}`}
                 sizes="300px"
               />
+              {PREVIEWS[tile.slug] && (
+                <PreviewTrigger slug={tile.slug} label={`Open ${project.name}: ${tile.caption}`} />
+              )}
             </div>
             <p className="px-1 text-base text-ink">{tile.caption}</p>
           </li>

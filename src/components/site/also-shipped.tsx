@@ -37,7 +37,8 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
         </h2>
       )}
 
-      <ul className={cn("hidden grid-cols-4 gap-4 lg:grid", variant === "home" ? "mt-12" : "mt-6")}>
+      {/* Home's six fill two rows of three; a lens shows two or three in the page's four-column rhythm */}
+      <ul className={cn("hidden gap-4 lg:grid", variant === "home" ? "mt-12 grid-cols-3" : "mt-6 grid-cols-4")}>
         {items.map((item) => (
           <li key={item.id}>
             <a

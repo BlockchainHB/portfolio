@@ -19,7 +19,7 @@ export function Nav() {
       </Link>
 
       <div className="hidden lg:block">
-        <FilterPills id="desktop" />
+        <FilterPills />
       </div>
 
       <div className="flex items-center justify-end gap-5 text-md text-body lg:w-60">

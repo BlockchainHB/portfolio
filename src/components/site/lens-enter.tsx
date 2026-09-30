@@ -80,7 +80,7 @@ export function MobileFilter() {
       className="order-2 flex justify-center px-4 pb-8 lg:hidden"
     >
       <div className="intro-fade" style={{ "--delay": "300ms" } as React.CSSProperties}>
-        <FilterPills id="mobile" compact />
+        <FilterPills compact />
       </div>
     </div>
   );
