@@ -16,13 +16,14 @@ export function LensPage({ lens }: { lens: Lens }) {
 
   return (
     <>
-      {/* Mobile: as tall as the home hero (408px), with its own fan, so the
-          filter below never moves when switching lenses. */}
-      <header className="masthead order-1 mx-auto flex min-h-[408px] w-full max-w-content flex-col items-center px-4 pb-12 pt-16 text-center lg:min-h-0 lg:px-0 lg:pb-16 lg:pt-24">
+      {/* Mobile: every lens masthead is the same height (fan, one-line title,
+          two-line subtitle), so switching between lenses never moves the filter
+          below. Only All <-> a lens moves it, and the filter glides that step. */}
+      <header className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-5 px-4 pb-12 pt-16 text-center lg:gap-4 lg:px-0 lg:pb-16 lg:pt-24">
         <LensFan marks={LENS_FANS[lens]} />
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 pt-5 lg:pt-0">
+        <div className="flex flex-col items-center gap-4">
           <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
-          <p className="text-balance text-base font-light text-body lg:text-lg">{meta.line}</p>
+          <p className="text-balance min-h-12 text-base font-light text-body lg:min-h-0 lg:text-lg">{meta.line}</p>
         </div>
       </header>
 

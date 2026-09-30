@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FilterPills } from "./filter-pills";
 
 // Module scope survives client navigations, so only the first paint skips the entrance.
@@ -29,16 +29,56 @@ export function LensEnter({ children }: { children: React.ReactNode }) {
 
 /*
  * The mobile filter lives in the layout, between each page's masthead
- * (order-1) and its body (order-3), so it never remounts and never moves: every
- * masthead is the same height on mobile. On the home page's first load it
- * arrives with the work, as it did when it was part of the page.
+ * (order-1) and its body (order-3), so it never remounts. Lens mastheads share
+ * one height, so switching lenses leaves it in place; All's hero is 72px
+ * taller, and that one step glides instead of jumping.
+ * On the home page's first load it arrives with the work.
  */
 export function MobileFilter() {
   const pathname = usePathname();
   const [intro] = useState(() => !hasNavigated && pathname === "/");
+  const ref = useRef<HTMLDivElement>(null);
+  const lastTop = useRef<number | null>(null);
+
+  // A resize moves the row without a glide; start the next one from there.
+  useEffect(() => {
+    const record = () => ref.current && (lastTop.current = ref.current.offsetTop);
+    window.addEventListener("resize", record);
+    return () => window.removeEventListener("resize", record);
+  }, []);
+
+  /*
+   * FLIP with the Web Animations API, so the glide runs on the compositor
+   * while the new page mounts (a main-thread layout animation drops frames
+   * then). Runs after the new page is in the DOM, before paint: put the row
+   * back where it was on screen, then animate the offset away.
+   */
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const prev = lastTop.current;
+    const top = el.offsetTop; // layout position, unaffected by the glide's transform
+    lastTop.current = top;
+    if (prev === null || prev === top) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Tapped mid-glide: continue from where the row is now, not where it was headed.
+    const transform = getComputedStyle(el).transform;
+    const running = transform === "none" ? 0 : new DOMMatrix(transform).m42;
+    el.getAnimations().forEach((a) => a.cancel());
+
+    el.animate([{ transform: `translateY(${prev + running - top}px)` }, { transform: "none" }], {
+      duration: 200,
+      easing: "cubic-bezier(0.23, 1, 0.32, 1)", // --ease-out: the tap gets an immediate response
+    });
+  }, [pathname]);
 
   return (
-    <div data-intro={intro ? "" : undefined} className="order-2 flex justify-center px-4 pb-8 lg:hidden">
+    <div
+      ref={ref}
+      data-intro={intro ? "" : undefined}
+      className="order-2 flex justify-center px-4 pb-8 lg:hidden"
+    >
       <div className="intro-fade" style={{ "--delay": "300ms" } as React.CSSProperties}>
         <FilterPills id="mobile" compact />
       </div>
