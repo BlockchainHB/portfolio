@@ -6,7 +6,7 @@ import { MARKS, PROJECTS, type Mark } from "@/data/site";
 import { PREVIEWS, type Preview, type PreviewImage, type PreviewView } from "@/data/previews";
 import { cn } from "@/lib/utils";
 import { ProjectMark } from "./project-mark";
-import { closePreview, refocusTrigger, usePreviewSlug } from "./preview-store";
+import { closePreview, previewSizes, refocusTrigger, usePreviewSlug } from "./preview-store";
 import { SlidingIndicator } from "./sliding-indicator";
 
 // Each native app and product shows its own icon; the rest show their project's mark.
@@ -324,15 +324,27 @@ function ViewImage({
       )}
       style={size}
     >
+      {/* Served like the home tiles: 3x sources, exact widths, quality 90 */}
       <Image
         src={image.src}
         alt={alt}
         fill
-        unoptimized
+        sizes={previewSizes(image)}
+        quality={90}
         draggable={false}
         className={cn("object-contain", image.dark && "dark:hidden")}
       />
-      {image.dark && <Image src={image.dark} alt={alt} fill unoptimized draggable={false} className="hidden object-contain dark:block" />}
+      {image.dark && (
+        <Image
+          src={image.dark}
+          alt={alt}
+          fill
+          sizes={previewSizes(image)}
+          quality={90}
+          draggable={false}
+          className="hidden object-contain dark:block"
+        />
+      )}
       {image.video && !still && (
         <video
           ref={video}
