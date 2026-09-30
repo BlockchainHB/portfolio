@@ -1,5 +1,4 @@
 import { AlsoShipped } from "@/components/site/also-shipped";
-import { FilterPills } from "@/components/site/filter-pills";
 import { Hero } from "@/components/site/hero";
 import { JsonLd } from "@/components/site/json-ld";
 import { IntroGate } from "@/components/site/lens-enter";
@@ -31,10 +30,7 @@ export default function HomePage() {
       <JsonLd graph={GRAPH} />
       <Hero />
       {/* The work arrives last in the entrance, after the hero has said what it is */}
-      <div className="intro-fade" style={{ "--delay": "300ms" } as React.CSSProperties}>
-        <div className="flex justify-center px-4 pb-8 lg:hidden">
-          <FilterPills id="mobile" compact />
-        </div>
+      <div className="lens-body intro-fade order-3" style={{ "--delay": "300ms" } as React.CSSProperties}>
         {PROJECTS.map((project, i) => (
           <ProjectSection key={project.id} project={project} first={i === 0} />
         ))}

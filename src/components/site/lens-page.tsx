@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { ALSO_SHIPPED, LENS_CARDS, LENSES, type Lens, type LensCard } from "@/data/site";
+import { ALSO_SHIPPED, LENS_CARDS, LENS_FANS, LENSES, type Lens, type LensCard } from "@/data/site";
 import { AlsoShipped } from "./also-shipped";
-import { FilterPills } from "./filter-pills";
+import { LensFan } from "./hero";
 import { ProjectMark } from "./project-mark";
 import { ThemeImage } from "./theme-image";
 import { cn } from "@/lib/utils";
@@ -16,29 +16,30 @@ export function LensPage({ lens }: { lens: Lens }) {
 
   return (
     <>
-      <header className="mx-auto flex max-w-content flex-col items-center gap-4 px-4 pb-12 pt-12 text-center lg:px-0 lg:pb-16 lg:pt-24">
-        <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
-        <p className="text-balance text-base font-light text-body lg:text-lg">{meta.line}</p>
+      {/* Mobile: as tall as the home hero (408px), with its own fan, so the
+          filter below never moves when switching lenses. */}
+      <header className="masthead order-1 mx-auto flex min-h-[408px] w-full max-w-content flex-col items-center px-4 pb-12 pt-16 text-center lg:min-h-0 lg:px-0 lg:pb-16 lg:pt-24">
+        <LensFan marks={LENS_FANS[lens]} />
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 pt-5 lg:pt-0">
+          <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
+          <p className="text-balance text-base font-light text-body lg:text-lg">{meta.line}</p>
+        </div>
       </header>
 
-      {/* Mobile: the filter sits under the heading, where it sits under the hero on
-          All, so switching lenses keeps the same order. Desktop has it in the nav. */}
-      <div className="flex justify-center px-4 pb-8 lg:hidden">
-        <FilterPills id="mobile" compact />
-      </div>
+      <div className="lens-body order-3">
+        <div className="mx-auto flex max-w-content flex-col gap-4 px-4 lg:px-0">
+          {featured && <FeaturedCard card={featured} />}
+          <ul className="grid gap-4 md:grid-cols-2">
+            {rest.map((card) => (
+              <li key={card.id} className="flex">
+                <Card card={card} />
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="mx-auto flex max-w-content flex-col gap-4 px-4 lg:px-0">
-        {featured && <FeaturedCard card={featured} />}
-        <ul className="grid gap-4 md:grid-cols-2">
-          {rest.map((card) => (
-            <li key={card.id} className="flex">
-              <Card card={card} />
-            </li>
-          ))}
-        </ul>
+        <AlsoShipped items={shipped} variant="lens" />
       </div>
-
-      <AlsoShipped items={shipped} variant="lens" />
     </>
   );
 }

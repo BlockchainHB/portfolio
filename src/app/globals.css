@@ -131,7 +131,23 @@
   }
 }
 
-.lens-enter {
+/*
+ * Lens swap. The filter stays put; the masthead fades in through a 2px blur
+ * (the old hand and heading become the new one) and the work rises 8px.
+ * No stagger: this runs every time someone switches lenses.
+ */
+@keyframes masthead-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+[data-lens-enter] .masthead {
+  animation: masthead-in 200ms var(--ease-out) both;
+}
+
+[data-lens-enter] .lens-body {
   animation: lens-in 200ms var(--ease-out) both;
 }
 
@@ -303,6 +319,12 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes masthead-in {
+    from {
+      opacity: 0;
     }
   }
 

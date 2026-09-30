@@ -1,5 +1,7 @@
 import { preload } from "react-dom";
+import type { Mark } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { ProjectMark } from "./project-mark";
 
 /*
  * Hero icon stacks. Each tile keeps the rotation and offset from the Paper
@@ -115,6 +117,40 @@ const FAN: StackTile[] = [
   { kind: "mark", name: "lf", size: 62, label: "Launch Fast", href: "#launch-fast", left: 102, top: 8, rotate: 0 },
 ];
 
+// The home fan's five slots, left to right. Three tiles take the middle three.
+const SLOTS = [
+  { left: 15, top: 33, rotate: -20 },
+  { left: 58, top: 17, rotate: -10 },
+  { left: 102, top: 8, rotate: 0 },
+  { left: 147, top: 7, rotate: 10 },
+  { left: 192, top: 14, rotate: 20 },
+];
+
+/*
+ * A lens's hand of tiles for its mobile masthead, dealt into the same slots
+ * as the home fan so switching lenses reads as the same hand changing.
+ * Outer tiles render first, so the middle one sits on top.
+ */
+export function LensFan({ marks }: { marks: Mark[] }) {
+  const slots = marks.length === 5 ? SLOTS : SLOTS.slice(1, 4);
+  const mid = (marks.length - 1) / 2;
+  const order = marks.map((_, i) => i).sort((a, b) => Math.abs(b - mid) - Math.abs(a - mid));
+
+  return (
+    <span aria-hidden className="relative block h-24 w-[260px] lg:hidden">
+      {order.map((i) => (
+        <span
+          key={i}
+          className={cn("absolute size-14 rounded-[13px]", fanShadow)}
+          style={{ left: slots[i].left, top: slots[i].top, rotate: `${slots[i].rotate}deg`, transformOrigin: "0 0" }}
+        >
+          <ProjectMark mark={marks[i]} size={56} className="block" />
+        </span>
+      ))}
+    </span>
+  );
+}
+
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as React.CSSProperties;
 
 // Line one's labels go above its stack, line two's below, so neither covers the other line.
@@ -141,7 +177,7 @@ export function Hero() {
   // with its stack. Mobile: the stacks hide and a hand of five tiles fans out
   // above the statement.
   return (
-    <section className="mx-auto flex w-full max-w-content flex-col items-center gap-5 pb-12 pt-16 lg:gap-7 lg:pb-24 lg:pt-28">
+    <section className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-5 pb-12 pt-16 lg:gap-7 lg:pb-24 lg:pt-28">
       <span aria-hidden className="intro-rise relative block h-24 w-[260px] lg:hidden" style={delay(0)}>
         {FAN.map((t) => (
           <Tile key={t.name} t={t} anchor={FAN[FAN.length - 1]} px={56} radius={13} shadow={fanShadow} />

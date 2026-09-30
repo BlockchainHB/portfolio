@@ -29,8 +29,11 @@ export function FilterPills({ id, compact = false }: { id: string; compact?: boo
                   className="shadow-tile absolute inset-0 rounded-full bg-selected"
                 />
               )}
+              {/* scroll={false}: the page keeps its scroll, so the filter stays under
+                  the finger (every mobile masthead is the same height) */}
               <Link
                 href={item.href}
+                scroll={false}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "relative flex h-9 items-center rounded-full text-sm transition-[color,transform] duration-150 ease-out active:scale-[0.96]",

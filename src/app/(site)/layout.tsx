@@ -1,4 +1,5 @@
 import { Footer } from "@/components/site/footer";
+import { MobileFilter } from "@/components/site/lens-enter";
 import { Nav } from "@/components/site/nav";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -7,7 +8,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <div className="px-4 lg:px-0">
         <Nav />
       </div>
-      <main className="flex-1">{children}</main>
+      <main className="flex flex-1 flex-col">
+        {children}
+        <MobileFilter />
+      </main>
       <div className="px-4 lg:px-0">
         <Footer />
       </div>

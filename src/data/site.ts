@@ -85,6 +85,16 @@ export const MARKS = {
   componentRat: { kind: "glyph", glyph: "component" },
 } satisfies Record<string, Mark>;
 
+// Each lens's mobile masthead deals its own hand of tiles, left to right,
+// with the lens's main project in the middle (on top).
+export const LENS_FANS: Record<Lens, Mark[]> = {
+  interface: [MARKS.dailyHadith, MARKS.gymCreatives, MARKS.launchFast, MARKS.beamlet, MARKS.prMonitor],
+  systems: [MARKS.dailyHadith, MARKS.gymCreatives, MARKS.launchFast, MARKS.mcp, MARKS.prMonitor],
+  agents: [MARKS.leo, MARKS.gymCreatives, MARKS.launchFast, MARKS.mcp, MARKS.claude],
+  brand: [MARKS.zenSweat, MARKS.gymCreatives, MARKS.launchFast, MARKS.hbGoodies, MARKS.flagRunner],
+  product: [MARKS.zenSweat, MARKS.hbGoodies, MARKS.flagRunner],
+};
+
 /* ---------- Home: projects and bento tiles ---------- */
 
 // Grid placement on the four-column desktop bento (1-based lines).
