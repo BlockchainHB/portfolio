@@ -8,7 +8,6 @@ const nextConfig = {
     // always gets a single clean downscale from the 3x source.
     imageSizes: [266, 280, 300, 342, 532, 560, 576, 600, 608],
     deviceSizes: [640, 684, 750, 798, 828, 840, 900, 1026, 1080, 1120, 1152, 1200, 1216, 1680, 1728, 1800, 1824, 1920],
-    minimumCacheTTL: 31536000,
   },
 };
 

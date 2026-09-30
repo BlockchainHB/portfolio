@@ -79,7 +79,7 @@ function MediaTile({ tile, project, priority }: { tile: Tile; project: string; p
 
   return (
     <figure
-      className={cn("shadow-tile relative overflow-hidden rounded-tile bg-fill", opens && "bento-tile")}
+      className={cn("tile-edge relative overflow-hidden rounded-tile bg-fill", opens && "bento-tile")}
       style={{ gridColumn: `${col} / span ${w}`, gridRow: `${row} / span ${h}` }}
     >
       <ThemeImage
@@ -89,7 +89,7 @@ function MediaTile({ tile, project, priority }: { tile: Tile; project: string; p
         sizes={sizes}
         priority={priority}
       />
-      <figcaption className="absolute left-3 top-3 rounded-full bg-pill px-3 py-[7px] text-sm text-ink backdrop-blur-md">
+      <figcaption className="absolute left-3 top-3 shadow-tile rounded-full bg-pill px-3 py-[7px] text-sm text-ink backdrop-blur-md">
         {tile.label}
       </figcaption>
       {opens && <PreviewTrigger slug={tile.slug} label={`Open ${project}: ${tile.caption}`} />}
@@ -109,7 +109,7 @@ function MobileProject({ project }: { project: Project }) {
           <li key={tile.slug} className="flex w-[300px] shrink-0 snap-start flex-col gap-3">
             <div
               className={cn(
-                "shadow-tile relative h-[360px] w-[300px] overflow-hidden rounded-tile bg-fill",
+                "tile-edge relative h-[360px] w-[300px] overflow-hidden rounded-tile bg-fill",
                 PREVIEWS[tile.slug] && "bento-tile",
               )}
             >

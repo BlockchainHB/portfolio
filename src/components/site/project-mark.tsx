@@ -11,8 +11,14 @@ type Props = {
 /*
  * Project icon tile. Radius is 23% of the size at every size; the mark sits
  * centered at a fixed share of the tile. One-color marks swap ink/white with
- * the theme, colored marks keep their color, app icons fill the tile.
+ * the theme unless they carry a tone, colored marks keep their color, app
+ * icons fill the tile.
  */
+
+// A toned mark keeps one tile in every theme: ink on white, or white on near-black.
+export const TONE_TILE = { light: "bg-white", dark: "bg-[#161616]" } as const;
+export const toneIcon = (name: string, tone: "light" | "dark") => `/icons/${name}-${tone === "light" ? "ink" : "white"}.png`;
+
 export function ProjectMark({ mark, size, className, style }: Props) {
   const frame = cn("relative shrink-0 overflow-hidden rounded-[23%]", className);
   const box = { width: size, height: size, ...style };
@@ -21,12 +27,8 @@ export function ProjectMark({ mark, size, className, style }: Props) {
     return (
       <span
         aria-hidden
-        className={cn(frame, "ring-mark bg-center")}
-        style={{
-          ...box,
-          backgroundImage: `url(/icons/${mark.name}-app.png)`,
-          backgroundSize: mark.zoom ? `${mark.zoom}%` : "cover",
-        }}
+        className={cn(frame, "ring-mark bg-cover bg-center")}
+        style={{ ...box, backgroundImage: `url(/icons/${mark.name}-app.png)` }}
       />
     );
   }
@@ -41,6 +43,14 @@ export function ProjectMark({ mark, size, className, style }: Props) {
 
   const layer = "absolute inset-0 bg-center bg-no-repeat";
   const backgroundSize = `${mark.size}%`;
+
+  if (mark.kind === "mono" && mark.tone) {
+    return (
+      <span aria-hidden className={cn(frame, "ring-mark", TONE_TILE[mark.tone])} style={box}>
+        <span className={layer} style={{ backgroundImage: `url(${toneIcon(mark.name, mark.tone)})`, backgroundSize }} />
+      </span>
+    );
+  }
 
   return (
     <span aria-hidden className={cn(frame, "ring-mark bg-mark-tile")} style={box}>

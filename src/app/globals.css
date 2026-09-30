@@ -341,6 +341,36 @@
   scale: 0.985;
 }
 
+/*
+ * Media tiles: a neutral 1px outline drawn just inside the edge, over the
+ * picture, so every tile keeps a clean edge whatever its picture is. Pure
+ * black at 10% in light, pure white at 10% in dark; a tinted edge would pick
+ * up the picture and read as dirt. The lift stays outside, in light only.
+ */
+.tile-edge {
+  box-shadow:
+    0 1px 2px -1px oklch(0 0 0 / 0.06),
+    0 2px 4px oklch(0 0 0 / 0.04);
+}
+
+.tile-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.1);
+  pointer-events: none;
+}
+
+.dark .tile-edge {
+  box-shadow: none;
+}
+
+.dark .tile-edge::after {
+  box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.1);
+}
+
 /* The selected pill in a segmented row (lens filter, preview views). */
 .sliding-indicator[data-animate] {
   transition:

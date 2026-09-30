@@ -1,5 +1,6 @@
 import { preload } from "react-dom";
 import { cn } from "@/lib/utils";
+import { TONE_TILE, toneIcon } from "./project-mark";
 
 /*
  * Hero icon stacks. Each tile keeps the rotation and offset from the Paper
@@ -19,7 +20,7 @@ type StackTile = {
   kind: "app" | "mark";
   name: string;
   size?: number; // mark share of the tile, in %
-  dark?: boolean; // app: has its own dark-theme icon (<name>-app-dark.png)
+  tone?: "light" | "dark"; // mark: one tile in every theme instead of following it
   label: string;
   href: string; // the project's section on the page
 };
@@ -61,19 +62,15 @@ function Tile({
   const bg = { backgroundSize: `${t.size}%`, backgroundPosition: "50%" };
 
   const tile =
-    t.kind === "app" && t.dark ? (
-      <span className={cn(face, "overflow-hidden")} style={{ borderRadius: radius }}>
-        <span className={cn(layer, "bg-cover bg-center dark:hidden")} style={{ backgroundImage: `url(/icons/${t.name}-app.png)` }} />
-        <span
-          className={cn(layer, "hidden bg-cover bg-center dark:block")}
-          style={{ backgroundImage: `url(/icons/${t.name}-app-dark.png)` }}
-        />
-      </span>
-    ) : t.kind === "app" ? (
+    t.kind === "app" ? (
       <span
         className={cn(face, "bg-cover bg-center")}
         style={{ borderRadius: radius, backgroundImage: `url(/icons/${t.name}-app.png)` }}
       />
+    ) : t.tone ? (
+      <span className={cn(face, "overflow-hidden", TONE_TILE[t.tone])} style={{ borderRadius: radius }}>
+        <span className={layer} style={{ ...bg, backgroundImage: `url(${toneIcon(t.name, t.tone)})` }} />
+      </span>
     ) : (
       <span className={cn(face, "overflow-hidden bg-mark-tile")} style={{ borderRadius: radius }}>
         <span className={cn(layer, "dark:hidden")} style={{ ...bg, backgroundImage: `url(/icons/${t.name}-ink.png)` }} />
@@ -106,22 +103,22 @@ function Tile({
 
 const SOFTWARE: StackTile[] = [
   { kind: "app", name: "beamlet", label: "Beamlet", href: "#native", left: 88, top: 4, rotate: 6 },
-  { kind: "mark", name: "gc", size: 54, label: "GymCreatives", href: "#gymcreatives", left: 44, top: 4, rotate: 2 },
-  { kind: "mark", name: "lf", size: 62, label: "Launch Fast", href: "#launch-fast", left: 2, top: 4, rotate: -4 },
+  { kind: "mark", name: "gc", size: 54, tone: "dark", label: "GymCreatives", href: "#gymcreatives", left: 44, top: 4, rotate: 2 },
+  { kind: "mark", name: "lf", size: 62, tone: "light", label: "Launch Fast", href: "#launch-fast", left: 2, top: 4, rotate: -4 },
 ];
 
 const THINGS: StackTile[] = [
-  { kind: "app", name: "flagrunner", dark: true, label: "Flag Runner", href: "#physical", left: 2, top: 4, rotate: -6 },
-  { kind: "app", name: "zensweat", dark: true, label: "Zen Sweat", href: "#physical", left: 44, top: 4, rotate: -2 },
-  { kind: "app", name: "hbbag", label: "HB Goodies", href: "#physical", left: 88, top: 4, rotate: 4 },
+  { kind: "app", name: "flagrunner", label: "Flag Runner", href: "#physical", left: 2, top: 4, rotate: -6 },
+  { kind: "app", name: "zensweat", label: "Zen Sweat", href: "#physical", left: 44, top: 4, rotate: -2 },
+  { kind: "mark", name: "hb", size: 52, tone: "dark", label: "HB Goodies", href: "#physical", left: 88, top: 4, rotate: 4 },
 ];
 
 const FAN: StackTile[] = [
   { kind: "app", name: "beamlet", label: "Beamlet", href: "#native", left: 15, top: 33, rotate: -20 },
-  { kind: "app", name: "zensweat", dark: true, label: "Zen Sweat", href: "#physical", left: 192, top: 14, rotate: 20 },
-  { kind: "mark", name: "gc", size: 54, label: "GymCreatives", href: "#gymcreatives", left: 58, top: 17, rotate: -10 },
-  { kind: "app", name: "hbbag", label: "HB Goodies", href: "#physical", left: 147, top: 7, rotate: 10 },
-  { kind: "mark", name: "lf", size: 62, label: "Launch Fast", href: "#launch-fast", left: 102, top: 8, rotate: 0 },
+  { kind: "app", name: "zensweat", label: "Zen Sweat", href: "#physical", left: 192, top: 14, rotate: 20 },
+  { kind: "mark", name: "gc", size: 54, tone: "dark", label: "GymCreatives", href: "#gymcreatives", left: 58, top: 17, rotate: -10 },
+  { kind: "mark", name: "hb", size: 52, tone: "dark", label: "HB Goodies", href: "#physical", left: 147, top: 7, rotate: 10 },
+  { kind: "mark", name: "lf", size: 62, tone: "light", label: "Launch Fast", href: "#launch-fast", left: 102, top: 8, rotate: 0 },
 ];
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as React.CSSProperties;
@@ -141,7 +138,7 @@ function Stack({ tiles, enterAt, labelAt }: { tiles: StackTile[]; enterAt: numbe
 const INTRO = "I'm Hasaam Bhatti, in Toronto. I take products from idea to shelf, from the backend to the box.";
 
 // Fetch the stack icons with the HTML, so the fan never opens on blank tiles.
-const ICONS = ["beamlet-app", "hbbag-app", "flagrunner-app", "flagrunner-app-dark", "zensweat-app", "zensweat-app-dark", ...["gc", "lf"].flatMap((n) => [`${n}-ink`, `${n}-white`])];
+const ICONS = ["beamlet-app", "flagrunner-app", "zensweat-app", "lf-ink", "gc-white", "hb-white"];
 
 export function Hero() {
   for (const icon of ICONS) preload(`/icons/${icon}.png`, { as: "image" });

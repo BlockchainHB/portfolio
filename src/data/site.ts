@@ -59,14 +59,15 @@ export const LENSES: { slug: Lens; label: string; title: string; line: string; s
 /* ---------- Project marks ---------- */
 
 export type Mark =
-  | { kind: "mono"; name: string; size: number } // one-color mark, swaps ink/white with the theme
+  // one-color mark: swaps ink/white with the theme, or keeps one tile in every theme (tone)
+  | { kind: "mono"; name: string; size: number; tone?: "light" | "dark" }
   | { kind: "color"; name: string; size: number } // colored mark on a themed tile
-  | { kind: "app"; name: string; zoom?: number } // full app icon, edge to edge
+  | { kind: "app"; name: string } // full app icon, edge to edge
   | { kind: "glyph"; glyph: "native" | "index" | "component" };
 
 export const MARKS = {
-  launchFast: { kind: "mono", name: "lf", size: 62 },
-  gymCreatives: { kind: "mono", name: "gc", size: 54 },
+  launchFast: { kind: "mono", name: "lf", size: 62, tone: "light" },
+  gymCreatives: { kind: "mono", name: "gc", size: 54, tone: "dark" },
   mcp: { kind: "mono", name: "mcp", size: 56 },
   github: { kind: "mono", name: "github", size: 60 },
   zenSweat: { kind: "app", name: "zensweat" },
@@ -75,7 +76,7 @@ export const MARKS = {
   chrome: { kind: "color", name: "chrome", size: 62 },
   leo: { kind: "color", name: "leo", size: 66 },
   njoyn: { kind: "color", name: "njoyn", size: 72 },
-  hbGoodies: { kind: "app", name: "hbbag", zoom: 124 },
+  hbGoodies: { kind: "mono", name: "hb", size: 52, tone: "dark" },
   beamlet: { kind: "app", name: "beamlet" },
   dailyHadith: { kind: "app", name: "dailyhadith" },
   prMonitor: { kind: "app", name: "prmonitor" },
@@ -133,8 +134,8 @@ export const PROJECTS: Project[] = [
   {
     id: "physical",
     name: "HB Goodies",
-    description: "My Amazon brand. I found each gap, designed the product and its brand, and launched it.",
-    meta: "Operator",
+    description: "My Amazon brand incubator. I find a gap, then design the product and brand that fill it.",
+    meta: "Founder",
     mark: MARKS.hbGoodies,
     tiles: [
       { slug: "zen-sweat", label: "Zen Sweat", caption: "Zen Sweat", place: { col: 1, row: 1, w: 2, h: 2 } },
@@ -255,7 +256,7 @@ export const ALSO_SHIPPED: Shipped[] = [
   {
     id: "njoyn",
     name: "Njoyn Navigator",
-    line: "Shortcuts for the Njoyn job portal",
+    line: "Shortcuts for recruiters in Njoyn",
     year: 2025,
     href: "https://github.com/BlockchainHB/atsnavigation",
     mark: MARKS.njoyn,
