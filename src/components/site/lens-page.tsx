@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { ALSO_SHIPPED, LENS_CARDS, LENS_FANS, LENSES, type Lens, type LensCard } from "@/data/site";
+import { ALSO_SHIPPED, LENS_CARDS, LENSES, type Lens, type LensCard } from "@/data/site";
 import { AlsoShipped } from "./also-shipped";
-import { LensFan } from "./hero";
 import { ProjectMark } from "./project-mark";
 import { ThemeImage } from "./theme-image";
 import { cn } from "@/lib/utils";
@@ -16,15 +15,12 @@ export function LensPage({ lens }: { lens: Lens }) {
 
   return (
     <>
-      {/* Mobile: every lens masthead is the same height (fan, one-line title,
+      {/* Mobile: every lens masthead is the same height (one-line title,
           two-line subtitle), so switching between lenses never moves the filter
           below. Only All <-> a lens moves it, and the filter glides that step. */}
-      <header className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-5 px-4 pb-12 pt-16 text-center lg:gap-4 lg:px-0 lg:pb-16 lg:pt-24">
-        <LensFan marks={LENS_FANS[lens]} />
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
-          <p className="text-balance min-h-12 text-base font-light text-body lg:min-h-0 lg:text-lg">{meta.line}</p>
-        </div>
+      <header className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-4 px-4 pb-12 pt-12 text-center lg:px-0 lg:pb-16 lg:pt-24">
+        <h1 className="text-hero font-light lg:text-3xl">{meta.title}</h1>
+        <p className="text-balance min-h-12 text-base font-light text-body lg:min-h-0 lg:text-lg">{meta.line}</p>
       </header>
 
       <div className="lens-body order-3">
