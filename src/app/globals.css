@@ -443,7 +443,8 @@ html[data-preview-open] {
   padding: 0;
   border: 0;
   background: transparent;
-  overflow: hidden;
+  /* clip, not hidden: a hidden box can still be scrolled by focus, which in Safari jumps the sheet on open */
+  overflow: clip;
   color: var(--ink);
 }
 
@@ -485,10 +486,36 @@ html[data-preview-open] {
   }
 }
 
-/* Mobile: a sheet that rises on the iOS drawer curve and follows the finger down. */
+/*
+ * Mobile: a sheet that rises on the iOS drawer curve and follows the finger
+ * down. It opens with [data-entering] held for a frame, so the sheet is laid
+ * out and painted below the screen before it moves; started any earlier, the
+ * slow first frame eats the fast start of the curve and the sheet jumps.
+ * It moves as one piece: no blur behind it and no separate rise on the copy.
+ */
 @media (max-width: 1023px) {
+  .preview::backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition-duration: 300ms;
+  }
+
   .preview-card {
-    transition: translate 420ms var(--ease-drawer);
+    transition: translate 500ms var(--ease-drawer);
+    will-change: translate;
+  }
+
+  .preview[data-entering]::backdrop {
+    opacity: 0;
+  }
+
+  .preview[data-entering] .preview-card {
+    translate: 0 100%;
+    transition: none;
+  }
+
+  .preview .preview-rise {
+    animation: none;
   }
 
   .preview[data-closing] .preview-card {
@@ -500,14 +527,6 @@ html[data-preview-open] {
 
   .preview[data-dragging] .preview-card {
     transition: none;
-  }
-
-  @starting-style {
-    .preview[open] .preview-card {
-      opacity: 1;
-      scale: none;
-      translate: 0 100%;
-    }
   }
 }
 
@@ -600,8 +619,10 @@ html[data-preview-open] {
     transition: opacity 200ms var(--ease-out);
   }
 
-  .preview[data-closing] .preview-card {
+  .preview[data-closing] .preview-card,
+  .preview[data-entering] .preview-card {
     opacity: 0;
+    translate: none;
   }
 
   @starting-style {
