@@ -19,6 +19,7 @@ export function ProjectSection({ project, first }: { project: Project; first?: b
       <ProjectHeader project={project} first={first} />
       <DesktopProject project={project} />
       <MobileProject project={project} />
+      <PreviewText project={project} />
     </section>
   );
 }
@@ -71,7 +72,7 @@ function DesktopProject({ project }: { project: Project }) {
       <div className="[container-type:inline-size]">
         <div className="grid grid-cols-4 gap-4" style={{ gridAutoRows: CELL }}>
           {project.tiles.map((tile, i) => (
-            <MediaTile key={tile.slug} tile={tile} project={project.name} priority={project.id === "launch-fast" && i < 2} />
+            <MediaTile key={tile.slug} tile={tile} project={project.name} preload={project.id === "launch-fast" && i < 2} />
           ))}
         </div>
       </div>
@@ -79,7 +80,7 @@ function DesktopProject({ project }: { project: Project }) {
   );
 }
 
-function MediaTile({ tile, project, priority }: { tile: Tile; project: string; priority?: boolean }) {
+function MediaTile({ tile, project, preload }: { tile: Tile; project: string; preload?: boolean }) {
   const { col, row, w, h } = tile.place;
   const sizes = w === 2 ? "(min-width: 1200px) 576px, 50vw" : "(min-width: 1200px) 280px, 25vw";
   const opens = Boolean(PREVIEWS[tile.slug]);
@@ -94,12 +95,23 @@ function MediaTile({ tile, project, priority }: { tile: Tile; project: string; p
         dark={`/work/home/${tile.slug}-dark.webp`}
         alt={`${project}: ${tile.label}`}
         sizes={sizes}
-        priority={priority}
+        preload={preload ? "(min-width: 1024px)" : undefined}
       />
       <figcaption className="absolute left-3 top-3 shadow-tile rounded-full bg-pill px-3 py-[7px] text-sm text-ink backdrop-blur-md">
         {tile.label}
       </figcaption>
       {opens && <PreviewTrigger slug={tile.slug} label={`Open ${project}: ${tile.caption}`} />}
+      {opens && (
+        <span
+          aria-hidden
+          className="bento-badge pointer-events-none absolute bottom-2 right-2 z-[12] flex size-10 items-center justify-center rounded-full bg-tile text-ink shadow-tile dark:bg-selected"
+        >
+          {/* Expand: the tile opens bigger, here. ↗ is kept for links that leave the site. */}
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8.5 2.5h3v3M11.5 2.5 8 6M5.5 11.5h-3v-3M2.5 11.5 6 8" />
+          </svg>
+        </span>
+      )}
     </figure>
   );
 }
@@ -112,7 +124,7 @@ function MobileProject({ project }: { project: Project }) {
     <div className="flex flex-col pt-6 lg:hidden">
       {/* Swipe rail: 300x360 tiles, the next one peeks in */}
       <ul className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-1">
-        {tiles.map((tile) => (
+        {tiles.map((tile, i) => (
           <li key={tile.slug} className="flex w-[300px] shrink-0 snap-start flex-col gap-3">
             <div
               className={cn(
@@ -125,6 +137,9 @@ function MobileProject({ project }: { project: Project }) {
                 dark={`/work/mobile/${tile.slug}-dark.webp`}
                 alt={`${project.name}: ${tile.caption}`}
                 sizes="300px"
+                // The first project's first tile is the largest paint on a phone.
+                preload={project.id === "launch-fast" && i === 0 ? "(max-width: 1023px)" : undefined}
+                eager={project.id === "launch-fast" && i === 0}
               />
               {PREVIEWS[tile.slug] && (
                 <PreviewTrigger slug={tile.slug} label={`Open ${project.name}: ${tile.caption}`} />
@@ -134,6 +149,43 @@ function MobileProject({ project }: { project: Project }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/*
+ * The preview windows' copy, in the page's HTML. A preview only renders after
+ * a click; search crawlers don't click and AI crawlers don't run JavaScript,
+ * so the same words ship here, hidden, where they can read them. It is the
+ * text a visitor gets on opening the tile, nothing more.
+ */
+function PreviewText({ project }: { project: Project }) {
+  const tiles = project.tiles.filter((t) => PREVIEWS[t.slug]);
+  if (tiles.length === 0) return null;
+
+  return (
+    <div hidden>
+      {tiles.map((tile) => {
+        const preview = PREVIEWS[tile.slug];
+        return (
+          <article key={tile.slug}>
+            <h3>
+              {project.name}: {tile.caption}. {preview.title}
+            </h3>
+            {preview.body.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+            <dl>
+              {preview.facts.map((fact) => (
+                <div key={fact.label}>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.href ? <a href={fact.href}>{fact.value}</a> : fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -9,6 +9,13 @@ const nextConfig = {
     imageSizes: [266, 280, 300, 342, 532, 560, 576, 600, 608],
     deviceSizes: [640, 684, 750, 798, 828, 840, 900, 1026, 1080, 1120, 1152, 1200, 1216, 1680, 1728, 1800, 1824, 1920],
   },
+  // Files in public/ are revalidated on every visit by default. They keep
+  // their names when re-exported, so a day in the browser (then served stale
+  // while it refetches) rather than immutable.
+  async headers() {
+    const cache = [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }];
+    return ["/icons/:path*", "/favicons/:path*", "/work/:path*", "/me-sticker.png"].map((source) => ({ source, headers: cache }));
+  },
   // DataFast through our own domain, so ad blockers leave it alone.
   async rewrites() {
     return [

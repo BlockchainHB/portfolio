@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy } from "lucide-react";
 import { CONTACT } from "@/data/site";
 import { track } from "@/lib/datafast";
 import { cn } from "@/lib/utils";
+import { SlidingIndicator } from "./sliding-indicator";
 
 const SOCIAL = [
   {
@@ -117,18 +117,11 @@ function CopyEmail() {
       aria-label="Copy email address"
       className="shadow-tile flex size-7 items-center justify-center rounded-lg bg-tile text-body transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96] dark:bg-selected"
     >
-      <AnimatePresence initial={false} mode="popLayout">
-        <motion.span
-          key={copied ? "check" : "copy"}
-          initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
-          transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-          className="flex"
-        >
-          {copied ? <Check size={14} strokeWidth={1.5} className="text-ink" /> : <Copy size={14} strokeWidth={1.5} />}
-        </motion.span>
-      </AnimatePresence>
+      {/* Both icons stay mounted and cross-fade (scale, opacity, blur), so there is nothing to mount on click */}
+      <span className="grid [&>*]:[grid-area:1/1]">
+        <Copy size={14} strokeWidth={1.5} data-shown={!copied} className="icon-swap" />
+        <Check size={14} strokeWidth={1.5} data-shown={copied} className="icon-swap text-ink" />
+      </span>
       <span role="status" className="sr-only">
         {copied ? "Email address copied" : ""}
       </span>
@@ -147,15 +140,22 @@ function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const current = mounted ? theme ?? "system" : "system";
+  const group = useRef<HTMLDivElement>(null);
 
   return (
-    <div role="radiogroup" aria-label="Theme" className="flex gap-0.5 rounded-full bg-fill p-[3px]">
+    <div ref={group} role="radiogroup" aria-label="Theme" className="relative flex gap-0.5 rounded-full bg-fill p-[3px]">
+      <SlidingIndicator
+        containerRef={group}
+        active={THEMES.findIndex((t) => t.value === current)}
+        className="inset-y-[3px] rounded-full bg-selected shadow-tile"
+      />
       {THEMES.map((t) => {
         const active = current === t.value;
         return (
           <button
             key={t.value}
             role="radio"
+            data-segment
             aria-checked={active}
             onClick={() => setTheme(t.value)}
             className={cn(
@@ -163,14 +163,6 @@ function ThemeToggle() {
               active ? "text-ink" : "text-body hover:text-ink",
             )}
           >
-            {active && (
-              <motion.span
-                layoutId="theme-toggle"
-                initial={false}
-                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                className="shadow-tile absolute inset-0 rounded-full bg-selected dark:bg-selected"
-              />
-            )}
             <span className="relative">{t.label}</span>
           </button>
         );

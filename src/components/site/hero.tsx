@@ -65,7 +65,7 @@ function Tile({
     t.kind === "app" ? (
       <span
         className={cn(face, "bg-cover bg-center")}
-        style={{ borderRadius: radius, backgroundImage: `url(/icons/${t.name}-app.png)` }}
+        style={{ borderRadius: radius, backgroundImage: `url(/icons/${t.name}-app.webp)` }}
       />
     ) : t.tone ? (
       <span className={cn(face, "overflow-hidden", TONE_TILE[t.tone])} style={{ borderRadius: radius }}>
@@ -73,10 +73,10 @@ function Tile({
       </span>
     ) : (
       <span className={cn(face, "overflow-hidden bg-mark-tile")} style={{ borderRadius: radius }}>
-        <span className={cn(layer, "dark:hidden")} style={{ ...bg, backgroundImage: `url(/icons/${t.name}-ink.png)` }} />
+        <span className={cn(layer, "dark:hidden")} style={{ ...bg, backgroundImage: `url(/icons/${t.name}-ink.webp)` }} />
         <span
           className={cn(layer, "hidden dark:block")}
-          style={{ ...bg, backgroundImage: `url(/icons/${t.name}-white.png)` }}
+          style={{ ...bg, backgroundImage: `url(/icons/${t.name}-white.webp)` }}
         />
       </span>
     );
@@ -141,7 +141,7 @@ const INTRO = "I'm Hasaam Bhatti, in Toronto. I take products from idea to shelf
 const ICONS = ["beamlet-app", "flagrunner-app", "zensweat-app", "lf-ink", "gc-white", "hb-white"];
 
 export function Hero() {
-  for (const icon of ICONS) preload(`/icons/${icon}.png`, { as: "image" });
+  for (const icon of ICONS) preload(`/icons/${icon}.webp`, { as: "image" });
 
   // One h1 for both layouts. Desktop: a zig-zag, each line ends or starts
   // with its stack. Mobile: the stacks hide and a hand of five tiles fans out

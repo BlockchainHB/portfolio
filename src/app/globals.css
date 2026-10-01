@@ -175,9 +175,14 @@
  * Fill mode is `backwards`: once done, the tiles hand back to their own
  * translate and rotate, so the hover spread can transition them.
  */
+/*
+ * Entrances start at 0.01, not 0: Chrome skips paints at opacity 0 when it
+ * picks the Largest Contentful Paint, so a fade from 0 would hold LCP back
+ * until the animation ends. 1% is invisible.
+ */
 @keyframes intro-rise {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(12px);
     filter: blur(4px);
   }
@@ -186,7 +191,7 @@
 /* The page below the hero: no blur, it covers too much area to filter cheaply. */
 @keyframes intro-fade {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(12px);
   }
 }
@@ -346,7 +351,35 @@
 }
 
 .bento-tile:has(.bento-trigger:active) {
-  scale: 0.985;
+  scale: 0.96;
+}
+
+/*
+ * The open badge: an expand icon in a white disc in the bottom-right corner,
+ * shown only to a pointer that can hover (touch has no hover to reveal it) and
+ * to keyboard focus. It eases in from 0.9, never from nothing; leaving is a
+ * touch quicker than arriving.
+ */
+.bento-badge {
+  opacity: 0;
+  scale: 0.9;
+  transition:
+    opacity 120ms var(--ease-out),
+    scale 120ms var(--ease-out);
+}
+
+.bento-trigger:focus-visible ~ .bento-badge {
+  opacity: 1;
+  scale: 1;
+  transition-duration: 150ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bento-tile:hover .bento-badge {
+    opacity: 1;
+    scale: 1;
+    transition-duration: 150ms;
+  }
 }
 
 /*
@@ -529,11 +562,36 @@ html[data-preview-open] {
   scroll-snap-stop: always;
 }
 
+/* An icon swapping with another in the same spot: scale 0.25, opacity 0, blur 4px, both ways. */
+.icon-swap {
+  transition-property: scale, opacity, filter;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.icon-swap[data-shown="false"] {
+  scale: 0.25;
+  opacity: 0;
+  filter: blur(4px);
+}
+
 .preview-dot {
   transition: background-color 200ms var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The open badge fades without growing. */
+  .bento-badge,
+  .bento-tile:hover .bento-badge {
+    scale: none;
+  }
+
+  /* Icon swaps keep their cross-fade and drop the scale and blur. */
+  .icon-swap[data-shown="false"] {
+    scale: none;
+    filter: none;
+  }
+
   /* Previews: fades stay, movement goes. */
   .preview-card,
   .preview[data-closing] .preview-card {
@@ -589,13 +647,13 @@ html[data-preview-open] {
   /* Gentler, not zero: the entrance keeps its fade and drops the movement. */
   @keyframes intro-rise {
     from {
-      opacity: 0;
+      opacity: 0.01;
     }
   }
 
   @keyframes intro-fade {
     from {
-      opacity: 0;
+      opacity: 0.01;
     }
   }
 
