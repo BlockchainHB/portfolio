@@ -20,7 +20,7 @@ type Props = {
  * on load. Anything already decoded (cache, or loaded before hydration) is
  * left alone, so there is never a fade on content that was already visible.
  */
-function fadeIn(img: HTMLImageElement | null) {
+export function fadeIn(img: HTMLImageElement | null) {
   if (!img || img.complete) return;
   img.dataset.pending = "";
   const done = () => delete img.dataset.pending;

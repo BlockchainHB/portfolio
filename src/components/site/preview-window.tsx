@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { ProjectMark } from "./project-mark";
 import { closePreview, previewSizes, refocusTrigger, usePreviewSlug } from "./preview-store";
 import { SlidingIndicator } from "./sliding-indicator";
+import { fadeIn } from "./theme-image";
 
 // Each native app and product shows its own icon; the rest show their project's mark.
 const TILE_MARKS: Record<string, Mark> = {
@@ -48,11 +49,21 @@ export function PreviewWindow() {
 
   useLayoutEffect(() => {
     const el = dialog.current;
-    if (!el || !shown || el.open) return;
+    const card = el?.querySelector<HTMLElement>(".preview-card");
+    if (!el || !card || !shown || el.open) return;
     delete el.dataset.closing;
+    // showModal focuses the dialog's autofocus element, else its first control.
+    // Safari scrolls that into view while the sheet is still off-screen below,
+    // so with the close button it scrolls the sheet's own content to the copy
+    // and the picture rides in out of sight. The card itself is the target:
+    // focusing it scrolls nothing inside it.
+    card.setAttribute("autofocus", "");
+    // Mobile: the sheet waits below the screen until it has painted once (globals.css)
+    el.dataset.entering = "";
     el.showModal();
-    el.querySelector<HTMLElement>(".preview-card")?.focus({ preventScroll: true });
+    card.scrollTop = 0;
     document.documentElement.dataset.previewOpen = "";
+    requestAnimationFrame(() => requestAnimationFrame(() => delete el.dataset.entering));
   }, [shown]);
 
   // Close: play the exit, then close the dialog and drop the content.
@@ -65,6 +76,7 @@ export function PreviewWindow() {
       () => {
         el.close();
         delete el.dataset.closing;
+        delete el.dataset.entering;
         delete el.dataset.dragging;
         delete document.documentElement.dataset.previewOpen;
         setShown(null);
@@ -305,12 +317,27 @@ function ViewImage({
   const video = useRef<HTMLVideoElement>(null);
   // Reduced motion keeps the still; otherwise the loop plays only while its view is showing.
   const [still, setStill] = useState(true);
+  // The loop is its own footage, not the still: it stays invisible until it is
+  // actually playing, then cross-fades in, so the window opens on the still.
+  const [playing, setPlaying] = useState(false);
   useEffect(() => setStill(window.matchMedia("(prefers-reduced-motion: reduce)").matches), []);
+  // The first play waits for the window to land, so the loop never cross-fades over a moving sheet.
+  const settled = useRef(false);
   useEffect(() => {
     const el = video.current;
     if (!el) return;
-    if (active) void el.play().catch(() => {});
-    else el.pause();
+    if (!active) {
+      el.pause();
+      return;
+    }
+    const timer = window.setTimeout(
+      () => {
+        settled.current = true;
+        void el.play().catch(() => {});
+      },
+      settled.current ? 0 : 500,
+    );
+    return () => window.clearTimeout(timer);
   }, [active, still]);
 
   const { width: w, height: h } = image;
@@ -336,6 +363,7 @@ function ViewImage({
     >
       {/* Served like the home tiles: 3x sources, exact widths, quality 90 */}
       <Image
+        ref={fadeIn}
         src={src}
         alt={alt}
         fill
@@ -344,20 +372,23 @@ function ViewImage({
         // The view on screen loads straight away; the others wait their turn.
         loading={active ? "eager" : "lazy"}
         draggable={false}
-        className="object-contain"
+        // A picture still downloading fades in over the stage instead of popping in
+        className="fade-img object-contain"
       />
       {image.video && !still && (
         <video
           ref={video}
           src={image.video}
-          // The loop's own first frame, so it starts without a jump.
-          poster={image.video.replace(/\.mp4$/, "-poster.webp")}
           muted
           loop
           playsInline
           preload="none"
           aria-hidden
-          className="absolute inset-0 size-full object-cover"
+          onPlaying={() => setPlaying(true)}
+          className={cn(
+            "absolute inset-0 size-full object-cover transition-opacity duration-300 ease-out",
+            !playing && "opacity-0",
+          )}
         />
       )}
     </div>
