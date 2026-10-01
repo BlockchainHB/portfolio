@@ -1,4 +1,5 @@
 import { ALSO_SHIPPED, CONTACT, LENS_CARDS, LENSES, PROJECTS } from "@/data/site";
+import { PREVIEWS } from "@/data/previews";
 import { DESCRIPTION, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -11,7 +12,15 @@ export function GET() {
   const projects = PROJECTS.map((p) => {
     const role = p.meta || p.mobileMeta;
     const head = `- [${p.name}](${SITE_URL}/#${p.id})${role ? ` (${role})` : ""}: ${p.description}`;
-    return p.visit ? `${head} Website: ${p.visit}` : head;
+    // The preview window copy for each piece, which the page only shows on click
+    const pieces = p.tiles
+      .filter((t) => PREVIEWS[t.slug])
+      .map((t) => {
+        const preview = PREVIEWS[t.slug];
+        const facts = preview.facts.map((f) => `${f.label}: ${f.href ?? f.value}`).join("; ");
+        return `  - ${t.caption}: ${preview.title}. ${preview.body.join(" ")} (${facts})`;
+      });
+    return [p.visit ? `${head} Website: ${p.visit}` : head, ...pieces].join("\n");
   });
 
   const lenses = LENSES.map((l) =>

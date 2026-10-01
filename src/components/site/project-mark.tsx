@@ -17,7 +17,7 @@ type Props = {
 
 // A toned mark keeps one tile in every theme: ink on white, or white on near-black.
 export const TONE_TILE = { light: "bg-white", dark: "bg-[#161616]" } as const;
-export const toneIcon = (name: string, tone: "light" | "dark") => `/icons/${name}-${tone === "light" ? "ink" : "white"}.png`;
+export const toneIcon = (name: string, tone: "light" | "dark") => `/icons/${name}-${tone === "light" ? "ink" : "white"}.webp`;
 
 export function ProjectMark({ mark, size, className, style }: Props) {
   const frame = cn("relative shrink-0 overflow-hidden rounded-[23%]", className);
@@ -28,7 +28,7 @@ export function ProjectMark({ mark, size, className, style }: Props) {
       <span
         aria-hidden
         className={cn(frame, "ring-mark bg-cover bg-center")}
-        style={{ ...box, backgroundImage: `url(/icons/${mark.name}-app.png)` }}
+        style={{ ...box, backgroundImage: `url(/icons/${mark.name}-app.webp)` }}
       />
     );
   }
@@ -58,15 +58,15 @@ export function ProjectMark({ mark, size, className, style }: Props) {
         <>
           <span
             className={cn(layer, "dark:hidden")}
-            style={{ backgroundImage: `url(/icons/${mark.name}-ink.png)`, backgroundSize }}
+            style={{ backgroundImage: `url(/icons/${mark.name}-ink.webp)`, backgroundSize }}
           />
           <span
             className={cn(layer, "hidden dark:block")}
-            style={{ backgroundImage: `url(/icons/${mark.name}-white.png)`, backgroundSize }}
+            style={{ backgroundImage: `url(/icons/${mark.name}-white.webp)`, backgroundSize }}
           />
         </>
       ) : (
-        <span className={layer} style={{ backgroundImage: `url(/icons/${mark.name}-color.png)`, backgroundSize }} />
+        <span className={layer} style={{ backgroundImage: `url(/icons/${mark.name}-color.webp)`, backgroundSize }} />
       )}
     </span>
   );

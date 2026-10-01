@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CONTACT, PROJECTS } from "@/data/site";
+import { PREVIEWS } from "@/data/previews";
 
 // The live host: the bare domain redirects here, so canonicals must point at www.
 export const SITE_URL = "https://www.hasaamb.com";
@@ -108,6 +109,8 @@ export const WEBSITE = {
   "@type": "WebSite",
   "@id": WEBSITE_ID,
   name: SITE_NAME,
+  // Lets Google show the name people search for as the site name
+  alternateName: ["hasaamb", "hasaamb.com"],
   url: SITE_URL,
   inLanguage: "en",
   publisher: { "@id": PERSON_ID },
@@ -122,5 +125,33 @@ export function breadcrumbs(items: { name: string; path: string }[]) {
       name: item.name,
       item: `${SITE_URL}${item.path}`,
     })),
+  };
+}
+
+/*
+ * Every previewable piece of work as a CreativeWork, from the same copy the
+ * preview windows show: what it is, who made it and where it lives.
+ */
+export function workList() {
+  return {
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/#work`,
+    name: "Work by Hasaam Bhatti",
+    itemListElement: PROJECTS.flatMap((project) =>
+      project.tiles
+        .filter((tile) => PREVIEWS[tile.slug])
+        .map((tile) => {
+          const preview = PREVIEWS[tile.slug];
+          const link = preview.facts.find((f) => f.href)?.href;
+          return {
+            "@type": "CreativeWork",
+            name: `${project.name}: ${tile.caption}`,
+            headline: preview.title,
+            description: preview.body.join(" "),
+            url: link ?? `${SITE_URL}/#${project.id}`,
+            creator: { "@id": PERSON_ID },
+          };
+        }),
+    ).map((item, i) => ({ "@type": "ListItem", position: i + 1, item })),
   };
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MARKS, PROJECTS, type Mark } from "@/data/site";
 import { PREVIEWS, type Preview, type PreviewImage, type PreviewView } from "@/data/previews";
@@ -238,6 +239,11 @@ function MobileStage({ views }: { views: PreviewView[] }) {
   }, []);
 
   const tallest = Math.min(0.95, Math.max(...views.map((v) => v.image.height / v.image.width)));
+  // The sheet spans the screen less 8px each side, so a view's width is known
+  // up front: the stage gets its height from the viewport on the first frame,
+  // not from the picture or a size container (Safari can lay those out at zero,
+  // then shift the copy down once the image arrives).
+  const stage = { "--stage-h": `min(calc((100vw - 16px) * ${tallest}), 56dvh)` } as React.CSSProperties;
 
   return (
     // pan-x: the stage only scrolls sideways itself, so a vertical drag here moves the sheet
@@ -246,12 +252,12 @@ function MobileStage({ views }: { views: PreviewView[] }) {
       <div
         ref={track}
         className="preview-track scrollbar-none -mx-4 flex overflow-x-auto"
+        style={stage}
       >
         {views.map((v, i) => (
           <div
             key={v.label || i}
-            className="flex w-full shrink-0 items-center justify-center px-4 [container-type:size]"
-            style={{ aspectRatio: `1 / ${tallest}`, maxHeight: "56dvh" }}
+            className="flex h-[var(--stage-h)] w-full shrink-0 items-center justify-center px-4"
           >
             <ViewImage image={v.image} alt={v.label} active={i === index} fit="mobile" />
           </div>
@@ -308,11 +314,15 @@ function ViewImage({
   }, [active, still]);
 
   const { width: w, height: h } = image;
-  // Fit inside the view's box (a size container) at the image's own aspect
-  // ratio; on desktop, never larger than designed.
-  const cap = fit === "desktop" ? `${w}px, ` : "";
-  const size = { width: `min(${cap}100cqw, calc(100cqh * ${w / h}))`, aspectRatio: `${w} / ${h}` };
+  // Fit the view's box at the image's own aspect ratio. Desktop: the box is a
+  // size container, and a view never grows past its designed size. Mobile: the
+  // box is the slide (viewport width less 48px, --stage-h tall).
+  const box = fit === "desktop" ? `${w}px, 100cqw, calc(100cqh * ${w / h})` : `calc(100vw - 48px), calc(var(--stage-h) * ${w / h})`;
+  const size = { width: `min(${box})`, aspectRatio: `${w} / ${h}` };
   const screen = image.kind === "screen";
+  // The dialog only renders after a click, so the theme is known: fetch just its picture.
+  const { resolvedTheme } = useTheme();
+  const src = resolvedTheme === "dark" && image.dark ? image.dark : image.src;
 
   return (
     <div
@@ -326,25 +336,16 @@ function ViewImage({
     >
       {/* Served like the home tiles: 3x sources, exact widths, quality 90 */}
       <Image
-        src={image.src}
+        src={src}
         alt={alt}
         fill
         sizes={previewSizes(image)}
         quality={90}
+        // The view on screen loads straight away; the others wait their turn.
+        loading={active ? "eager" : "lazy"}
         draggable={false}
-        className={cn("object-contain", image.dark && "dark:hidden")}
+        className="object-contain"
       />
-      {image.dark && (
-        <Image
-          src={image.dark}
-          alt={alt}
-          fill
-          sizes={previewSizes(image)}
-          quality={90}
-          draggable={false}
-          className="hidden object-contain dark:block"
-        />
-      )}
       {image.video && !still && (
         <video
           ref={video}

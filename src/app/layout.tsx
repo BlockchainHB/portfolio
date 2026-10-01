@@ -8,11 +8,13 @@ import { DATAFAST } from "@/lib/datafast";
 import { DESCRIPTION, HOME_TITLE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // SF Pro comes from the system on Apple devices; Inter stands in everywhere else.
+// Not preloaded: Apple devices never use it, and elsewhere it swaps in once the CSS asks for it.
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400"],
   variable: "--font-inter",
   display: "swap",
+  preload: false,
 });
 
 // Pages set their own canonical, description and social preview (pageMetadata).

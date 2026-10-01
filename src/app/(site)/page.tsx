@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/json-ld";
 import { IntroGate } from "@/components/site/lens-enter";
 import { ProjectSection } from "@/components/site/project-section";
 import { ALSO_SHIPPED, PROJECTS } from "@/data/site";
-import { DESCRIPTION, HOME_TITLE, ORGANIZATIONS, pageMetadata, PERSON, PERSON_ID, SITE_URL, WEBSITE, WEBSITE_ID } from "@/lib/seo";
+import { DESCRIPTION, HOME_TITLE, ORGANIZATIONS, pageMetadata, PERSON, PERSON_ID, SITE_URL, WEBSITE, WEBSITE_ID, workList } from "@/lib/seo";
 
 export const metadata = pageMetadata({ description: DESCRIPTION, path: "/" });
 
@@ -22,6 +22,7 @@ const GRAPH = [
   },
   PERSON,
   ...ORGANIZATIONS,
+  workList(),
 ];
 
 export default function HomePage() {
