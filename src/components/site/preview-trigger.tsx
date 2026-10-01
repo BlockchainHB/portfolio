@@ -15,6 +15,8 @@ export function PreviewTrigger({ slug, label }: { slug: string; label: string })
       type="button"
       aria-label={label}
       aria-haspopup="dialog"
+      data-goal="preview_open"
+      data-goal-slug={slug}
       onClick={(e) => openPreview(slug, e.currentTarget)}
       onPointerEnter={warm}
       onFocus={warm}

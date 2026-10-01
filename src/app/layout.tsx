@@ -1,8 +1,10 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import { DataFastGoals } from "@/components/site/datafast-goals";
+import { DATAFAST } from "@/lib/datafast";
 import { DESCRIPTION, HOME_TITLE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // SF Pro comes from the system on Apple devices; Inter stands in everywhere else.
@@ -50,20 +52,31 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
-        <script
-          defer
-          data-website-id="68e0d3e320ff399f48a39d93"
-          data-domain="hasaamb.com"
-          data-allow-localhost="true"
-          src="https://datafa.st/js/script.js"
-        />
+        {DATAFAST.enabled && (
+          <>
+            {/* Queues goals fired before the script arrives */}
+            <Script id="datafast-queue" strategy="beforeInteractive">
+              {`window.datafast = window.datafast || function () {
+                window.datafast.q = window.datafast.q || [];
+                window.datafast.q.push(arguments);
+              };`}
+            </Script>
+            <Script
+              src="/js/script.cookieless.js"
+              data-website-id={DATAFAST.websiteId}
+              data-domain={DATAFAST.domain}
+              data-disable-payments="true"
+              strategy="afterInteractive"
+            />
+          </>
+        )}
       </head>
       <body className="min-h-screen bg-page font-sans text-ink">
         {/* disableTransitionOnChange: a theme flip snaps instead of smearing every transition at once */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-          <Analytics />
         </ThemeProvider>
+        <DataFastGoals />
       </body>
     </html>
   );

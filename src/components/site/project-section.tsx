@@ -16,7 +16,7 @@ export function ProjectSection({ project, first }: { project: Project; first?: b
       // Jumping here (hero tiles link to #id) lands the heading 48px from the top, padding or not
       className={cn(first ? "scroll-mt-12" : "pt-12 lg:-scroll-mt-12 lg:pt-24")}
     >
-      <ProjectHeader project={project} />
+      <ProjectHeader project={project} first={first} />
       <DesktopProject project={project} />
       <MobileProject project={project} />
     </section>
@@ -29,11 +29,14 @@ export function ProjectSection({ project, first }: { project: Project; first?: b
  *          mark | role                    mark | description  |
  *          description
  */
-function ProjectHeader({ project }: { project: Project }) {
+function ProjectHeader({ project, first }: { project: Project; first?: boolean }) {
   const mobileMeta = project.mobileMeta ?? project.meta;
 
   return (
-    <header className="mx-auto grid w-full max-w-content grid-cols-[auto_1fr] items-center gap-x-3.5 gap-y-0.5 px-4 [grid-template-areas:'mark_name''mark_meta''desc_desc'] lg:grid-cols-[auto_1fr_auto] lg:gap-x-4 lg:px-0 lg:[grid-template-areas:'mark_name_side''mark_desc_side']">
+    <header
+      // Scroll depth; the first heading is on screen at load, so it has no marker
+      data-scroll-goal={first ? undefined : `scroll:${project.id}`}
+      className="mx-auto grid w-full max-w-content grid-cols-[auto_1fr] items-center gap-x-3.5 gap-y-0.5 px-4 [grid-template-areas:'mark_name''mark_meta''desc_desc'] lg:grid-cols-[auto_1fr_auto] lg:gap-x-4 lg:px-0 lg:[grid-template-areas:'mark_name_side''mark_desc_side']">
       <ProjectMark mark={project.mark} size={56} className="[grid-area:mark] lg:!size-12" />
       <h2 id={`${project.id}-title`} className="self-end text-xl font-light [grid-area:name]">
         {project.name}
@@ -46,6 +49,10 @@ function ProjectHeader({ project }: { project: Project }) {
           {project.visit && (
             <a
               href={project.visit}
+              target="_blank"
+              rel="noopener"
+              data-goal="project_visit"
+              data-goal-project={project.id}
               className="group inline-flex text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
               aria-label={`Visit ${project.name}`}
             >

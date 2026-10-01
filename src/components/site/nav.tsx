@@ -17,7 +17,7 @@ export function Nav() {
         <Image
           src="/me-sticker.png"
           alt=""
-          width={20}
+          width={21}
           height={26}
           quality={90}
           priority
@@ -31,10 +31,16 @@ export function Nav() {
       </div>
 
       <div className="flex items-center justify-end gap-5 text-md text-body lg:w-60">
-        <a href={`mailto:${CONTACT.email}`} className="transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96]">
+        <a href={`mailto:${CONTACT.email}`} data-goal="email_click" data-goal-location="nav" className="transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96]">
           Email
         </a>
-        <a href={CONTACT.x} className="transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96]">
+        <a
+          href={CONTACT.x}
+          target="_blank"
+          rel="noopener"
+          data-goal="social_click"
+          data-goal-network="x"
+          data-goal-location="nav" className="transition-[color,transform] duration-150 ease-out hover:text-ink active:scale-[0.96]">
           X
         </a>
       </div>

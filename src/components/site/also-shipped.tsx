@@ -8,7 +8,7 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby="also-shipped" className="mx-auto w-full max-w-content pt-24">
+    <section aria-labelledby="also-shipped" data-scroll-goal="scroll:also-shipped" className="mx-auto w-full max-w-content pt-24">
       {variant === "home" ? (
         <>
           <header className="hidden items-center gap-4 lg:flex">
@@ -43,6 +43,8 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
           <li key={item.id}>
             <a
               href={item.href}
+              target="_blank"
+              rel="noopener"
               className="shadow-tile group flex h-[132px] flex-col justify-between rounded-tile bg-tile px-5 pb-[18px] pt-4 transition-transform duration-150 ease-out active:scale-[0.96]"
             >
               <span className="flex items-center justify-between">
@@ -65,6 +67,8 @@ export function AlsoShipped({ items, variant }: { items: Shipped[]; variant: "ho
           <li key={item.id} className={cn(i > 0 && "border-t border-border")}>
             <a
               href={item.href}
+              target="_blank"
+              rel="noopener"
               className="-mx-2 flex items-center gap-3 rounded-[20px] px-2 py-3 transition-colors duration-150 ease-out active:bg-fill"
             >
               <ProjectMark mark={item.mark} size={32} />

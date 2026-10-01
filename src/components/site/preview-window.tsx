@@ -431,7 +431,10 @@ function Fact({ label, value, href }: { label: string; value: string; href?: str
         <a
           href={href}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener"
+          data-goal="project_visit"
+          data-goal-link={label.toLowerCase()}
+          data-goal-from="preview"
           className="group inline-flex text-ink underline-offset-4 transition-opacity duration-150 ease-out hover:underline"
         >
           {value}

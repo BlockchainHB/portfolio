@@ -25,7 +25,7 @@ export async function generateMetadata({
     summary: description,
     image,
   } = post.metadata;
-  let ogImage = image ? `${SITE_URL}${image}` : `${SITE_URL}/opengraph-image`;
+  let ogImage = image ? `${SITE_URL}${image}` : `${SITE_URL}/opengraph-image.jpg`;
 
   return {
     title,
@@ -78,7 +78,7 @@ export default async function Blog({
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
-            image: post.metadata.image ? `${SITE_URL}${post.metadata.image}` : `${SITE_URL}/opengraph-image`,
+            image: post.metadata.image ? `${SITE_URL}${post.metadata.image}` : `${SITE_URL}/opengraph-image.jpg`,
             url: `${SITE_URL}/blog/${post.slug}`,
             author: { "@type": "Person", "@id": PERSON_ID, name: SITE_NAME, url: SITE_URL },
           }),

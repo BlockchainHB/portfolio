@@ -18,7 +18,7 @@ export const DESCRIPTION =
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 
-const OG_IMAGE = { url: "/opengraph-image", width: 1200, height: 630, alt: "Hasaam Bhatti: I build software and sell things" };
+const OG_IMAGE = { url: "/opengraph-image.jpg", width: 2400, height: 1260, alt: "Hasaam Bhatti: I build software and sell things" };
 
 /*
  * Page metadata with a self-referencing canonical. Next merges metadata

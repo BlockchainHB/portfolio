@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy } from "lucide-react";
 import { CONTACT } from "@/data/site";
+import { track } from "@/lib/datafast";
 import { cn } from "@/lib/utils";
 
 const SOCIAL = [
@@ -39,10 +40,14 @@ export function Footer() {
     <footer className="mx-auto flex w-full max-w-content flex-col gap-12 pt-24 lg:gap-16 lg:pt-28">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
         <div className="flex flex-col gap-1.5">
-          <p className="text-md text-body">Say hello</p>
+          <p data-scroll-goal="scroll:contact" className="text-md text-body">
+            Say hello
+          </p>
           <div className="flex items-center gap-3">
             <a
               href={`mailto:${CONTACT.email}`}
+              data-goal="email_click"
+              data-goal-location="footer"
               className="text-2xl font-light text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
             >
               {CONTACT.email}
@@ -55,6 +60,11 @@ export function Footer() {
             <li key={s.label}>
               <a
                 href={s.href}
+                target="_blank"
+                rel="noopener"
+                data-goal="social_click"
+                data-goal-network={s.label.toLowerCase()}
+                data-goal-location="footer"
                 className="flex items-center gap-2 text-md text-ink transition-[opacity,transform] duration-150 ease-out hover:opacity-70 active:scale-[0.96]"
               >
                 <span className="shadow-tile flex size-7 items-center justify-center rounded-lg bg-tile text-ink dark:bg-selected">
@@ -94,6 +104,7 @@ function CopyEmail() {
     try {
       await navigator.clipboard.writeText(CONTACT.email);
       setCopied(true);
+      track("email_copy");
     } catch {
       // Clipboard blocked: the mailto link beside it still works.
     }

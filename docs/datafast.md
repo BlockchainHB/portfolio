@@ -17,7 +17,37 @@ DataFast (datafa.st, by Marc Lou) is a lightweight web analytics product focused
 
 Code blocks below are copied from the docs. The only edit is that the docs' `// 👈 ✅` pointer comments are removed. All IDs are placeholders.
 
-### Current state of this repo (as of commit a2f129f)
+### Implemented (2026-09-30)
+
+- **Config:** `src/lib/datafast.ts` holds the website ID (`dfid_...`), the root domain and the `track()` helper. Tracking is on only when `VERCEL_ENV === "production"`.
+- **Script:** `src/app/layout.tsx` loads the cookieless script (`/js/script.cookieless.js`) with the queue stub and `data-disable-payments`.
+- **Proxy:** `next.config.mjs` rewrites `/js/script.cookieless.js` and `/api/events` to datafa.st. The script sends events to the page's own `/api/events` whenever its `src` is not on datafa.st.
+- **Bot traffic:** `src/middleware.ts` calls `trackAICrawlerRequest` from `@datafast/ai-crawl`. Its matcher skips images, fonts, scripts and video in `public/`, but keeps pages, `robots.txt`, `llms.txt`, the sitemap and `.md`.
+- **Goals:** `src/components/site/datafast-goals.tsx` handles our own `data-goal` / `data-goal-<param>` attributes (one `track()` per click) and `data-scroll-goal` markers. The native `data-fast-*` attributes are not used. In the live cookieless script (read 2026-09-30) they have two problems:
+  - A keyboard press counts twice: the script handles the key, then the browser's click.
+  - A scroll goal re-fires every time its element re-enters the screen, and it fires at the first visible pixel.
+
+  | Goal | Params |
+  |---|---|
+  | `preview_open` | `slug` |
+  | `project_visit` | `project`, or `link` + `from=preview` |
+  | `email_click` | `location` |
+  | `email_copy` | none (JS) |
+  | `social_click` | `network`, `location` |
+
+- **Outbound links:** they open in a new tab (`target="_blank" rel="noopener"`). The script sends events with a plain async XHR (no `sendBeacon` or `keepalive`), and a same-tab navigation would cancel it. `noopener` keeps the referrer, so the linked products see the visit came from here.
+- **Scroll depth:** `scroll:<project-id>` sits on every project header except the first, which is on screen at load. `scroll:also-shipped` and `scroll:contact` cover the last two sections.
+  - Each fires once per page view, when half the element (or half the screen) is in view, with `scroll_percentage` attached.
+  - A path change starts them over.
+  - The site keeps the scroll position on client navigation, so markers already in view fire on arrival at 100%.
+- **Removed:** `@vercel/analytics`.
+- **Dashboard steps (manual):**
+  1. Make sure Cookieless is on in Settings > General.
+  2. Set `email_click` as the #1 KPI.
+  3. Build the funnel `/` visit > `scroll:physical` > `scroll:gymcreatives` > `scroll:native` > `scroll:also-shipped` > `scroll:contact`.
+- **After deploy:** check that visitor locations vary. If they don't, the rewrite is not forwarding IPs, and cookieless visitor hashing collapses. Switch to the managed proxy in that case.
+
+### State of this repo before the implementation (as of commit a2f129f)
 
 - DataFast is already installed. `src/app/layout.tsx` has a raw `<script defer ...>` in `<head>` with the website ID and `data-domain` hard-coded. The ID is visible in every page's HTML anyway, so it is not a secret. The repo is public, though, so the plan below moves it to an env var.
 - That tag also sets `data-allow-localhost="true"`, so every `pnpm dev` session is recorded in production stats. Remove it.
