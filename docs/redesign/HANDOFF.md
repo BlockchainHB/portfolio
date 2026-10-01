@@ -1,6 +1,6 @@
 # Portfolio redesign handoff
 
-Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` has changed yet.
+Last updated: 2026-10-01. The redesign is built and live on hasaamb.com. This file records the design-era decisions; `CLAUDE.md` at the repo root is the current guide to the code.
 
 - **Paper file:** [Porfolio](https://app.paper.design/file/01M3MZDE6V4Z5WE7C6XCV0XTSN) (one page, 11 artboards)
 - **Copy guide:** [Portfolio copy guide](https://claude.ai/code/artifact/67443965-476b-413b-84ab-8375b8d1667a) (Claude Doc: voice, banned words, length budgets, formulas, checklist)
@@ -22,7 +22,7 @@ Last updated: 2026-09-28. The whole redesign lives in Paper. Nothing in `src/` h
 | Systems diagrams | Rebuilt with the diagram-design skill (hasaam-portfolio skin): nine cards, each a different form. The featured card is the Launchie approval swimlane; the rest are Launchie on Cloudflare (deployment), Inngest fan-out, tool layer stack, GymCreatives agent sequence, image-quality flowchart, model registry matrix, Daily Hadith Urdu comparison and PR Monitor fan-in. Source SVGs and generator: `systems-diagrams/`; facts: `systems-research/`. Live on "Filter \| Systems" and "Filter \| Systems \| Dark". The Agents page featured Launchie card uses the same system (a loop with a seller-memory hub). The older "Beams" style survives only on the "Diagram directions" board |
 | Brand kit (GymCreatives brand memory) | One component used on home, mobile, Agents, Brand and Systems: the Ironside CrossFit logo tile, 4 swatches, Oswald "Aa" and voice chips. The dark variant is on the dark home and the dark Systems artboard |
 | Dark artboards | Every page now has a dark twin in Paper, placed under its light artboard: Home — Mobile \| Dark, Filter \| Interface / Agents / Brand / Product \| Dark (Systems already had one). Expanded cards are still light only |
-| Code | Built on branch `redesign`. Routes: `/` plus one lens route each (`/interface`, `/systems`, `/agents`, `/brand`, `/product`). All copy lives in `src/data/site.ts`; components in `src/components/site/`. Tile and card visuals are Paper exports (`public/work/{home,mobile,lens}/<slug>-{light,dark}.webp`, 3x); Systems diagrams are the SVGs from `systems-diagrams/`. Theme images swap with the `.dark` class, so there's no flash. Not built yet: expanded cards (preview windows) and the tile hover + |
+| Code | Built on branch `redesign`. Routes: `/` plus one lens route each (`/interface`, `/systems`, `/agents`, `/brand`, `/product`). All copy lives in `src/data/site.ts`; components in `src/components/site/`. Tile and card visuals are Paper exports (`public/work/{home,mobile,lens}/<slug>-{light,dark}.webp`, 3x); Systems diagrams are the SVGs from `systems-diagrams/`. Theme images swap with the `.dark` class, so there's no flash. Expanded cards shipped as the preview window (`preview-window.tsx`, content in `src/data/previews.ts`), with a hover-only expand badge on tiles |
 
 ## Next steps
 
