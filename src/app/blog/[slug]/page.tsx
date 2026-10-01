@@ -1,5 +1,5 @@
 import { getBlogPosts, getPost } from "@/data/blog";
-import { DATA } from "@/data/resume";
+import { PERSON_ID, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -25,17 +25,18 @@ export async function generateMetadata({
     summary: description,
     image,
   } = post.metadata;
-  let ogImage = image ? `${DATA.url}${image}` : `${DATA.url}/og?title=${title}`;
+  let ogImage = image ? `${SITE_URL}${image}` : `${SITE_URL}/opengraph-image.jpg`;
 
   return {
     title,
     description,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title,
       description,
       type: "article",
       publishedTime,
-      url: `${DATA.url}/blog/${post.slug}`,
+      url: `/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -77,14 +78,9 @@ export default async function Blog({
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${DATA.url}${post.metadata.image}`
-              : `${DATA.url}/og?title=${post.metadata.title}`,
-            url: `${DATA.url}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: DATA.name,
-            },
+            image: post.metadata.image ? `${SITE_URL}${post.metadata.image}` : `${SITE_URL}/opengraph-image.jpg`,
+            url: `${SITE_URL}/blog/${post.slug}`,
+            author: { "@type": "Person", "@id": PERSON_ID, name: SITE_NAME, url: SITE_URL },
           }),
         }}
       />

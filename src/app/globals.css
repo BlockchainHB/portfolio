@@ -2,298 +2,623 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Typography system tweaks */
-@layer utilities {
-  .type-h1 { @apply text-[14px] leading-[1.4] tracking-normal font-medium text-foreground; }
-  .type-h2 { @apply text-[14px] leading-[1.4] tracking-normal font-medium text-foreground; }
-  .type-body { @apply text-[12.8px] leading-[1.6] text-foreground; }
-  .type-meta { @apply text-[12.8px] leading-[1.5] text-muted-foreground; }
-  .type-micro { @apply text-[11px] leading-[1.5] text-muted-foreground; }
-  .measure { max-width: 68ch; }
-}
-
+/*
+ * Tokens come from the Paper file (docs/redesign/tokens.json).
+ * Light is the default; `.dark` on <html> swaps every surface at once.
+ */
 @layer base {
-    :root {
-      --background: oklch(0.9761 0.0041 91.4461);
-      --foreground: oklch(0.2417 0.0298 269.8827);
-      --card: oklch(1.0000 0 0);
-      --card-foreground: oklch(0.2417 0.0298 269.8827);
-      --popover: oklch(1.0000 0 0);
-      --popover-foreground: oklch(0.2417 0.0298 269.8827);
-      --primary: oklch(0.6333 0.0309 154.9039);
-      --primary-foreground: oklch(1.0000 0 0);
-      --secondary: oklch(0.8596 0.0291 119.9919);
-      --secondary-foreground: oklch(0.2417 0.0298 269.8827);
-      --muted: oklch(0.9251 0.0071 88.6450);
-      --muted-foreground: oklch(0.5510 0.0234 264.3637);
-      --accent: oklch(0.8242 0.0221 136.6092);
-      --accent-foreground: oklch(0.2417 0.0298 269.8827);
-      --destructive: oklch(0.5624 0.1743 26.1433);
-      --destructive-foreground: oklch(1.0000 0 0);
-      --border: oklch(0.9251 0.0071 88.6450);
-      --input: oklch(1.0000 0 0);
-      --ring: oklch(0.6333 0.0309 154.9039);
-      --chart-1: oklch(0.6333 0.0309 154.9039);
-      --chart-2: oklch(0.7209 0.0489 120.9474);
-      --chart-3: oklch(0.6744 0.0427 136.0110);
-      --chart-4: oklch(0.5510 0.0234 264.3637);
-      --chart-5: oklch(0.9251 0.0071 88.6450);
-      --sidebar: oklch(0.9845 0.0026 106.4477);
-      --sidebar-foreground: oklch(0.2417 0.0298 269.8827);
-      --sidebar-primary: oklch(0.6333 0.0309 154.9039);
-      --sidebar-primary-foreground: oklch(1.0000 0 0);
-      --sidebar-accent: oklch(0.9251 0.0071 88.6450);
-      --sidebar-accent-foreground: oklch(0.2417 0.0298 269.8827);
-      --sidebar-border: oklch(0.9251 0.0071 88.6450);
-      --sidebar-ring: oklch(0.6333 0.0309 154.9039);
-      --font-sans: Satoshi, ui-sans-serif, sans-serif, system-ui;
-      --font-serif: Signifier, Georgia, serif;
-      --font-mono: JetBrains Mono, Courier New, monospace;
-      --radius: 0.35rem;
-      --shadow-2xs: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.02);
-      --shadow-xs: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.02);
-      --shadow-sm: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.04), 0px 1px 2px -1px hsl(225 27.7778% 14.1176% / 0.04);
-      --shadow: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.04), 0px 1px 2px -1px hsl(225 27.7778% 14.1176% / 0.04);
-      --shadow-md: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.04), 0px 2px 4px -1px hsl(225 27.7778% 14.1176% / 0.04);
-      --shadow-lg: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.04), 0px 4px 6px -1px hsl(225 27.7778% 14.1176% / 0.04);
-      --shadow-xl: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.04), 0px 8px 10px -1px hsl(225 27.7778% 14.1176% / 0.04);
-      --shadow-2xl: 0px 1px 2px 0px hsl(225 27.7778% 14.1176% / 0.10);
-      --spacing: 0.23rem;
-      /* motion tokens */
-      --motion-duration-xs: 120ms;
-      --motion-duration-sm: 180ms;
-      --motion-duration-md: 240ms;
-      --motion-duration-lg: 360ms;
-      --motion-duration-xl: 600ms;
-      --motion-stagger-micro: 40ms;
-      --motion-stagger: 80ms;
-      --ease-swift-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-gentle-in: cubic-bezier(0.2, 0, 0, 1);
-      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-      --elev-1: 0 2px 6px rgba(0,0,0,.08);
-      --elev-2: 0 6px 12px rgba(0,0,0,.10);
-      --elev-3: 0 14px 24px rgba(0,0,0,.12);
-      --glass-blur: 16px;
-      --glass-noise: 0.015;
-      --shadow-color: #1a1f2e;
-      --shadow-opacity: 0.04;
-      --shadow-blur: 2px;
-      --shadow-spread: 0px;
-      --shadow-offset-x: 0px;
-      --shadow-offset-y: 1px;
-      --letter-spacing: 0em;
-      --tracking-normal: 0em;
-    }
+  :root {
+    --page: #f7f7f7;
+    --tile: #ffffff;
+    --fill: #eeeeee;
+    --selected: #ffffff;
+    --ink: #292929;
+    --body: #5d5d5d;
+    --subtle: #767676;
+    --pill: #ffffffd9;
+    --mark-tile: #ffffff;
+    --mark-ring: 0 0 0 1px #00000014;
+    --tile-shadow: 0 0 0 1px #0000000f, 0 1px 2px -1px #0000000f, 0 2px 4px #0000000a;
+    --image-outline: #0000001a;
+    --stage: #e6e9ee; /* preview visual panel */
+    --stage-pill: #dcdfe5;
+    --scrim: #00000047;
+    --dialog-shadow: 0 0 0 1px #0000000f, 0 24px 64px #0000002e;
 
-    .dark {
-      --background: oklch(0.1448 0 0);
-      --foreground: oklch(0.9702 0 0);
-      --card: oklch(0.1822 0 0);
-      --card-foreground: oklch(0.9702 0 0);
-      --popover: oklch(0.1822 0 0);
-      --popover-foreground: oklch(0.9702 0 0);
-      --primary: oklch(0.6333 0.0309 154.9039);
-      --primary-foreground: oklch(0 0 0);
-      --secondary: oklch(0.2178 0 0);
-      --secondary-foreground: oklch(0.9702 0 0);
-      --muted: oklch(0.2178 0 0);
-      --muted-foreground: oklch(0.7058 0 0);
-      --accent: oklch(0.3709 0.0248 153.9823);
-      --accent-foreground: oklch(0.9702 0 0);
-      --destructive: oklch(0.6368 0.2078 25.3313);
-      --destructive-foreground: oklch(1.0000 0 0);
-      --border: oklch(0.2850 0 0);
-      --input: oklch(0.1822 0 0);
-      --ring: oklch(0.6333 0.0309 154.9039);
-      --chart-1: oklch(0.6333 0.0309 154.9039);
-      --chart-2: oklch(0.7209 0.0489 120.9474);
-      --chart-3: oklch(0.6744 0.0427 136.0110);
-      --chart-4: oklch(0.5510 0.0234 264.3637);
-      --chart-5: oklch(0.5096 0.0289 152.3460);
-      --sidebar: oklch(0.1684 0 0);
-      --sidebar-foreground: oklch(0.9702 0 0);
-      --sidebar-primary: oklch(0.6333 0.0309 154.9039);
-      --sidebar-primary-foreground: oklch(1.0000 0 0);
-      --sidebar-accent: oklch(0.2178 0 0);
-      --sidebar-accent-foreground: oklch(0.9702 0 0);
-      --sidebar-border: oklch(0.2850 0 0);
-      --sidebar-ring: oklch(0.6333 0.0309 154.9039);
-      --radius: 0.35rem;
-      --font-sans: Satoshi, ui-sans-serif, sans-serif, system-ui;
-      --font-serif: Signifier, Georgia, serif;
-      --font-mono: JetBrains Mono, Courier New, monospace;
-      --shadow-color: #000000;
-      --shadow-opacity: 0.04;
-      --shadow-blur: 2px;
-      --shadow-spread: 0px;
-      --shadow-offset-x: 0px;
-      --shadow-offset-y: 1px;
-      --letter-spacing: 0em;
-      --spacing: 0.23rem;
-      --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.02);
-      --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.02);
-      --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.04), 0px 1px 2px -1px hsl(0 0% 0% / 0.04);
-      --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.04), 0px 1px 2px -1px hsl(0 0% 0% / 0.04);
-      --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.04), 0px 2px 4px -1px hsl(0 0% 0% / 0.04);
-      --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.04), 0px 4px 6px -1px hsl(0 0% 0% / 0.04);
-      --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.04), 0px 8px 10px -1px hsl(0 0% 0% / 0.04);
-      --shadow-2xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.10);
-    }
-  .theme { --animate-marquee: marquee var(--duration) infinite linear; --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite; --font-sans: Antic, ui-sans-serif, sans-serif, system-ui; --font-mono: JetBrains Mono, Courier New, monospace; --font-serif: Signifier, Georgia, serif; --radius: 0.35rem; --tracking-tighter: calc(var(--tracking-normal) - 0.05em); --tracking-tight: calc(var(--tracking-normal) - 0.025em); --tracking-wide: calc(var(--tracking-normal) + 0.025em); --tracking-wider: calc(var(--tracking-normal) + 0.05em); --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-icon: cubic-bezier(0.2, 0, 0, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* shadcn variables, kept for the blog */
+    --background: var(--page);
+    --foreground: var(--ink);
+    --card: var(--tile);
+    --card-foreground: var(--ink);
+    --popover: var(--tile);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--tile);
+    --secondary: var(--fill);
+    --secondary-foreground: var(--ink);
+    --muted: var(--fill);
+    --muted-foreground: var(--subtle);
+    --accent: var(--fill);
+    --accent-foreground: var(--ink);
+    --destructive: #cc292e;
+    --destructive-foreground: #ffffff;
+    --border: #e8e8e8;
+    --input: var(--tile);
+    --ring: var(--ink);
+    --radius: 0.5rem;
   }
+
+  .dark {
+    --page: #111111;
+    --tile: #1b1b1b;
+    --fill: #222222;
+    --selected: #2a2a2a;
+    --ink: #ededed;
+    --body: #a1a1a1;
+    --subtle: #888888;
+    --pill: #111111b8;
+    --mark-tile: #222222;
+    --mark-ring: 0 0 0 1px #ffffff1a;
+    --tile-shadow: 0 0 0 1px #ffffff14;
+    --image-outline: #ffffff1a;
+    --stage: #202124;
+    --stage-pill: #17181a;
+    --scrim: #00000099;
+    --dialog-shadow: 0 0 0 1px #ffffff14, 0 24px 64px #00000080;
+    --border: #262626;
+  }
+
+  html {
+    background: var(--page);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
-    letter-spacing: var(--tracking-normal);
-  }
-  }
-
-  /* reduced motion fallbacks for tokens */
-  @media (prefers-reduced-motion: reduce) {
-    :root {
-      --motion-duration-xs: 1ms;
-      --motion-duration-sm: 1ms;
-      --motion-duration-md: 1ms;
-      --motion-duration-lg: 1ms;
-      --motion-duration-xl: 1ms;
-    }
+    background: var(--page);
+    color: var(--ink);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
-  }
-
-  h3 code {
-    @apply !text-lg md:!text-xl;
-  }
-
-  pre {
-    @apply !px-0 rounded-lg overflow-x-auto py-4
-  }
-
-  pre [data-line] {
-    @apply px-4
-  }
-
-  code {
-    @apply text-sm md:text-base !leading-loose;
-  }
-
-  pre > code {
-    counter-reset: line;
-  }
-
-  code[data-theme*=" "],
-  code[data-theme*=" "] span {
-    color: var(--shiki-light);
-    background-color: var(--shiki-light-bg);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    code[data-theme*=" "],
-    code[data-theme*=" "] span {
-      color: var(--shiki-dark);
-      background-color: var(--shiki-dark-bg);
-    }
-  }
-
-  code[data-line-numbers] {
-    counter-reset: line;
-  }
-
-  code[data-line-numbers] > [data-line]::before {
-    counter-increment: line;
-    content: counter(line);
-    @apply inline-block w-4 mr-4 text-right text-gray-500;
-  }
-
-  code {
-    counter-reset: line;
-  }
-
-  code > [data-line]::before {
-  counter-increment: line;
-  content: counter(line);
-
-  /* Other styling */
-  display: inline-block;
-  width: 1rem;
-  margin-right: 2rem;
-  text-align: right;
-  color: gray;
-}
-
-code[data-line-numbers-max-digits="2"] > [data-line]::before {
-  width: 2rem;
-}
-
-code[data-line-numbers-max-digits="3"] > [data-line]::before {
-  width: 3rem;
-}
-
-@theme inline {
-  @keyframes marquee {
-  from {
-    transform: translateX(0);
-    }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-    }
-  }
-  @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-    }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
-    }
+  ::selection {
+    background: color-mix(in oklab, var(--ink) 16%, transparent);
   }
 }
 
-/* Motion utilities and load orchestration */
 @layer utilities {
-  /* Marquee utilities (explicit classes so they aren't purged in prod) */
-  .animate-marquee { animation: marquee var(--duration) linear infinite; }
-  .animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
-  .reveal { opacity: 0; transform: translateY(8px); }
-  .reveal.in { opacity: 1; transform: none; transition: opacity var(--motion-duration-md) var(--ease-swift-out), transform var(--motion-duration-md) var(--ease-swift-out); }
-  .elev-1 { box-shadow: var(--elev-1); }
-  .elev-2 { box-shadow: var(--elev-2); }
-  .elev-3 { box-shadow: var(--elev-3); }
-  .glass { backdrop-filter: blur(var(--glass-blur)); }
+  .shadow-tile {
+    box-shadow: var(--tile-shadow);
+  }
+
+  .ring-mark {
+    box-shadow: var(--mark-ring);
+  }
+
+  /* 1px image outline, pure black or white at 10% */
+  .image-outline {
+    outline: 1px solid var(--image-outline);
+    outline-offset: -1px;
+  }
+
+  /* Die-cut sticker: a tight contact shadow on light, a deeper one on dark so the white edge sits on the page */
+  .sticker {
+    filter: drop-shadow(0 0.5px 0.5px oklch(0 0 0 / 0.16)) drop-shadow(0 1px 2px oklch(0 0 0 / 0.1));
+  }
+  .dark .sticker {
+    filter: drop-shadow(0 1px 2px oklch(0 0 0 / 0.5));
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-/* staged load sequence (body[data-mounted]) */
-[data-mounted="true"] .load-stagger > * { opacity: 0; transform: translateY(6px); }
-[data-mounted="true"] .load-stagger > * { transition: opacity var(--motion-duration-sm) var(--ease-swift-out), transform var(--motion-duration-sm) var(--ease-swift-out); }
-[data-mounted="true"] .load-stagger > *:nth-child(n) { transition-delay: calc((var(--n, 0)) * var(--motion-stagger-micro)); }
+/* Lens swap: content rises 8px and fades in over 200ms. */
+@keyframes lens-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-/* View-timeline progressive enhancement */
-@supports (animation-timeline: view()) {
-  .sl-reveal { opacity: 0; transform: translateY(10px); animation: sl-in var(--motion-duration-lg) var(--ease-swift-out) both; animation-timeline: view(); animation-range: entry 20% cover 30%; }
-  @keyframes sl-in { to { opacity: 1; transform: none; } }
+/*
+ * Lens swap. The filter stays put; the masthead fades in through a 2px blur
+ * (the old hand and heading become the new one) and the work rises 8px.
+ * No stagger: this runs every time someone switches lenses.
+ */
+@keyframes masthead-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
 
-  /* Hero parallax */
-  .hero-parallax { view-timeline-name: --hero; view-timeline-axis: block; }
-  .hero-avatar { animation: hero-avatar var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: transform; }
-  @keyframes hero-avatar { to { transform: translateY(-12px) scale(1.02); } }
-  .hero-name { animation: hero-name var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: transform; }
-  @keyframes hero-name { to { transform: translateY(-6px); } }
-  .hero-summary { animation: hero-summary var(--motion-duration-xl) linear both; animation-timeline: --hero; animation-range: entry 0% cover 30%; will-change: opacity; }
-  @keyframes hero-summary { to { opacity: 0.92; } }
+[data-lens-enter] .masthead {
+  animation: masthead-in 200ms var(--ease-out) both;
+}
+
+[data-lens-enter] .lens-body {
+  animation: lens-in 200ms var(--ease-out) both;
+}
+
+/*
+ * Home entrance, first load only ([data-intro] is set by IntroGate).
+ * Text rises 12px out of a 4px blur, about 100ms apart. Each hero stack
+ * starts gathered under the tile nearest the text and fans out to its place,
+ * 80ms after the stack starts to appear so the fan reads once it is visible.
+ * Fill mode is `backwards`: once done, the tiles hand back to their own
+ * translate and rotate, so the hover spread can transition them.
+ */
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+}
+
+/* The page below the hero: no blur, it covers too much area to filter cheaply. */
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes intro-fan {
+  from {
+    translate: var(--fan-x) var(--fan-y);
+    rotate: 0deg;
+  }
+}
+
+[data-intro] .intro-rise {
+  animation: intro-rise 500ms var(--ease-out) var(--delay, 0ms) backwards;
+}
+
+[data-intro] .intro-fade {
+  animation: intro-fade 500ms var(--ease-out) var(--delay, 0ms) backwards;
+}
+
+[data-intro] .intro-fan {
+  animation: intro-fan 600ms var(--ease-drawer) calc(var(--delay, 0ms) + 80ms) backwards;
+}
+
+/*
+ * Hero tiles. .hero-item is the unrotated slot (link + label), .hero-tile the
+ * rotated face. Rotation lives in a variable so hover can scale it.
+ */
+.hero-item {
+  transition:
+    translate 250ms var(--ease-out),
+    z-index 0s linear 250ms; /* drop back under its neighbours only once it has settled */
+}
+
+.hero-tile {
+  rotate: var(--r);
+  transform-origin: 0 0;
+  transition-property: translate, rotate, scale, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: var(--ease-out);
+}
+
+/*
+ * The name, as a pill like the tile captions. Line one's sit above, line two's
+ * below. The lifted tile rises 6px, so 14px above and 5px below both read as
+ * the same 8px gap, and line two's pill clears the intro paragraph.
+ */
+.hero-label {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--pill);
+  box-shadow: var(--tile-shadow);
+  backdrop-filter: blur(12px);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.97;
+  transition:
+    opacity 150ms var(--ease-out),
+    scale 150ms var(--ease-out);
+}
+
+.hero-label::after {
+  content: attr(data-label);
+}
+
+.hero-label[data-at="above"] {
+  bottom: calc(100% + 14px);
+  transform-origin: 50% 100%;
+}
+
+.hero-label[data-at="below"] {
+  top: calc(100% + 5px);
+  transform-origin: 50% 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Reaching for a stack spreads it a little, away from the text. */
+  .hero-stack:hover .hero-item {
+    translate: var(--spread-x) -2px;
+  }
+
+  .hero-stack:hover .hero-tile {
+    rotate: calc(var(--r) * 1.5);
+  }
+
+  /* The tile under the pointer is picked up: it comes forward, lifts,
+     straightens halfway and casts a longer shadow. */
+  .hero-item:hover {
+    z-index: 1;
+    transition-delay: 0s;
+  }
+
+  .hero-item:hover .hero-tile {
+    translate: -1.5px -6px; /* the -1.5px keeps the 1.06 scale centred (origin is top-left) */
+    rotate: calc(var(--r) * 0.5);
+    scale: 1.06;
+    box-shadow:
+      inset 0 0 0 1px var(--image-outline),
+      0 0 0 2px var(--page),
+      0 10px 24px #0000001f;
+  }
+
+  .hero-item:hover .hero-label {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .hero-item:active .hero-tile {
+    scale: 1.02;
+  }
+}
+
+/* Images that load after hydration fade in instead of popping over the fill. */
+.fade-img {
+  transition: opacity 250ms var(--ease-out);
+}
+
+.fade-img[data-pending] {
+  opacity: 0;
+}
+
+/* Outbound ↗ nudges toward where the link goes. */
+.arrow-out {
+  display: inline-block;
+  transition: translate 150ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .arrow-out {
+    translate: 1.5px -1.5px;
+  }
+}
+
+/* ---------- Bento tiles ---------- */
+
+/* Pointing at a tile says it opens: the picture leans in a touch. Pressing gives a little. */
+.bento-tile {
+  transition: scale 150ms var(--ease-out);
+}
+
+.bento-tile img {
+  transition: scale 300ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bento-tile:hover img {
+    scale: 1.02;
+  }
+}
+
+.bento-tile:has(.bento-trigger:active) {
+  scale: 0.985;
+}
+
+/*
+ * Media tiles: a neutral 1px outline drawn just inside the edge, over the
+ * picture, so every tile keeps a clean edge whatever its picture is. Pure
+ * black at 10% in light, pure white at 10% in dark; a tinted edge would pick
+ * up the picture and read as dirt. The lift stays outside, in light only.
+ */
+.tile-edge {
+  box-shadow:
+    0 1px 2px -1px oklch(0 0 0 / 0.06),
+    0 2px 4px oklch(0 0 0 / 0.04);
+}
+
+.tile-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.1);
+  pointer-events: none;
+}
+
+.dark .tile-edge {
+  box-shadow: none;
+}
+
+.dark .tile-edge::after {
+  box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.1);
+}
+
+/* The selected pill in a segmented row (lens filter, preview views). */
+.sliding-indicator[data-animate] {
+  transition:
+    transform 250ms var(--ease-out),
+    width 250ms var(--ease-out);
+}
+
+/* ---------- Preview window ---------- */
+
+/*
+ * A native <dialog> covering the viewport: the browser gives it focus
+ * trapping, Escape and an inert page. The card is centered on desktop and is
+ * a bottom sheet on mobile. Enter uses @starting-style so it stays a
+ * transition (interruptible); exit is driven by [data-closing], then the
+ * dialog closes once it has played.
+ */
+html[data-preview-open] {
+  overflow: hidden;
+}
+
+.preview {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.preview::backdrop {
+  background: var(--scrim);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 200ms var(--ease-out);
+}
+
+.preview[data-closing]::backdrop {
+  opacity: 0;
+  transition-duration: 150ms;
+}
+
+.preview-card {
+  box-shadow: var(--dialog-shadow);
+  transition:
+    opacity 250ms var(--ease-out),
+    scale 250ms var(--ease-out),
+    translate 250ms var(--ease-out);
+}
+
+.preview[data-closing] .preview-card {
+  opacity: 0;
+  scale: 0.98;
+  transition-duration: 150ms;
+}
+
+@starting-style {
+  .preview[open]::backdrop {
+    opacity: 0;
+  }
+
+  .preview[open] .preview-card {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 8px;
+  }
+}
+
+/* Mobile: a sheet that rises on the iOS drawer curve and follows the finger down. */
+@media (max-width: 1023px) {
+  .preview-card {
+    transition: translate 420ms var(--ease-drawer);
+  }
+
+  .preview[data-closing] .preview-card {
+    opacity: 1;
+    scale: none;
+    translate: 0 100%;
+    transition: translate 280ms var(--ease-drawer);
+  }
+
+  .preview[data-dragging] .preview-card {
+    transition: none;
+  }
+
+  @starting-style {
+    .preview[open] .preview-card {
+      opacity: 1;
+      scale: none;
+      translate: 0 100%;
+    }
+  }
+}
+
+/* The copy settles in just behind the card, in reading order. */
+.preview-rise {
+  animation: preview-rise 300ms var(--ease-out) var(--delay, 0ms) backwards;
+}
+
+@keyframes preview-rise {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/*
+ * Views on the desktop stage are stacked. The current one sits in place; the
+ * others wait just off to the side they are on, faded and softened, so a
+ * change of view slides in from the direction of the tab that was picked.
+ */
+.preview-view {
+  transition:
+    opacity 250ms var(--ease-out),
+    translate 300ms var(--ease-out),
+    filter 250ms var(--ease-out);
+}
+
+.preview-view[data-pos="prev"],
+.preview-view[data-pos="next"] {
+  opacity: 0;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.preview-view[data-pos="prev"] {
+  translate: -16px 0;
+}
+
+.preview-view[data-pos="next"] {
+  translate: 16px 0;
+}
+
+/* Mobile views swipe natively, one per snap. */
+.preview-track {
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+}
+
+.preview-track > * {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.preview-dot {
+  transition: background-color 200ms var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-avatar, .hero-name, .hero-summary { animation: none !important; transform: none !important; opacity: 1 !important; }
+  /* Previews: fades stay, movement goes. */
+  .preview-card,
+  .preview[data-closing] .preview-card {
+    scale: none;
+    translate: none;
+    transition: opacity 200ms var(--ease-out);
+  }
+
+  .preview[data-closing] .preview-card {
+    opacity: 0;
+  }
+
+  @starting-style {
+    .preview[open] .preview-card {
+      opacity: 0;
+      scale: none;
+      translate: none;
+    }
+  }
+
+  @keyframes preview-rise {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .preview-view[data-pos="prev"],
+  .preview-view[data-pos="next"] {
+    translate: none;
+    filter: none;
+  }
+
+  .bento-tile:hover img,
+  .bento-tile:has(.bento-trigger:active) {
+    scale: none;
+  }
+
+  @keyframes lens-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes masthead-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Gentler, not zero: the entrance keeps its fade and drops the movement. */
+  @keyframes intro-rise {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes intro-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  [data-intro] .intro-fan {
+    animation: none;
+  }
+
+  /* Keep the name and the shadow, drop the movement. */
+  .hero-stack:hover .hero-item,
+  .hero-stack:hover .hero-tile,
+  .hero-item:hover .hero-tile {
+    translate: none;
+    rotate: var(--r);
+    scale: none;
+  }
+
+  .hero-label {
+    scale: none;
+  }
 }
 
-/* Aperture reveal for cards */
-.aperture-reveal { clip-path: circle(60% at 50% 50%); opacity: 0; transform: translateY(6px) scale(0.98); }
-.aperture-reveal.in { clip-path: circle(140% at 50% 50%); opacity: 1; transform: none; transition: clip-path var(--motion-duration-lg) var(--ease-swift-out), opacity var(--motion-duration-md) var(--ease-swift-out), transform var(--motion-duration-lg) var(--ease-swift-out); }
-
-/* Glare utility (uses --glare-x) */
-.glare::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.12) 50%, transparent 60%); transform: translateX(calc(var(--glare-x, 50%) - 50%)); mix-blend-mode: screen; opacity: 0; transition: opacity var(--motion-duration-sm) var(--ease-swift-out); }
-.glare:hover::after { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

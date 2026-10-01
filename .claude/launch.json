@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["-u", "NODE_ENV", "pnpm", "dev", "--port", "3100"],
+      "port": 3100
+    }
+  ]
+}

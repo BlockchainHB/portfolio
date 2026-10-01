@@ -1,0 +1,181 @@
+import { preload } from "react-dom";
+import { cn } from "@/lib/utils";
+import { TONE_TILE, toneIcon } from "./project-mark";
+
+/*
+ * Hero icon stacks. Each tile keeps the rotation and offset from the Paper
+ * file (rotation happens around the top-left corner, as there).
+ *
+ * The last tile in each list is the anchor: it sits on top, nearest the text.
+ * On first load the others start gathered under it and fan out (intro-fan).
+ * On desktop, pointing at a stack spreads it a little further from the
+ * anchor, and the tile under the pointer lifts and shows its name.
+ */
+
+type StackTile = {
+  left: number;
+  top: number;
+  rotate: number;
+  // app: full-bleed app icon; mark: one-color mark on a themed tile
+  kind: "app" | "mark";
+  name: string;
+  size?: number; // mark share of the tile, in %
+  tone?: "light" | "dark"; // mark: one tile in every theme instead of following it
+  label: string;
+  href: string; // the project's section on the page
+};
+
+const tileShadow = "shadow-[inset_0_0_0_1px_var(--image-outline),0_0_0_2px_var(--page),0_2px_8px_#00000014]";
+const fanShadow = "shadow-[inset_0_0_0_1px_var(--image-outline),0_0_0_2px_var(--page),0_4px_12px_#0000001a]";
+
+// How far a tile moves on hover, as a share of its distance from the anchor.
+const SPREAD = 0.1;
+
+function Tile({
+  t,
+  anchor,
+  px,
+  radius,
+  shadow,
+  labelAt,
+}: {
+  t: StackTile;
+  anchor: StackTile;
+  px: number;
+  radius: number;
+  shadow: string;
+  labelAt?: "above" | "below";
+}) {
+  const style = {
+    left: t.left,
+    top: t.top,
+    width: px,
+    height: px,
+    "--r": `${t.rotate}deg`,
+    "--fan-x": `${anchor.left - t.left}px`,
+    "--fan-y": `${anchor.top - t.top}px`,
+    "--spread-x": `${Math.round((t.left - anchor.left) * SPREAD)}px`,
+  } as React.CSSProperties;
+
+  const face = cn("hero-tile intro-fan absolute inset-0", shadow);
+  const layer = "absolute inset-0 bg-no-repeat";
+  const bg = { backgroundSize: `${t.size}%`, backgroundPosition: "50%" };
+
+  const tile =
+    t.kind === "app" ? (
+      <span
+        className={cn(face, "bg-cover bg-center")}
+        style={{ borderRadius: radius, backgroundImage: `url(/icons/${t.name}-app.png)` }}
+      />
+    ) : t.tone ? (
+      <span className={cn(face, "overflow-hidden", TONE_TILE[t.tone])} style={{ borderRadius: radius }}>
+        <span className={layer} style={{ ...bg, backgroundImage: `url(${toneIcon(t.name, t.tone)})` }} />
+      </span>
+    ) : (
+      <span className={cn(face, "overflow-hidden bg-mark-tile")} style={{ borderRadius: radius }}>
+        <span className={cn(layer, "dark:hidden")} style={{ ...bg, backgroundImage: `url(/icons/${t.name}-ink.png)` }} />
+        <span
+          className={cn(layer, "hidden dark:block")}
+          style={{ ...bg, backgroundImage: `url(/icons/${t.name}-white.png)` }}
+        />
+      </span>
+    );
+
+  // Mobile fan: decoration only, nothing to point at on touch.
+  if (!labelAt) {
+    return (
+      <span aria-hidden className="absolute" style={style}>
+        {tile}
+      </span>
+    );
+  }
+
+  // Desktop: a pointer shortcut to the project. Hidden from the heading's
+  // accessible name and the tab order; every section is reachable anyway.
+  return (
+    <a href={t.href} aria-hidden tabIndex={-1} className="hero-item absolute" style={style}>
+      {tile}
+      {/* The name is drawn from data-label by CSS, so it isn't text inside the h1 */}
+      <span className="hero-label" data-at={labelAt} data-label={t.label} />
+    </a>
+  );
+}
+
+const SOFTWARE: StackTile[] = [
+  { kind: "app", name: "beamlet", label: "Beamlet", href: "#native", left: 88, top: 4, rotate: 6 },
+  { kind: "mark", name: "gc", size: 54, tone: "dark", label: "GymCreatives", href: "#gymcreatives", left: 44, top: 4, rotate: 2 },
+  { kind: "mark", name: "lf", size: 62, tone: "light", label: "Launch Fast", href: "#launch-fast", left: 2, top: 4, rotate: -4 },
+];
+
+const THINGS: StackTile[] = [
+  { kind: "app", name: "flagrunner", label: "Flag Runner", href: "#physical", left: 2, top: 4, rotate: -6 },
+  { kind: "app", name: "zensweat", label: "Zen Sweat", href: "#physical", left: 44, top: 4, rotate: -2 },
+  { kind: "mark", name: "hb", size: 52, tone: "dark", label: "HB Goodies", href: "#physical", left: 88, top: 4, rotate: 4 },
+];
+
+const FAN: StackTile[] = [
+  { kind: "app", name: "beamlet", label: "Beamlet", href: "#native", left: 15, top: 33, rotate: -20 },
+  { kind: "app", name: "zensweat", label: "Zen Sweat", href: "#physical", left: 192, top: 14, rotate: 20 },
+  { kind: "mark", name: "gc", size: 54, tone: "dark", label: "GymCreatives", href: "#gymcreatives", left: 58, top: 17, rotate: -10 },
+  { kind: "mark", name: "hb", size: 52, tone: "dark", label: "HB Goodies", href: "#physical", left: 147, top: 7, rotate: 10 },
+  { kind: "mark", name: "lf", size: 62, tone: "light", label: "Launch Fast", href: "#launch-fast", left: 102, top: 8, rotate: 0 },
+];
+
+const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as React.CSSProperties;
+
+// Line one's labels go above its stack, line two's below, so neither covers the other line.
+function Stack({ tiles, enterAt, labelAt }: { tiles: StackTile[]; enterAt: number; labelAt: "above" | "below" }) {
+  const anchor = tiles[tiles.length - 1];
+  return (
+    <span className="hero-stack intro-rise relative hidden h-[60px] w-[142px] shrink-0 lg:block" style={delay(enterAt)}>
+      {tiles.map((t) => (
+        <Tile key={t.name} t={t} anchor={anchor} px={52} radius={12} shadow={tileShadow} labelAt={labelAt} />
+      ))}
+    </span>
+  );
+}
+
+const INTRO = "I'm Hasaam Bhatti, in Toronto. I take products from idea to shelf, from the backend to the box.";
+
+// Fetch the stack icons with the HTML, so the fan never opens on blank tiles.
+const ICONS = ["beamlet-app", "flagrunner-app", "zensweat-app", "lf-ink", "gc-white", "hb-white"];
+
+export function Hero() {
+  for (const icon of ICONS) preload(`/icons/${icon}.png`, { as: "image" });
+
+  // One h1 for both layouts. Desktop: a zig-zag, each line ends or starts
+  // with its stack. Mobile: the stacks hide and a hand of five tiles fans out
+  // above the statement.
+  return (
+    <section className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-5 pb-12 pt-16 lg:gap-7 lg:pb-24 lg:pt-28">
+      <span aria-hidden className="intro-rise relative block h-24 w-[260px] lg:hidden" style={delay(0)}>
+        {FAN.map((t) => (
+          <Tile key={t.name} t={t} anchor={FAN[FAN.length - 1]} px={56} radius={13} shadow={fanShadow} />
+        ))}
+      </span>
+
+      {/* Each stack sits like a word: 10px gap plus sidebearing and tile inset ≈ one word space (0.26em) */}
+      <h1 className="flex flex-col items-center text-center text-hero font-light lg:gap-1 lg:text-3xl">
+        <span className="flex items-center gap-2.5">
+          {/* Mobile brings the statement in as one piece, after the fan */}
+          <span className="intro-rise [--delay:100ms] lg:[--delay:0ms]">I build software</span>
+          <Stack tiles={SOFTWARE} enterAt={60} labelAt="above" />
+        </span>{" "}
+        {/* The space keeps the text "software and", not "softwareand"; flex ignores it */}
+        <span className="flex items-center gap-2.5">
+          <Stack tiles={THINGS} enterAt={160} labelAt="below" />
+          <span className="intro-rise" style={delay(100)}>
+            and sell things
+          </span>
+        </span>
+      </h1>
+
+      <p
+        className="intro-rise text-balance max-w-[320px] text-center text-base text-body lg:max-w-[600px] lg:text-lg lg:font-light"
+        style={delay(200)}
+      >
+        {INTRO}
+      </p>
+    </section>
+  );
+}
