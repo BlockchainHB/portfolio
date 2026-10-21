@@ -264,6 +264,7 @@ export const PREVIEWS: Record<string, Preview> = {
     facts: [
       { label: "Status", value: "Live" },
       { label: "App Store", value: "Daily Hadith", href: "https://apps.apple.com/us/app/daily-hadith/id6786129456" },
+      { label: "Website", value: "dailyhadithapp.com", href: "https://www.dailyhadithapp.com" },
       { label: "Role", value: "Designer and engineer" },
     ],
     views: [{ label: "", image: { src: "/work/preview/daily-hadith/1.webp", dark: "/work/preview/daily-hadith/1-dark.webp", width: 560, height: 574, kind: "phone" } }],
