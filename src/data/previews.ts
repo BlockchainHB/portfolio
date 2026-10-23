@@ -59,7 +59,7 @@ export const PREVIEWS: Record<string, Preview> = {
       { label: "Status", value: "In TestFlight" },
       { label: "Role", value: "Co-founder and engineer" },
     ],
-    views: [{ label: "", image: { src: "/work/preview/lf-ios-app/1.webp", dark: "/work/preview/lf-ios-app/1-dark.webp", width: 600, height: 610, kind: "phone" } }],
+    views: [{ label: "", image: { src: "/work/preview/lf-ios-app/phones.webp", dark: "/work/preview/lf-ios-app/phones-dark.webp", width: 600, height: 610, kind: "phone" } }],
   },
   "lf-mcp": {
     title: "Launch Fast, in any AI chat",
