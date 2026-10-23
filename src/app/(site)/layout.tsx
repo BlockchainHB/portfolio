@@ -1,7 +1,7 @@
 import { Footer } from "@/components/site/footer";
 import { MobileFilter } from "@/components/site/lens-enter";
 import { Nav } from "@/components/site/nav";
-import { PreviewWindow } from "@/components/site/preview-window";
+import { PreviewHost } from "@/components/site/preview-host";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,7 +16,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <div className="px-4 lg:px-0">
         <Footer />
       </div>
-      <PreviewWindow />
+      <PreviewHost />
     </div>
   );
 }

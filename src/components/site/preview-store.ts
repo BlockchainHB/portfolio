@@ -1,8 +1,7 @@
 "use client";
 
-import { getImageProps } from "next/image";
 import { useSyncExternalStore } from "react";
-import { PREVIEWS, type PreviewImage } from "@/data/previews";
+import type { PreviewImage } from "@/data/previews";
 
 /*
  * Which tile's preview is open. Tiles live in server-rendered sections all
@@ -15,8 +14,9 @@ const listeners = new Set<() => void>();
 
 const emit = () => listeners.forEach((l) => l());
 
+// Only tiles with a preview render a trigger, so any slug that arrives here has one.
 export function openPreview(next: string, from?: HTMLElement | null) {
-  if (!PREVIEWS[next]) return;
+  loadPreviewWindow();
   slug = next;
   trigger = from ?? null;
   emit();
@@ -50,27 +50,20 @@ export function previewSizes(image: PreviewImage) {
 }
 
 /*
+ * The window, the preview copy and the warm-up live in chunks of their own,
+ * fetched on the first sign of intent (or in idle time), not with the page.
+ */
+export const loadPreviewWindow = () => import("./preview-window");
+
+/*
  * Warm the browser cache on intent (hover, focus, touch), so a preview opens
- * on pictures, not blanks. It asks for the same srcset and sizes the window
- * renders, so the browser picks, and caches, the very file it will show.
+ * on pictures, not blanks. It also fetches the window's code, so the click
+ * that follows finds it ready.
  */
 const warmed = new Set<string>();
 export function warmPreview(key: string) {
   if (warmed.has(key)) return;
   warmed.add(key);
-  const dark = document.documentElement.classList.contains("dark");
-  for (const { image } of PREVIEWS[key]?.views ?? []) {
-    const { props } = getImageProps({
-      src: dark && image.dark ? image.dark : image.src,
-      alt: "",
-      fill: true,
-      sizes: previewSizes(image),
-      quality: 90,
-    });
-    const img = new Image();
-    img.decoding = "async";
-    if (props.sizes) img.sizes = props.sizes;
-    if (props.srcSet) img.srcset = props.srcSet;
-    img.src = props.src;
-  }
+  void loadPreviewWindow();
+  void import("./preview-warm").then((m) => m.warmPictures(key));
 }

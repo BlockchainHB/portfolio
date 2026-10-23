@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    formats: ["image/webp"],
+    // AVIF first (about a third smaller at the same look), WebP for the rest.
+    formats: ["image/avif", "image/webp"],
     // Exact 1x/2x/3x widths of every tile and card (280, 300, 560, 576 CSS px)
     // and every preview view (266, 342, 560, 600, 608 CSS px), so a screen
     // always gets a single clean downscale from the 3x source.
