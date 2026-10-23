@@ -80,6 +80,7 @@ export const MARKS = {
   beamlet: { kind: "app", name: "beamlet" },
   dailyHadith: { kind: "app", name: "dailyhadith" },
   prMonitor: { kind: "app", name: "prmonitor" },
+  ribbon: { kind: "app", name: "ribbon" },
   kijiji: { kind: "app", name: "kijiji" },
   native: { kind: "glyph", glyph: "native" },
   index: { kind: "glyph", glyph: "index" },
@@ -175,14 +176,15 @@ export const PROJECTS: Project[] = [
   {
     id: "native",
     name: "Native apps",
-    description: "A daily hadith on the iPhone, and two menu bar tools on the Mac. All Swift.",
+    description: "A window manager and two menu bar tools for the Mac, and a daily hadith for the iPhone.",
     meta: "",
-    mobileMeta: "iPhone | Mac",
+    mobileMeta: "Mac | iPhone",
     mark: MARKS.native,
     tiles: [
-      { slug: "daily-hadith", label: "Daily Hadith", caption: "Daily Hadith", place: { col: 1, row: 1, w: 2, h: 1 } },
-      { slug: "beamlet", label: "Beamlet", caption: "Beamlet", place: { col: 3, row: 1, w: 1, h: 1 } },
-      { slug: "pr-monitor", label: "PR Monitor", caption: "PR Monitor", place: { col: 4, row: 1, w: 1, h: 1 } },
+      { slug: "ribbon", label: "Ribbon", caption: "Ribbon", place: { col: 1, row: 1, w: 2, h: 2 } },
+      { slug: "daily-hadith", label: "Daily Hadith", caption: "Daily Hadith", place: { col: 3, row: 1, w: 2, h: 1 } },
+      { slug: "beamlet", label: "Beamlet", caption: "Beamlet", place: { col: 3, row: 2, w: 1, h: 1 } },
+      { slug: "pr-monitor", label: "PR Monitor", caption: "PR Monitor", place: { col: 4, row: 2, w: 1, h: 1 } },
     ],
   },
 ];
@@ -192,7 +194,7 @@ export const MOBILE_ORDER: Record<string, string[]> = {
   "launch-fast": ["lf-web-app", "lf-ios-app", "lf-launchie", "lf-mcp", "lf-chrome", "lf-brand"],
   physical: ["zen-sweat", "flag-runner"],
   gymcreatives: ["gc-chat", "gc-agent", "gc-auto-posts", "gc-brand-memory", "gc-models"],
-  native: ["daily-hadith", "beamlet", "pr-monitor"],
+  native: ["ribbon", "daily-hadith", "beamlet", "pr-monitor"],
 };
 
 /* ---------- Also shipped ---------- */
@@ -347,6 +349,14 @@ export const LENS_CARDS: Record<Lens, LensCard[]> = {
       title: "Pick the model for the job",
       line: "Image and chat models behind one switcher.",
       visual: { type: "image", slug: "interface-model-choice" },
+    },
+    {
+      id: "ribbon",
+      project: "Ribbon",
+      mark: MARKS.ribbon,
+      title: "Your agents, right beside your work",
+      line: "A scrolling workspace for the Mac that keeps each agent beside its work.",
+      visual: { type: "image", slug: "interface-ribbon" },
     },
     {
       id: "daily-hadith",

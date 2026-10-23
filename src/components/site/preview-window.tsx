@@ -15,6 +15,7 @@ import { fadeIn } from "./theme-image";
 const TILE_MARKS: Record<string, Mark> = {
   "zen-sweat": MARKS.zenSweat,
   "flag-runner": MARKS.flagRunner,
+  ribbon: MARKS.ribbon,
   "daily-hadith": MARKS.dailyHadith,
   beamlet: MARKS.beamlet,
   "pr-monitor": MARKS.prMonitor,
@@ -350,6 +351,7 @@ function ViewImage({
   // The dialog only renders after a click, so the theme is known: fetch just its picture.
   const { resolvedTheme } = useTheme();
   const src = resolvedTheme === "dark" && image.dark ? image.dark : image.src;
+  const videoSrc = resolvedTheme === "dark" && image.videoDark ? image.videoDark : image.video;
 
   return (
     <div
@@ -375,10 +377,10 @@ function ViewImage({
         // A picture still downloading fades in over the stage instead of popping in
         className="fade-img object-contain"
       />
-      {image.video && !still && (
+      {videoSrc && !still && (
         <video
           ref={video}
-          src={image.video}
+          src={videoSrc}
           muted
           loop
           playsInline
