@@ -434,6 +434,22 @@ export const LENS_CARDS: Record<Lens, LensCard[]> = {
       visual: { type: "svg", slug: "gc-model-registry" },
     },
     {
+      id: "ribbon-engine",
+      project: "Ribbon",
+      mark: MARKS.ribbon,
+      title: "Swift app, Rust layout engine",
+      line: "The SwiftUI app writes the engine's only config file, launches it as a child process and reads its state for the overview. The Rust engine, a Paneru fork, owns the strip and every window move.",
+      visual: { type: "svg", slug: "rb-engine-boundary" },
+    },
+    {
+      id: "ribbon-recovery",
+      project: "Ribbon",
+      mark: MARKS.ribbon,
+      title: "Window recovery journal",
+      line: "Before the engine starts, the app saves each managed window's frame, without titles. Pausing stops the engine first, then returns every window to a connected display. The journal stays until all of them accept.",
+      visual: { type: "svg", slug: "rb-recovery-journal" },
+    },
+    {
       id: "hadith-transcripts",
       project: "Daily Hadith",
       mark: MARKS.dailyHadith,
