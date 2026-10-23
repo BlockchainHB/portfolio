@@ -25,11 +25,12 @@ export function LensPage({ lens }: { lens: Lens }) {
 
       <div className="lens-body order-3">
         <div className="mx-auto flex max-w-content flex-col gap-4 px-4 lg:px-0">
+          {/* The first card is the largest paint at every width: preload its picture. */}
           {featured && <FeaturedCard card={featured} />}
           <ul className="grid gap-4 md:grid-cols-2">
-            {rest.map((card) => (
+            {rest.map((card, i) => (
               <li key={card.id} className="flex">
-                <Card card={card} />
+                <Card card={card} lead={!featured && i === 0} />
               </li>
             ))}
           </ul>
@@ -41,8 +42,9 @@ export function LensPage({ lens }: { lens: Lens }) {
   );
 }
 
-function CardVisual({ card, featured }: { card: LensCard; featured?: boolean }) {
+function CardVisual({ card, featured, lead }: { card: LensCard; featured?: boolean; lead?: boolean }) {
   const v = card.visual;
+  const first = featured || lead;
   const sizes = featured ? "(min-width: 1200px) 736px, 100vw" : "(min-width: 1200px) 560px, (min-width: 768px) 50vw, 100vw";
 
   return (
@@ -55,11 +57,15 @@ function CardVisual({ card, featured }: { card: LensCard; featured?: boolean }) 
     >
       {v.type === "svg" ? (
         <>
+          {/* Lazy keeps the hidden theme unfetched; the lead diagram is preloaded per color scheme. */}
+          {first && <link rel="preload" as="image" href={`/work/systems/${v.slug}-light.svg`} media="(prefers-color-scheme: light)" fetchPriority="high" />}
+          {first && <link rel="preload" as="image" href={`/work/systems/${v.slug}-dark.svg`} media="(prefers-color-scheme: dark)" fetchPriority="high" />}
           <Image
             src={`/work/systems/${v.slug}-light.svg`}
             alt={card.title}
             fill
             unoptimized
+            fetchPriority={first ? "high" : undefined}
             className="object-contain dark:hidden"
           />
           <Image
@@ -67,6 +73,7 @@ function CardVisual({ card, featured }: { card: LensCard; featured?: boolean }) 
             alt={card.title}
             fill
             unoptimized
+            fetchPriority={first ? "high" : undefined}
             className="hidden object-contain dark:block"
           />
         </>
@@ -76,6 +83,7 @@ function CardVisual({ card, featured }: { card: LensCard; featured?: boolean }) 
           dark={`/work/lens/${v.slug}-dark.webp`}
           alt={card.title}
           sizes={sizes}
+          preload={first ? "screen" : undefined}
         />
       )}
     </div>
@@ -91,10 +99,10 @@ function Label({ card }: { card: LensCard }) {
   );
 }
 
-function Card({ card }: { card: LensCard }) {
+function Card({ card, lead }: { card: LensCard; lead?: boolean }) {
   return (
     <article className="shadow-tile flex w-full flex-col rounded-tile bg-tile p-2">
-      <CardVisual card={card} />
+      <CardVisual card={card} lead={lead} />
       <div className="flex flex-col gap-4 px-4 pb-4 pt-5">
         <Label card={card} />
         <div className="flex flex-col gap-2">

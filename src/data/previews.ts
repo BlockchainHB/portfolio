@@ -8,6 +8,7 @@ export type PreviewImage = {
   src: string; // light theme, /work/preview/<slug>/<n>.webp, exported at 2x
   dark?: string; // dark theme, when the view has one
   video?: string; // muted loop that plays over the still (product "In use" views)
+  videoDark?: string; // dark theme loop, when the footage is drawn per theme
   width: number; // display size in the desktop visual panel, in px
   height: number;
   // screen: a flat screenshot; the preview draws its corners and shadow.
@@ -59,7 +60,7 @@ export const PREVIEWS: Record<string, Preview> = {
       { label: "Status", value: "In TestFlight" },
       { label: "Role", value: "Co-founder and engineer" },
     ],
-    views: [{ label: "", image: { src: "/work/preview/lf-ios-app/1.webp", dark: "/work/preview/lf-ios-app/1-dark.webp", width: 600, height: 610, kind: "phone" } }],
+    views: [{ label: "", image: { src: "/work/preview/lf-ios-app/phones.webp", dark: "/work/preview/lf-ios-app/phones-dark.webp", width: 600, height: 610, kind: "phone" } }],
   },
   "lf-mcp": {
     title: "Launch Fast, in any AI chat",
@@ -255,6 +256,40 @@ export const PREVIEWS: Record<string, Preview> = {
   },
 
   // Native apps
+  ribbon: {
+    title: "Your agents, beside your work",
+    body: [
+      "Keep Codex beside your IDE, Claude beside your canvas and the rest of your work nearby. Ribbon arranges the Mac's windows in a strip that scrolls past the edge of the screen: pick useful widths, move between windows from the keyboard, pair the ones that belong together and find any window in the overview.",
+      "I designed and built the app in SwiftUI and AppKit, along with its brand and website. The layout engine is a Rust fork of Paneru, with my changes for multiple displays and for restoring windows when it stops.",
+    ],
+    facts: [
+      { label: "Status", value: "Live" },
+      { label: "Website", value: "ribbonwm.com", href: "https://ribbonwm.com" },
+      { label: "GitHub", value: "BlockchainHB/Ribbon", href: "https://github.com/BlockchainHB/Ribbon" },
+      { label: "Role", value: "Designer and engineer" },
+    ],
+    // Each view is a loop of one behaviour; its still is the loop's first frame.
+    views: (
+      [
+        ["Scroll", "scroll"],
+        ["Resize", "resize"],
+        ["Pair", "pair"],
+        ["Stack", "stack"],
+        ["Overview", "overview"],
+      ] as const
+    ).map(([label, name]) => ({
+      label,
+      image: {
+        src: `/work/preview/ribbon/${name}.webp`,
+        dark: `/work/preview/ribbon/${name}-dark.webp`,
+        video: `/work/preview/ribbon/${name}.mp4`,
+        videoDark: `/work/preview/ribbon/${name}-dark.mp4`,
+        width: 608,
+        height: 500,
+        kind: "screen" as const,
+      },
+    })),
+  },
   "daily-hadith": {
     title: "A hadith a day, for my mom",
     body: [

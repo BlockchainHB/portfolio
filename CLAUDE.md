@@ -12,10 +12,10 @@ Guidance for Claude Code in this repo: hasaamb.com, Hasaam Bhatti's portfolio. T
 
 - `src/data/site.ts`: every word and image on the site. Lenses, projects, tiles (`place` = bento grid position), `MOBILE_ORDER`, Also shipped, lens cards, contact.
 - `src/data/previews.ts`: the preview window content per tile slug (title, body, facts, views). Image `kind` is `screen` (flat screenshot; the window adds corners and shadow) or `phone` (carries its own device frame; the window adds a drop shadow).
-- `src/components/site/`: the whole site UI. `project-section.tsx` (bento + mobile rail), `preview-window.tsx` (the modal / bottom sheet), `theme-image.tsx` (light/dark image pairs, preloads, fade-in), `hero.tsx`, `nav.tsx`, `footer.tsx`, `lens-page.tsx`.
+- `src/components/site/`: the whole site UI. `project-section.tsx` (bento + mobile rail), `preview-window.tsx` (the modal / bottom sheet, loaded on intent by `preview-host.tsx`), `theme-image.tsx` (light/dark image pairs, preloads, fade-in), `hero.tsx`, `nav.tsx`, `footer.tsx`, `lens-page.tsx`.
 - Routes: `src/app/(site)/page.tsx` (home), `(site)/[lens]` (interface, systems, agents, brand, product), `blog/`, `llms.txt/route.ts`, `sitemap.ts`, `robots.ts`.
 - `src/lib/seo.ts`: titles, descriptions, JSON-LD (Person, WebSite, ItemList of work). `src/lib/datafast.ts`: analytics config.
-- Legacy from the old template: `src/data/resume.tsx`, `src/components/{magicui,ui}` and the loose components in `src/components/`. Only the blog list still uses `BlurFade`. Don't build new things on them.
+- Legacy from the old template: `src/data/resume.tsx`, `src/components/{magicui,ui}` and the loose components in `src/components/`. Nothing on the live site uses them any more (the blog list moved to the CSS `intro-fade`). Don't build new things on them.
 
 ## Copy rules
 
@@ -23,7 +23,7 @@ First person. No em dashes, no "!", no "·" as a separator, no revenue or metric
 
 ## Images
 
-- Tiles and previews are Paper exports: `public/work/{home,mobile,lens}/<slug>-{light,dark}.webp` and `public/work/preview/<slug>/<n>[-dark].webp`, exported at 3x and converted to WebP q92. Next serves exact widths at quality 90.
+- Tiles and previews are Paper exports: `public/work/{home,mobile,lens}/<slug>-{light,dark}.webp` and `public/work/preview/<slug>/<n>[-dark].webp`, exported at 3x and converted to WebP q92. Next serves exact widths at quality 90, as AVIF where the browser takes it (Next encodes AVIF at quality − 15), else WebP.
 - Phone images must be truly transparent around the phones. A Paper export once carried a faint white background (~8% alpha) that showed as a lighter square box in dark mode. Check new exports: `magick f.webp -alpha extract -fx "u>0.03 && u<0.13" -format "%[fx:mean*100]" info:` should be near 0.
 - `/work`, `/icons`, `/favicons` are served with a one-day cache. Replacing a file under the same name won't reach returning visitors for a day; rename it to force a refresh.
 - Icons are WebP. Above-the-fold images use `ThemeImage preload="<media query>"` (media-scoped `<link rel=preload>`), not `next/image priority`.
@@ -34,13 +34,14 @@ A native `<dialog>`: a centered card on desktop, a bottom sheet below 1024px. Ha
 - The card itself gets `autofocus` before `showModal()`, and `.preview` uses `overflow: clip`. Otherwise Safari focuses the close button and scrolls the sheet's content while it's still off-screen, so it rises with the copy at the top.
 - Mobile opens with `data-entering` held for two frames so the sheet is painted below the screen before it moves; then a 500ms translate on `--ease-drawer`. No backdrop blur and no copy `preview-rise` on mobile, so the sheet moves as one piece.
 - The mobile stage height comes from the viewport (`--stage-h`), never from the image, so nothing shifts when pictures load. Downloading pictures fade in (`fade-img`).
-- Product loops (Zen Sweat, Flag Runner) are their own footage, not the still: the video stays hidden until `playing`, starts 500ms after open, and cross-fades in.
+- Product loops (Zen Sweat, Flag Runner) are their own footage, not the still: the video stays hidden until `playing`, starts 500ms after open, and cross-fades in. Ribbon's five loops are drawn per theme (`video` / `videoDark`) and each still is its loop's first frame, so the hand-off is invisible; their source is `docs/redesign/assets/ribbon/animation/`. Give re-rendered stills and loops new file names (old ones stay cached for a day).
+- The window, the preview copy and the picture warm-up are separate chunks: `preview-host.tsx` mounts the window on the first open or in idle time, and hovering a tile fetches its code and the still the window opens on. Both stages are mounted; only the visible one plays its loop.
 
 ## Motion and performance
 
 - Follow the better-ui / emil-design-eng values already in `globals.css` (`--ease-out`, `--ease-drawer`, scale 0.96 on press, icon swaps at scale 0.25 / blur 4px).
 - Entrance keyframes start at `opacity: 0.01`, not 0: Chrome ignores opacity-0 paints for LCP.
-- No Framer Motion outside the blog.
+- No Framer Motion.
 
 ## Analytics and SEO
 

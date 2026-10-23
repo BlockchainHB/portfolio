@@ -139,7 +139,6 @@ function MobileProject({ project }: { project: Project }) {
                 sizes="300px"
                 // The first project's first tile is the largest paint on a phone.
                 preload={project.id === "launch-fast" && i === 0 ? "(max-width: 1023px)" : undefined}
-                eager={project.id === "launch-fast" && i === 0}
               />
               {PREVIEWS[tile.slug] && (
                 <PreviewTrigger slug={tile.slug} label={`Open ${project.name}: ${tile.caption}`} />

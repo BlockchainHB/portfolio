@@ -277,7 +277,58 @@ def lf_launchie_loop(th):
     d.text(24, 404, "The model never writes memory. Rules come from your own words, the track record from the ledger.", 9, "soft", MONO)
     return d
 
-ALL = [lf_launchie_loop, gc_image_quality, lf_fanout, lf_approval, lf_launchie_cloudflare, lf_layers, gc_sequence, gc_registry, pr_fanin]
+def rb_boundary(th):
+    d = D(th, "rb", "rb-engine-boundary", "Swift app, Rust layout engine",
+          "Process boundary of Ribbon: the Swift app writes engine.toml, launches the Rust engine as a child process and queries its state for the overview; the engine owns the layout strip and global shortcuts and moves windows through macOS Accessibility.")
+    def zone(x, y, w, h, label):
+        d.rect(x, y, w, h, "fillTotal", "line", 1, rx=8, dash="4 4", layer="back")
+        tw = round(len(label) * 5.5 + 12)
+        d.rect(x + 8, y - 6, tw, 12, "paper", None, rx=2, layer="back")
+        d.text(x + 14, y + 3, label.upper(), 8, "soft", MONO, 500, spacing="0.1em", layer="back")
+    zone(16, 36, 176, 232, "Ribbon.app, Swift"); zone(252, 36, 160, 232, "Engine, Rust")
+    # connectors
+    d.path([(176, 80), (264, 80)]); d.label(220, 66, "engine.toml")
+    d.path([(264, 112), (232, 112), (232, 152), (176, 152)], dash="5 4", r=6); d.label(214, 132, "state")
+    d.path([(176, 224), (264, 224)]); d.label(220, 210, "launch")
+    d.path([(400, 84), (440, 84)], "accent", width=1.4); d.label(420, 70, "move", "accent")
+    d.path([(440, 108), (400, 108)], dash="5 4"); d.label(420, 122, "read")
+    # nodes
+    d.node(28, 60, 148, 40, "Settings", "scope, shortcuts")
+    d.node(28, 132, 148, 40, "Overview", "reads pair_id")
+    d.node(28, 204, 148, 40, "Session", "start, pause, restore")
+    d.node(264, 60, 136, 64, "Layout strip", "order, widths, pairs", focal=True)
+    d.node(264, 140, 136, 40, "Shortcuts", "only global owner")
+    d.node(264, 204, 136, 40, "Watchdog", "exits with the app")
+    d.node(440, 76, 104, 40, "Accessibility", "window frames", kind="store")
+    d.text(16, 290, "Swift owns no layout geometry. The engine is a Paneru fork on its own Mach service.", 8.5, "soft", MONO)
+    d.text(16, 304, "Frame writes run shrink, move, grow, so a neighbor's old frame is released first.", 8.5, "soft", MONO)
+    return d
+
+def rb_recovery(th):
+    d = D(th, "rb", "rb-recovery-journal", "Window recovery journal",
+          "State machine of a Ribbon session: starting saves every managed window's frame to recovery.json; pausing stops the engine and restores each window onto a connected display; the journal is deleted only when every window accepts its frame, otherwise recovery stays pending.")
+    d.eyebrow(24, 28, "Session")
+    o = -28  # vertical offset for the whole machine
+    y = lambda v: v + o
+    # connectors
+    d.path([(136, y(140)), (224, y(140))]); d.label(176, y(126), "start")
+    d.path([(180, y(140)), (180, y(252)), (152, y(252))], dash="5 4", r=6); d.label(196, y(200), "save")
+    d.path([(336, y(140)), (424, y(140))], "accent", width=1.4); d.label(380, y(126), "pause", "accent")
+    d.path([(480, y(120)), (480, y(96)), (80, y(96)), (80, y(120))], r=8); d.label(280, y(96), "all restored")
+    d.path([(280, y(160)), (280, y(220))]); d.label(298, y(190), "crash")
+    d.path([(448, y(160)), (448, y(232)), (336, y(232))], r=6); d.label(392, y(218), "some refused")
+    d.path([(336, y(256)), (504, y(256)), (504, y(160))], dash="5 4", r=6); d.label(420, y(270), "restore")
+    # nodes
+    d.node(24, y(120), 112, 40, "Stopped", "journal deleted")
+    d.node(224, y(120), 112, 40, "Running", "engine owns frames")
+    d.node(424, y(120), 112, 40, "Restoring", "fit to a display", focal=True)
+    d.node(224, y(220), 112, 48, "Recovery pending", "start is blocked", kind="optional", size=10.5)
+    d.node(24, y(232), 128, 40, "recovery.json", "frames, no titles", kind="store")
+    d.text(24, 290, "Pause stops the engine first (quit, interrupt, kill), so two processes never move a window.", 8.5, "soft", MONO)
+    d.text(24, 304, "A refused frame keeps the journal, and no session starts until every window is back.", 8.5, "soft", MONO)
+    return d
+
+ALL = [lf_launchie_loop, gc_image_quality, lf_fanout, lf_approval, lf_launchie_cloudflare, lf_layers, gc_sequence, gc_registry, pr_fanin, rb_boundary, rb_recovery]
 if __name__ == "__main__":
     out = os.path.dirname(os.path.abspath(__file__))
     for f in ALL:

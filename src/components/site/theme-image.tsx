@@ -11,8 +11,6 @@ type Props = {
   className?: string;
   // Above the fold at this media query: preload it and skip the fade.
   preload?: string;
-  // Load both variants straight away instead of on layout (the mobile LCP tile).
-  eager?: boolean;
 };
 
 /*
@@ -38,10 +36,13 @@ export function fadeIn(img: HTMLImageElement | null) {
  * its own media query: the layout's breakpoint and the system color scheme
  * (the theme's default), so a phone in dark mode fetches one file.
  */
-export function ThemeImage({ light, dark, alt, sizes, className, preload, eager }: Props) {
+export function ThemeImage({ light, dark, alt, sizes, className, preload }: Props) {
   // Above-the-fold images paint as soon as they can; a fade would only delay them.
   const ref = preload ? undefined : fadeIn;
   const fade = !preload && "fade-img";
+  // The preload has already fetched the right variant; lazy keeps the hidden
+  // theme from downloading, and high priority takes the visible one first.
+  const priority = preload ? "high" : undefined;
 
   return (
     <>
@@ -54,7 +55,8 @@ export function ThemeImage({ light, dark, alt, sizes, className, preload, eager 
         fill
         sizes={sizes}
         quality={90}
-        loading={eager ? "eager" : "lazy"}
+        loading="lazy"
+        fetchPriority={priority}
         className={cn("object-cover dark:hidden", fade, className)}
       />
       <Image
@@ -64,7 +66,8 @@ export function ThemeImage({ light, dark, alt, sizes, className, preload, eager 
         fill
         sizes={sizes}
         quality={90}
-        loading={eager ? "eager" : "lazy"}
+        loading="lazy"
+        fetchPriority={priority}
         className={cn("hidden object-cover dark:block", fade, className)}
       />
     </>

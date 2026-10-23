@@ -1,0 +1,532 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 608px; height: 500px; overflow: hidden; }
+  body { font-family: "SF Pro", -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body.light { background: linear-gradient(160deg, #EDF2FF 0%, #D2DDFC 100%); }
+  body.dark { background: linear-gradient(160deg, #18244A 0%, #0B1024 100%); }
+  .mono { font-family: Menlo, monospace; }
+  #world { position: absolute; left: 47px; top: 44px; width: 1512px; height: 982px; transform-origin: 0 0; transform: scale(0.34); }
+  .strip { position: absolute; left: 0; top: 0; width: 1512px; height: 982px; }
+  #ghost { opacity: 0.45; } .dark #ghost { opacity: 0.6; }
+  #display { position: absolute; left: 0; top: 0; width: 1512px; height: 982px; border-radius: 18px; overflow: hidden; }
+  .light #display { box-shadow: 0 0 0 10px #16181D, 0 0 0 11px #3A3D45, 0 30px 80px rgba(16,20,31,0.28);
+    background: radial-gradient(120% 90% at 85% 8%, #86A6FF 0%, rgba(134,166,255,0) 55%), radial-gradient(90% 80% at 8% 100%, #102A9C 0%, rgba(16,42,156,0) 62%), linear-gradient(160deg, #3F6CFA 0%, #2856ED 48%, #1C3FCB 100%); }
+  .dark #display { box-shadow: 0 0 0 10px #050608, 0 0 0 11px #2A2D35, 0 30px 80px rgba(0,0,0,0.5);
+    background: radial-gradient(120% 90% at 85% 8%, #3557D6 0%, rgba(53,87,214,0) 55%), radial-gradient(90% 80% at 8% 100%, #060E3A 0%, rgba(6,14,58,0) 62%), linear-gradient(160deg, #1B3AAE 0%, #142B86 48%, #0B1A5C 100%); }
+
+  /* Windows: live HTML so content reflows as Ribbon resizes them. */
+  .win { position: absolute; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; background: var(--win); color: var(--text); }
+  .light .win { box-shadow: 0 0 0 0.5px rgba(0,0,0,0.2), 0 10px 30px rgba(10,20,60,0.18); }
+  .dark .win { box-shadow: 0 0 0 0.5px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.08), 0 10px 30px rgba(0,0,0,0.45); }
+  .light .win.focused { box-shadow: 0 0 0 0.5px rgba(0,0,0,0.22), 0 18px 50px rgba(10,20,60,0.32), 0 4px 12px rgba(10,20,60,0.12); }
+  .dark .win.focused { box-shadow: 0 0 0 0.5px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1), 0 18px 50px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.3); }
+  .lights { display: flex; gap: 8px; flex-shrink: 0; }
+  .lights i { width: 12px; height: 12px; border-radius: 50%; background: var(--lightsOff); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.12); }
+  .focused .lights i:nth-child(1) { background: #FF5F57; }
+  .focused .lights i:nth-child(2) { background: #FEBC2E; }
+  .focused .lights i:nth-child(3) { background: #28C840; }
+  .bar { flex-shrink: 0; display: flex; align-items: center; }
+  .nowrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Codex */
+  .codex .bar { height: 52px; gap: 14px; padding: 0 16px 0 18px; border-bottom: 1px solid var(--line2); }
+  .codex .title { flex: 1; font-size: 13px; line-height: 16px; font-weight: 600; }
+  .codex .thread { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 18px; padding: 22px 22px 0; width: 100%; max-width: 760px; align-self: center; font-size: 14px; line-height: 21px; }
+  .meta { display: flex; align-items: center; gap: 8px; color: var(--text3); font-size: 13px; line-height: 16px; }
+  .chip { display: flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: var(--chip); color: var(--text2); font-size: 11px; line-height: 16px; }
+  .bubble { align-self: flex-end; max-width: 380px; padding: 10px 14px; border-radius: 18px; background: var(--chip); }
+  .step { display: flex; align-items: center; gap: 8px; color: var(--text3); font-size: 13px; line-height: 18px; white-space: nowrap; }
+  .step .mono { font-size: 12px; color: var(--text2); }
+  .diff { border: 1px solid var(--card); border-radius: 12px; overflow: hidden; font-size: 13px; line-height: 18px; }
+  .diff div { display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: var(--text2); white-space: nowrap; }
+  .diff div + div { border-top: 1px solid var(--line2); }
+  .diff .grow { flex: 1; }
+  .add { color: var(--plus); font-weight: 700; font-size: 12px; } .rem { color: var(--minus); font-weight: 700; font-size: 12px; }
+  .composer { flex-shrink: 0; padding: 0 16px 16px; width: 100%; max-width: 760px; align-self: center; }
+  .composer > div { display: flex; flex-direction: column; gap: 14px; padding: 14px 14px 10px 16px; border: 1px solid var(--composerLine); border-radius: 22px; background: var(--composer); }
+  .ph { font-size: 14px; line-height: 20px; color: var(--ph); }
+  .crow { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text3); }
+  .send { width: 28px; height: 28px; border-radius: 50%; background: var(--sendBg); display: flex; align-items: center; justify-content: center; margin-left: auto; }
+
+  /* Cursor */
+  .cursor .bar { height: 40px; padding: 0 14px 0 18px; background: var(--chrome); border-bottom: 1px solid var(--line); }
+  .search { width: 360px; max-width: 46%; height: 26px; border-radius: 7px; background: var(--field); color: var(--mute); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto; }
+  .ide { flex: 1; min-height: 0; display: flex; }
+  .explorer { width: 236px; flex-shrink: 0; background: var(--chrome); border-right: 1px solid var(--line); padding: 10px 0; font-size: 13px; line-height: 22px; color: var(--text2); white-space: nowrap; overflow: hidden; }
+  .explorer .label { padding: 0 16px 6px; font-size: 11px; line-height: 18px; font-weight: 600; letter-spacing: 0.06em; color: var(--mute); display: block; }
+  .row { display: flex; align-items: center; gap: 6px; }
+  .row.sel { background: var(--sel); color: var(--selText); }
+  .row .m { margin-left: auto; padding-right: 14px; font-size: 11px; color: #C9A227; }
+  .dot { width: 8px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .editor { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--editor); }
+  .tabs { height: 36px; flex-shrink: 0; display: flex; background: var(--chrome); border-bottom: 1px solid var(--line); font-size: 12.5px; }
+  .tab { display: flex; align-items: center; gap: 7px; padding: 0 14px; border-right: 1px solid var(--line); color: var(--mute); white-space: nowrap; }
+  .tab.on { background: var(--editor); color: var(--text); box-shadow: inset 0 2px 0 #2856ED; }
+  .crumb { height: 24px; flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 0 16px; color: var(--mute); font-size: 12px; white-space: nowrap; }
+  .code { flex: 1; min-height: 0; overflow: hidden; padding: 6px 0; font-family: Menlo, monospace; font-size: 12px; line-height: 20px; white-space: pre; color: var(--cPlain); }
+  .code > div { height: 20px; display: flex; }
+  .code .n { width: 56px; flex-shrink: 0; padding-right: 22px; text-align: right; color: var(--cNum); }
+  .code .plus { background: var(--addBg); box-shadow: inset 3px 0 0 var(--addBar); }
+  .k { color: var(--cKw); } .t { color: var(--cTag); } .s { color: var(--cStr); } .d { color: var(--mute); }
+  .status { height: 24px; flex-shrink: 0; display: flex; align-items: center; gap: 16px; padding: 0 12px; background: var(--chrome); border-top: 1px solid var(--line); font-size: 11.5px; color: var(--mute); white-space: nowrap; overflow: hidden; }
+
+  /* Safari */
+  .safari .bar { height: 52px; gap: 16px; padding: 0 16px 0 18px; background: var(--chrome); border-bottom: 1px solid var(--line); }
+  .addr { flex: 1; display: flex; justify-content: center; min-width: 0; }
+  .addr > div { width: 340px; max-width: 100%; height: 30px; border-radius: 9px; background: var(--field); display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--text2); }
+  .page { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; background: var(--page); }
+  .site-nav { height: 64px; flex-shrink: 0; display: flex; align-items: center; gap: 24px; padding: 0 32px; border-bottom: 1px solid var(--line2); font-size: 13px; color: var(--navText); white-space: nowrap; }
+  .site-nav .brand { display: flex; align-items: center; gap: 8px; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: var(--siteText); margin-right: auto; }
+  .btn { padding: 7px 14px; border-radius: 8px; background: #2856ED; color: #fff; font-weight: 600; }
+  .hero { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 64px 40px 0; text-align: center; }
+  .hero h1 { font-size: 52px; line-height: 54px; font-weight: 500; letter-spacing: -0.04em; color: var(--siteText); }
+  .hero p { font-size: 16px; line-height: 24px; color: var(--siteMuted); }
+  .hero .acts { display: flex; align-items: center; gap: 18px; padding-top: 8px; font-size: 15px; white-space: nowrap; }
+  .hero .acts .btn { padding: 11px 20px; border-radius: 10px; }
+  .scene { flex: 1; display: flex; gap: 10px; padding: 40px 32px 0; }
+  .scene i { flex: 1; border: 1px solid var(--boxLine); border-radius: 10px; background: var(--box); }
+  .scene i:nth-child(2) { flex: 1.9; }
+
+  /* Claude */
+  .claude { background: var(--cBg); }
+  .claude .bar { height: 44px; gap: 14px; padding: 0 18px; border-bottom: 1px solid var(--cLine); }
+  .claude .title { flex: 1; text-align: center; font-size: 13px; font-weight: 500; color: var(--cText); }
+  .cthread { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 22px; padding: 40px 48px 0; width: 100%; max-width: 680px; align-self: center; }
+  .cbubble { align-self: flex-end; max-width: 420px; padding: 12px 16px; border-radius: 16px; background: var(--cBubble); font-size: 15px; line-height: 22px; color: var(--cText); }
+  .creply { display: flex; gap: 12px; font-size: 15px; line-height: 24px; color: var(--cText); }
+  .ccomp { padding: 0 48px 24px; width: 100%; max-width: 680px; align-self: center; }
+  .ccomp > div { display: flex; align-items: center; justify-content: space-between; padding: 14px 12px 14px 18px; border-radius: 20px; background: var(--cComp); box-shadow: 0 0 0 1px var(--cRing); font-size: 15px; color: var(--cPh); white-space: nowrap; }
+
+  /* Terminal */
+  .term { background: var(--termBg); }
+  .term .bar { height: 30px; gap: 14px; padding: 0 12px; background: var(--termBar); border-bottom: 1px solid var(--line); }
+  .term .title { flex: 1; text-align: center; font-size: 13px; font-weight: 600; color: var(--text3); white-space: nowrap; overflow: hidden; }
+  .term pre { padding: 8px 10px; font-family: Menlo, monospace; font-size: 12px; line-height: 17px; color: var(--text); }
+
+  /* Menu bar */
+  #menubar { position: absolute; left: 0; top: 0; width: 1512px; height: 24px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 20px; color: #fff; font-size: 13px; line-height: 16px; font-weight: 500; z-index: 5; }
+  #menubar .menus { display: flex; align-items: center; gap: 22px; }
+  #menubar .status-items { display: flex; align-items: center; gap: 18px; }
+  #app { font-weight: 700; }
+
+  /* Overview, context menu, pointer, pair outline */
+  #panel { position: absolute; left: 444px; top: 417px; width: 624px; height: 172px; border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px; z-index: 6; opacity: 0; }
+  .light #panel { background: rgba(246,246,248,0.93); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.14), 0 24px 70px rgba(10,20,60,0.32), 0 6px 18px rgba(10,20,60,0.14); }
+  .dark #panel { background: rgba(44,44,48,0.94); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1), 0 24px 70px rgba(0,0,0,0.5); }
+  .tile { width: 112px; height: 132px; flex-shrink: 0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 14px; line-height: 18px; font-weight: 500; color: var(--text); }
+  .tile .icon { width: 80px; height: 80px; position: relative; }
+  .tile .icon img { width: 80px; height: 80px; }
+  .badge { position: absolute; right: 0; bottom: 0; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; }
+  .light .badge { background: rgba(246,246,248,0.95); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.12); }
+  .dark .badge { background: rgba(50,50,54,0.95); box-shadow: 0 0 0 0.5px rgba(255,255,255,0.15); }
+  .menu { position: absolute; z-index: 8; width: 200px; padding: 5px; border-radius: 10px; font-size: 13px; line-height: 16px; opacity: 0; }
+  .light .menu { background: rgba(246,246,248,0.97); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.18), 0 10px 30px rgba(0,0,0,0.2); color: #1D1D1F; }
+  .dark .menu { background: rgba(40,40,44,0.97); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.45); color: #F2F2F7; }
+  .menu .it { height: 24px; padding: 0 10px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .menu .it.off { opacity: 0.4; }
+  .menu .it.hl { background: #0A7AFF; color: #fff; opacity: 1; }
+  .menu hr { border: 0; height: 1px; margin: 4px 10px; }
+  .light .menu hr { background: rgba(0,0,0,0.1); } .dark .menu hr { background: rgba(255,255,255,0.12); }
+  #pointer { position: absolute; z-index: 9; width: 26px; height: 38px; transform-origin: 3px 2px; opacity: 0; }
+  #outline { position: absolute; z-index: 4; border-radius: 14px; border: 6px solid var(--outline); box-shadow: 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 1px rgba(255,255,255,0.5); opacity: 0; pointer-events: none; }
+
+  /* Caption */
+  #caption { position: absolute; left: 0; right: 0; top: 432px; display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; }
+  .light #caption { color: #5D5D5D; } .dark #caption { color: #A1A1A1; }
+  .keys { display: flex; gap: 4px; }
+  .key { min-width: 26px; height: 26px; padding: 0 7px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+  .light .key { background: #fff; color: #292929; box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 1px 0 1px rgba(0,0,0,0.06); }
+  .dark .key { background: #222; color: #EDEDED; box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 1px 0 1px rgba(0,0,0,0.5); }
+  .light .key.down { background: #E6ECFD; color: #1C3FB8; box-shadow: 0 0 0 1px rgba(40,86,237,0.35); }
+  .dark .key.down { background: #24315C; color: #C9D6FF; box-shadow: 0 0 0 1px rgba(127,160,255,0.45); }
+
+  .light { --win:#FFFFFF; --chrome:#F7F7F8; --line:#E6E6E9; --line2:#EFEFF1; --text:#1D1D1F; --text2:#3A3A3C; --text3:#6E6E73; --mute:#8A8A8E; --ph:#A1A1A6; --chip:#F2F2F4; --card:#E8E8EB; --composer:#FFFFFF; --composerLine:#E5E5EA; --field:#ECECEF; --sel:#E3E9FB; --selText:#1C3FB8; --editor:#FFFFFF; --addBg:#E7F5EC; --addBar:#2EA36B; --cPlain:#3B414B; --cNum:#B4B9C2; --cKw:#8A4FD8; --cTag:#2856ED; --cStr:#1F8A5B; --plus:#1F8A5B; --minus:#C2413B; --page:#FFFFFF; --siteText:#000000; --siteMuted:#5D6470; --navText:#20242C; --box:#FFFFFF; --boxLine:#DCDDE2; --cBg:#FAF9F5; --cBubble:#F0EEE6; --cLine:#ECEAE3; --cText:#3D3929; --cPh:#A09C8E; --cComp:#FFFFFF; --cRing:#E8E6DD; --termBg:#FFFFFF; --termBar:#F2F2F4; --lightsOff:#DDDDE0; --sendBg:#1D1D1F; --sendFg:#FFFFFF; --outline:#2856ED; }
+  .dark { --win:#1E1E21; --chrome:#232326; --line:#333338; --line2:#333338; --text:#F2F2F7; --text2:#D1D1D6; --text3:#A1A1A6; --mute:#8E8E93; --ph:#6E6E73; --chip:#2E2E32; --card:#38383D; --composer:#262629; --composerLine:#3A3A3F; --field:#333337; --sel:#24315C; --selText:#9DB4FF; --editor:#1A1A1D; --addBg:#132A1C; --addBar:#3FB873; --cPlain:#D4D7DD; --cNum:#5C6370; --cKw:#C59BFF; --cTag:#7FA0FF; --cStr:#7FD3A0; --plus:#7FD3A0; --minus:#FF7A70; --page:#10141F; --siteText:#FFFFFF; --siteMuted:#A0A6B1; --navText:#E6E8EC; --box:#1A2030; --boxLine:#2B3242; --cBg:#262624; --cBubble:#393937; --cLine:#3A3A37; --cText:#E8E6DC; --cPh:#8A877C; --cComp:#30302E; --cRing:#45443F; --termBg:#1E1E21; --termBar:#2A2A2D; --lightsOff:#4A4A4F; --sendBg:#F2F2F7; --sendFg:#1D1D1F; --outline:#7FA0FF; }
+</style>
+</head>
+<body>
+  <div id="world">
+    <div id="ghost" class="strip"></div>
+    <div id="display">
+      <div id="strip" class="strip"></div>
+      <div id="outline"></div>
+      <div id="menubar">
+        <div class="menus">
+          <svg width="14" height="17" viewBox="0 0 24 24"><path fill="#fff" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+          <span id="app">Codex</span><span>File</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span>
+        </div>
+        <div class="status-items">
+          <img src="layers/menu-white.png" style="width:16px;height:16px" />
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#fff" stroke-opacity="0.5"/><rect x="2" y="2" width="17" height="9" rx="2" fill="#fff"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="#fff" fill-opacity="0.5"/></svg>
+          <svg width="17" height="13" viewBox="0 0 17 13"><path d="M8.5 2.6c2.4 0 4.6.9 6.3 2.5l1.2-1.3C14 1.9 11.4.8 8.5.8S3 1.9 1 3.8l1.2 1.3C3.9 3.5 6.1 2.6 8.5 2.6z" fill="#fff"/><path d="M8.5 6.1c1.4 0 2.7.5 3.8 1.4l1.2-1.3C12.1 5 10.4 4.3 8.5 4.3S4.9 5 3.5 6.2l1.2 1.3c1.1-.9 2.4-1.4 3.8-1.4z" fill="#fff"/><path d="M8.5 9.6c.5 0 1 .2 1.4.5l1.3-1.3C10.5 8.1 9.5 7.8 8.5 7.8s-2 .3-2.7 1l1.3 1.3c.4-.3.9-.5 1.4-.5z" fill="#fff"/><circle cx="8.5" cy="11.6" r="1.2" fill="#fff"/></svg>
+          <svg width="16" height="14" viewBox="0 0 16 14"><rect x="0.75" y="0.75" width="14.5" height="5" rx="2.5" fill="none" stroke="#fff" stroke-width="1.5"/><circle cx="12.5" cy="3.25" r="1.6" fill="#fff"/><rect x="0.75" y="8.25" width="14.5" height="5" rx="2.5" fill="none" stroke="#fff" stroke-width="1.5"/><circle cx="3.5" cy="10.75" r="1.6" fill="#fff"/></svg>
+          <span style="white-space:pre">Wed Oct 21  9:41 AM</span>
+        </div>
+      </div>
+      <div id="panel"></div>
+      <div id="menu" class="menu"></div>
+      <div id="submenu" class="menu"></div>
+      <svg id="pointer" viewBox="0 0 26 38"><path d="M3 2v29l7-7 5 11 5-2-5-11h10z" fill="#000" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+  <div id="caption"><div class="keys" id="keys"></div><span id="label"></span></div>
+
+<script>
+const q = new URLSearchParams(location.search);
+const THEME = q.get('theme') || 'light';
+const SCENE = q.get('scene') || 'scroll';
+document.body.className = THEME;
+
+// ---------- windows ----------
+const LIGHTS = '<div class="lights"><i></i><i></i><i></i></div>';
+const ICON = (d, c = 'var(--mute)') => `<svg width="14" height="14" viewBox="0 0 16 16"><path d="${d}" fill="none" stroke="${c}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const FILE = ICON('M4 1.75h5l3 3v9.5H4z');
+const SEND = `<svg width="12" height="12" viewBox="0 0 16 16"><path d="M8 13V3M4 7l4-4 4 4" fill="none" stroke="var(--sendFg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+const codex = () => `
+  <div class="bar">${LIGHTS}<span class="title nowrap">Build the new homepage</span>${ICON('M7 2.5H4.5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V9M12.6 1.9a1.2 1.2 0 0 1 1.7 1.7L8.5 9.4 6.4 10l.6-2.1z')}</div>
+  <div class="thread">
+    <div class="meta">${ICON('M1.75 4.25c0-.8.65-1.5 1.5-1.5h3l1.5 1.5h5c.83 0 1.5.67 1.5 1.5v6c0 .83-.67 1.5-1.5 1.5h-9.5c-.85 0-1.5-.67-1.5-1.5z')}<span>ribbon</span><span class="chip mono">⑂ main</span></div>
+    <div class="bubble">Keep the layout simple. Make the work the focus, and bring the Download button closer to the headline.</div>
+    <div>I’ll tighten the hero in index.astro, then check it in the browser.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="step">${FILE}<span>Read</span><span class="mono">src/pages/index.astro</span></div>
+      <div class="step">${FILE}<span>Read</span><span class="mono">src/styles/site.css</span></div>
+    </div>
+    <div class="diff"><div><span class="grow">Edited <span class="mono" style="font-size:12px">index.astro</span></span><span class="add mono">+3</span><span class="rem mono">−2</span></div><div><span class="grow">Edited <span class="mono" style="font-size:12px">site.css</span></span><span class="add mono">+1</span><span class="rem mono">−1</span></div></div>
+    <div class="step">${ICON('M1.75 3.5a.75.75 0 0 1 .75-.75h11a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-.75.75h-11a.75.75 0 0 1-.75-.75zM4.5 6.5 6.5 8l-2 1.5M8 10h3')}<span>Ran</span><span class="mono">npm run dev</span></div>
+    <div>Updated the hero. The headline now sits 24 px above Download, and the dev server is running on localhost:4321 if you want to check it in Safari.</div>
+  </div>
+  <div class="composer"><div><span class="ph">Ask Codex anything</span><div class="crow"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="var(--mute)" stroke-width="1.4" stroke-linecap="round"/></svg><span>Local</span><span class="send">${SEND}</span></div></div></div>`;
+
+const CODE = [
+  [0, [['d', '---']]],
+  [0, [['k', 'import'], ['', ' Site '], ['k', 'from'], ['s', " '../layouts/Site.astro'"], ['', ';']]],
+  [0, [['k', 'import'], ['', ' HeroScene '], ['k', 'from'], ['s', " '../components/HeroScene.astro'"], ['', ';']]],
+  [0, [['k', 'import'], ['', ' DownloadLink '], ['k', 'from'], ['s', " '../components/DownloadLink.astro'"], ['', ';']]],
+  [0, [['d', '---']]],
+  [0, []],
+  [0, [['t', '<Site'], ['k', ' title'], ['', '='], ['s', '"Ribbon"'], ['t', '>']]],
+  [2, [['t', '<section'], ['k', ' class'], ['', '='], ['s', '"hero"'], ['t', '>']]],
+  [4, [['t', '<div'], ['k', ' class'], ['', '='], ['s', '"hero-intro"'], ['t', '>']]],
+  [6, [['t', '<h1>'], ['', 'Your agents,'], ['t', '<br />'], ['', 'right beside your work.'], ['t', '</h1>']]],
+  [6, [['t', '<p'], ['k', ' class'], ['', '='], ['s', '"hero-description"'], ['t', '>']]],
+  [8, [['', 'Codex beside your IDE. Claude beside your canvas.']]],
+  [6, [['t', '</p>']]],
+  [6, [['t', '<div'], ['k', ' class'], ['', '='], ['s', '"hero-actions"'], ['t', '>']], 1],
+  [8, [['t', '<DownloadLink'], ['k', ' icon'], ['t', ' />']], 1],
+  [8, [['t', '<a'], ['k', ' href'], ['', '='], ['s', '"#features"'], ['t', '>'], ['', 'See how it works'], ['t', '</a>']], 1],
+  [6, [['t', '</div>']]],
+  [4, [['t', '</div>']]],
+  [4, [['t', '<HeroScene />']]],
+  [2, [['t', '</section>']]],
+  [0, [['t', '</Site>']]],
+];
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const codeHTML = CODE.map(([ind, toks, add], i) => `<div${add ? ' class="plus"' : ''}><span class="n">${i + 1}</span><span>${' '.repeat(ind)}${toks.map(([c, s]) => c ? `<span class="${c}">${esc(s)}</span>` : esc(s)).join('')}</span></div>`).join('');
+const DOT = c => `<span class="dot" style="background:${c}"></span>`;
+const CHEV = open => `<svg width="10" height="10" viewBox="0 0 10 10"><path d="${open ? 'M2.5 3.5 5 6l2.5-2.5' : 'M3.5 2.5 6 5 3.5 7.5'}" fill="none" stroke="var(--text3)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const cursor = () => `
+  <div class="bar">${LIGHTS}<div class="search">${ICON('M11 11l3 3M7 11.75a4.75 4.75 0 1 0 0-9.5 4.75 4.75 0 0 0 0 9.5z')}<span>ribbon</span></div><div style="width:56px;flex-shrink:0"></div></div>
+  <div class="ide">
+    <div class="explorer"><span class="label">RIBBON</span>
+      <div class="row" style="padding-left:14px">${CHEV(1)}website</div>
+      <div class="row" style="padding-left:26px">${CHEV(1)}src</div>
+      <div class="row" style="padding-left:38px">${CHEV(0)}components</div>
+      <div class="row" style="padding-left:38px">${CHEV(0)}layouts</div>
+      <div class="row" style="padding-left:38px">${CHEV(1)}pages</div>
+      <div class="row sel" style="padding-left:66px">${DOT('#FF5D01')}index.astro<span class="m">M</span></div>
+      <div class="row" style="padding-left:66px">${DOT('#FF5D01')}404.astro</div>
+      <div class="row" style="padding-left:38px">${CHEV(1)}styles</div>
+      <div class="row" style="padding-left:66px">${DOT('#2965F1')}hero.css</div>
+      <div class="row" style="padding-left:66px">${DOT('#2965F1')}site.css<span class="m">M</span></div>
+      <div class="row" style="padding-left:38px">${DOT('var(--cNum)')}astro.config.mjs</div>
+      <div class="row" style="padding-left:38px">${DOT('var(--cNum)')}package.json</div>
+    </div>
+    <div class="editor">
+      <div class="tabs"><div class="tab on">${DOT('#FF5D01')}index.astro<span style="color:var(--mute)">×</span></div><div class="tab">${DOT('#2965F1')}site.css</div></div>
+      <div class="crumb">website › src › pages › <span style="color:var(--text2)">index.astro</span></div>
+      <div class="code">${codeHTML}</div>
+    </div>
+  </div>
+  <div class="status"><span style="color:${THEME === 'dark' ? '#7FA0FF' : '#2856ED'}">⑂ main*</span><span>0 problems</span><span style="margin-left:auto">Ln 15, Col 22</span><span>Spaces: 2</span><span>Astro</span></div>`;
+
+const safari = () => `
+  <div class="bar">${LIGHTS}
+    <svg width="18" height="14" viewBox="0 0 18 14"><rect x="0.75" y="0.75" width="16.5" height="12.5" rx="2.5" fill="none" stroke="var(--mute)" stroke-width="1.3"/><path d="M6.5 1v12" stroke="var(--mute)" stroke-width="1.3"/></svg>
+    <svg width="22" height="14" viewBox="0 0 22 14"><path d="M5 2 1 7l4 5" fill="none" stroke="var(--mute)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 2l4 5-4 5" fill="none" stroke="var(--ph)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="addr"><div><svg width="11" height="11" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="var(--mute)" stroke-width="1.5"/></svg>localhost:4321</div></div>
+    ${ICON('M8 2v8M5 5l3-3 3 3M3 8v5h10V8')}${ICON('M8 3v10M3 8h10')}
+  </div>
+  <div class="page">
+    <div class="site-nav"><span class="brand"><img src="layers/ribbon-icon.png" style="width:26px;height:26px">Ribbon</span><span>Features</span><span>FAQ</span><span class="btn">Download</span></div>
+    <div class="hero"><h1>Your agents,<br>right beside your work.</h1><p>Codex beside your IDE. Claude beside your canvas.</p><div class="acts"><span class="btn">Download</span><span style="color:#2856ED">See how it works →</span></div></div>
+    <div class="scene"><i></i><i></i><i></i></div>
+  </div>`;
+
+const claude = () => `
+  <div class="bar">${LIGHTS}<span class="title nowrap">Review the hero</span><div style="width:52px"></div></div>
+  <div class="cthread">
+    <div class="cbubble">Review the hero changes Codex just made. Does the layout still read clearly?</div>
+    <div class="creply"><svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:3px"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1" stroke="#D97757" stroke-width="2.6" stroke-linecap="round"/></svg><span>It reads clearly. The headline and Download button now feel like one group. I’d tighten the gap above the workspace scene next, so the first screen ends on the product.</span></div>
+  </div>
+  <div class="ccomp"><div>Reply to Claude…<span style="width:30px;height:30px;border-radius:9px;background:#D97757;display:flex;align-items:center;justify-content:center">${SEND.replace('var(--sendFg)', '#fff')}</span></div></div>`;
+
+const terminal = () => `
+  <div class="bar">${LIGHTS}<span class="title">website — npm run dev — 80×24</span></div>
+  <pre>~/dev/ribbon/website % npm run dev
+
+ astro  v5.13.2 ready in 412 ms
+
+┃ Local    http://localhost:4321/
+
+09:41:07 [watch] src/pages/index.astro</pre>`;
+
+const BUILD = { Claude: [claude, 'claude'], Codex: [codex, 'codex'], Cursor: [cursor, 'cursor'], Safari: [safari, 'safari'], Terminal: [terminal, 'term'] };
+const ORDER = ['Claude', 'Codex', 'Cursor', 'Safari', 'Terminal'];
+const EL = { strip: {}, ghost: {} };
+for (const layer of ['strip', 'ghost']) {
+  const host = document.getElementById(layer);
+  for (const id of ORDER) {
+    const d = document.createElement('div');
+    d.className = `win ${BUILD[id][1]}`;
+    d.innerHTML = BUILD[id][0]();
+    host.appendChild(d);
+    EL[layer][id] = d;
+  }
+}
+
+// ---------- overview panel ----------
+const panel = document.getElementById('panel');
+const linkColor = THEME === 'dark' ? '#7FA0FF' : '#2856ED';
+const TILE = {};
+for (const id of ORDER) {
+  const t = document.createElement('div');
+  t.className = 'tile';
+  t.innerHTML = `<div class="icon"><img src="layers/${id.toLowerCase()}.png"><div class="badge"><svg width="12" height="12" viewBox="0 0 16 16"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.3-2.3a3 3 0 0 0-4.2-4.2L7.6 4.2M9.5 6.5a3 3 0 0 0-4.2 0L3 8.8a3 3 0 0 0 4.2 4.2l1.2-1.2" fill="none" stroke="${linkColor}" stroke-width="1.9" stroke-linecap="round"/></svg></div></div><span>${id}</span>`;
+  panel.appendChild(t);
+  TILE[id] = t;
+}
+const tileCenter = id => [516 + ORDER.indexOf(id) * 120, 487];
+
+// ---------- easing and tracks ----------
+function bezier(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+  const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const sx = t => ((ax * t + bx) * t + cx) * t, sy = t => ((ay * t + by) * t + cy) * t, dx = t => (3 * ax * t + 2 * bx) * t + cx;
+  return x => { let t = x; for (let i = 0; i < 8; i++) { const e = sx(t) - x; const d = dx(t); if (Math.abs(e) < 1e-6 || !d) break; t -= e / d; } return sy(Math.min(1, Math.max(0, t))); };
+}
+const TRAVEL = bezier(0.77, 0, 0.175, 1);     // the website's window moves
+const FEEDBACK = bezier(0.23, 1, 0.32, 1);    // panels, menus, highlights
+// Sequential moves: [{t, d, v, e}] from a base value.
+function anim(t, base, moves) {
+  let v = base;
+  for (const m of moves) {
+    if (t < m.t) break;
+    const from = v;
+    v = t >= m.t + m.d ? m.v : from + (m.v - from) * (m.e || TRAVEL)((t - m.t) / m.d);
+  }
+  return v;
+}
+function step(t, base, stops) { let v = base; for (const [at, val] of stops) if (t >= at) v = val; return v; }
+const fade = (t, inAt, outAt, d = 0.2) => Math.min(anim(t, 0, [{ t: inAt, d, v: 1, e: FEEDBACK }]), outAt == null ? 1 : anim(t, 1, [{ t: outAt, d: 0.15, v: 0, e: FEEDBACK }]));
+
+// Ribbon geometry at 1:1: 12 pt gaps, 6 pt screen padding, windows flush under the menu bar.
+const GAP = 12, TOP = 24, FULL = 958;
+const BASE = { Claude: [-750, 744], Codex: [6, 494], Cursor: [512, 994], Safari: [1518, 744], Terminal: [2274, 620] };
+// Lay columns out left to right from Codex, given widths.
+function layout(widths, startX = 6) {
+  const out = {}; let x = startX;
+  for (const id of ['Codex', 'Cursor', 'Safari', 'Terminal']) { out[id] = x; x += widths[id] + GAP; }
+  out.Claude = startX - GAP - widths.Claude;
+  return out;
+}
+
+// ---------- scenes ----------
+// Each returns the full frame state at time t.
+function baseState() {
+  const wins = {};
+  for (const id of ORDER) wins[id] = { x: BASE[id][0], y: TOP, w: BASE[id][1], h: FULL };
+  return { wins, offset: 0, focus: 'Codex', panel: 0, selected: null, hover: null, press: false, badges: 0, pointer: null, menu: null, outline: 0, keys: [], down: false, label: '' };
+}
+
+const SCENES = {
+  // Focus right through the strip and back: each move scrolls only as far as the focused window needs.
+  scroll: { duration: 9.2, render(t) {
+    const s = baseState();
+    const steps = [[1.0, '→', 'Cursor', 0], [2.2, '→', 'Safari', 756], [3.6, '→', 'Terminal', 1388], [5.0, '←', 'Safari', 1388], [6.0, '←', 'Cursor', 506], [7.4, '←', 'Codex', 0]];
+    s.offset = anim(t, 0, steps.map(([at, , , o]) => ({ t: at, d: 0.7, v: o })));
+    s.focus = step(t, 'Codex', steps.map(([at, , f]) => [at, f]));
+    const key = step(t, '→', steps.map(([at, k]) => [at, k]));
+    s.keys = ['⌃', '⌥', key]; s.label = key === '→' ? 'Focus right' : 'Focus left';
+    s.down = steps.some(([at]) => t >= at && t < at + 0.22);
+    return s;
+  } },
+
+  // Control-Option-R cycles the focused column through its preset widths; the strip reflows around it.
+  resize: { duration: 8.8, render(t) {
+    const s = baseState();
+    const presets = [[494, '⅓'], [744, '½'], [994, '⅔'], [1122, '¾'], [1500, 'Full'], [494, '⅓']];
+    const at = [1.0, 2.5, 4.0, 5.5, 7.0];
+    const w = anim(t, 494, at.map((a, i) => ({ t: a, d: 0.7, v: presets[i + 1][0] })));
+    const xs = layout({ Codex: w, Cursor: 994, Safari: 744, Terminal: 620, Claude: 744 });
+    for (const id of ORDER) s.wins[id].x = xs[id];
+    s.wins.Codex.w = w;
+    const n = step(t, 0, at.map((a, i) => [a, i + 1]));
+    s.keys = ['⌃', '⌥', 'R']; s.label = n ? `Cycle widths: ${presets[n][1]}` : 'Cycle widths';
+    s.down = at.some(a => t >= a && t < a + 0.22);
+    return s;
+  } },
+
+  // Stack: Terminal joins Safari's column, one column and two windows; then it leaves again.
+  stack: { duration: 8.4, render(t) {
+    const s = baseState();
+    s.focus = 'Terminal';
+    const half = (FULL - GAP) / 2;
+    const STACK = 1.0, UNSTACK = 4.8, D = 0.8;
+    s.offset = anim(t, 1388, [{ t: STACK, d: D, v: 756 }, { t: UNSTACK, d: D, v: 1388 }]);
+    s.wins.Safari.h = anim(t, FULL, [{ t: STACK, d: D, v: half }, { t: UNSTACK, d: D, v: FULL }]);
+    const T = s.wins.Terminal;
+    T.x = anim(t, 2274, [{ t: STACK, d: D, v: 1518 }, { t: UNSTACK, d: D, v: 2274 }]);
+    T.y = anim(t, TOP, [{ t: STACK, d: D, v: TOP + half + GAP }, { t: UNSTACK, d: D, v: TOP }]);
+    T.w = anim(t, 620, [{ t: STACK, d: D, v: 744 }, { t: UNSTACK, d: D, v: 620 }]);
+    T.h = anim(t, FULL, [{ t: STACK, d: D, v: half }, { t: UNSTACK, d: D, v: FULL }]);
+    const stacked = t >= STACK && t < UNSTACK;
+    s.keys = stacked ? ['⌃', '⌥', ']'] : t >= UNSTACK ? ['⌃', '⌥', '⇧', ']'] : ['⌃', '⌥', ']'];
+    s.label = t >= UNSTACK ? 'Unstack' : 'Stack';
+    s.down = (t >= STACK && t < STACK + 0.22) || (t >= UNSTACK && t < UNSTACK + 0.22);
+    return s;
+  } },
+
+  // Pair from the overview's context menu, fit the pair to ⅓–⅔, then cycle the width and ungroup.
+  pair: { duration: 11.8, render(t) {
+    const s = baseState();
+    const codexW = anim(t, 744, [{ t: 5.4, d: 0.8, v: 494 }, { t: 7.4, d: 0.7, v: 744 }]);
+    const xs = layout({ Codex: codexW, Cursor: 994, Safari: 744, Terminal: 620, Claude: 744 });
+    for (const id of ORDER) s.wins[id].x = xs[id];
+    s.wins.Codex.w = codexW;
+    // Overview open twice.
+    s.panel = Math.max(fade(t, 0.8, 5.25), fade(t, 8.7, 10.9));
+    s.selected = 'Codex';
+    const tile = tileCenter('Codex');
+    const P0 = [1250, 820];
+    const path = (moves) => [anim(t, P0[0], moves.map(m => ({ t: m[0], d: m[1], v: m[2][0], e: TRAVEL }))), anim(t, P0[1], moves.map(m => ({ t: m[0], d: m[1], v: m[2][1], e: TRAVEL })))];
+    const mx = tile[0] + 4, my = tile[1] + 4;              // menu anchor at the right-click
+    const item = (i) => [mx + 70, my + 5 + 12 + 24 * i + (i >= 3 ? 9 : 0)];
+    const sub = (i) => [mx + 230, my + 5 + 12 + 24 * 3 + 9 + 24 * i];
+    s.pointer = { o: Math.max(fade(t, 0.9, 5.3), fade(t, 8.8, 11.0)), press: false };
+    const p1 = path([
+      [1.1, 0.6, tile], [2.2, 0.4, item(1)], [3.2, 0.4, tile], [3.95, 0.4, item(3)], [4.45, 0.25, [mx + 230, item(3)[1]]], [4.7, 0.25, sub(1)],
+      [6.0, 0.01, P0], [9.0, 0.6, tile], [10.0, 0.35, item(2)],
+    ]);
+    s.pointer.x = p1[0]; s.pointer.y = p1[1];
+    const clicks = [1.95, 2.85, 3.75, 5.15, 9.8, 10.55];
+    s.pointer.press = clicks.some(c => t >= c && t < c + 0.12);
+    s.badges = Math.min(anim(t, 0, [{ t: 2.95, d: 0.2, v: 1, e: FEEDBACK }]), anim(t, 1, [{ t: 10.6, d: 0.2, v: 0, e: FEEDBACK }]));
+    const paired = s.badges > 0.5;
+    // Context menus: [open, close, hovered item over time]
+    const menus = [[2.0, 2.9, [[2.45, 1]]], [3.8, 5.2, [[4.2, 3]]], [9.85, 10.6, [[10.25, 2]]]];
+    for (const [o, c, hov] of menus) {
+      if (t >= o && t < c + 0.15) {
+        s.menu = { o: fade(t, o, c, 0.12), x: mx, y: my, hover: step(t, null, hov), paired: o > 3 && o < 9 ? true : paired, sub: null };
+        if (o === 3.8 && t >= 4.3) s.menu.sub = { o: fade(t, 4.3, 5.2, 0.12), hover: t >= 4.85 ? 1 : null };
+        if (o === 3.8 && t >= 4.3) s.menu.hover = 3;
+      }
+    }
+    s.hover = s.panel > 0.5 && !s.menu && ((t > 1.6 && t < 5.2) || (t > 9.5)) ? 'Codex' : null;
+    s.outline = Math.min(fade(t, 5.4, 7.0, 0.25), 1);
+    // Caption follows the action.
+    s.keys = step(t, ['⌃', '⌥', 'Tab'], [[2.85, []], [7.3, ['⌃', '⌥', 'R']], [8.6, ['⌃', '⌥', 'Tab']], [10.55, []]]);
+    s.label = step(t, 'Arrange windows', [[2.85, 'Pair with Right'], [5.15, 'Arrange ⅓–⅔'], [7.3, 'Cycle widths: ½'], [8.6, 'Arrange windows'], [10.55, 'Ungroup']]);
+    s.down = [0.8, 7.4, 8.7].some(a => t >= a - 0.05 && t < a + 0.2);
+    return s;
+  } },
+
+  // The overview finds a window anywhere in the strip; a click focuses it and the strip follows.
+  overview: { duration: 8.6, render(t) {
+    const s = baseState();
+    const rounds = [{ open: 1.0, to: 'Safari', click: 2.6, offset: 756 }, { open: 4.6, to: 'Codex', click: 6.2, offset: 0 }];
+    s.offset = anim(t, 0, rounds.map(r => ({ t: r.click + 0.12, d: 0.7, v: r.offset })));
+    s.focus = step(t, 'Codex', rounds.map(r => [r.click + 0.08, r.to]));
+    s.panel = Math.max(...rounds.map(r => fade(t, r.open, r.click + 0.08)));
+    s.selected = t >= rounds[1].open ? 'Safari' : 'Codex';
+    const P0 = [1320, 820];
+    const moves = [{ t: 1.45, d: 0.9, v: tileCenter('Safari') }, { t: 5.05, d: 0.9, v: tileCenter('Codex') }];
+    s.pointer = {
+      x: anim(t, P0[0], moves.map(m => ({ t: m.t, d: m.d, v: m.v[0] }))),
+      y: anim(t, P0[1], moves.map(m => ({ t: m.t, d: m.d, v: m.v[1] }))),
+      o: Math.min(anim(t, 0, [{ t: 1.1, d: 0.25, v: 1, e: x => x }]), anim(t, 1, [{ t: 7.4, d: 0.4, v: 0, e: x => x }])),
+      press: rounds.some(r => t >= r.click && t < r.click + 0.12),
+    };
+    for (const r of rounds) if (t > r.click - 0.35 && t < r.click + 0.08) s.hover = r.to;
+    s.keys = ['⌃', '⌥', 'Tab']; s.label = 'Arrange windows';
+    s.down = rounds.some(r => t >= r.open - 0.05 && t < r.open + 0.2);
+    return s;
+  } },
+};
+
+// ---------- draw ----------
+const $ = id => document.getElementById(id);
+function menuHTML(m) {
+  const items = [['Pair with Left', true], ['Pair with Right', m.paired], ['Ungroup', !m.paired]];
+  let h = items.map(([label, off], i) => `<div class="it${off ? ' off' : ''}${m.hover === i ? ' hl' : ''}">${label}</div>`).join('');
+  h += `<hr><div class="it${m.hover === 3 ? ' hl' : ''}">Arrange<span>›</span></div>`;
+  return h;
+}
+function draw(s) {
+  for (const layer of ['strip', 'ghost']) {
+    for (const id of ORDER) {
+      const w = s.wins[id], el = EL[layer][id];
+      el.style.left = w.x + 'px'; el.style.top = w.y + 'px'; el.style.width = w.w + 'px'; el.style.height = w.h + 'px';
+      el.classList.toggle('focused', id === s.focus);
+    }
+    $(layer).style.transform = `translateX(${-s.offset}px)`;
+  }
+  $('app').textContent = s.focus;
+  // Overview
+  panel.style.opacity = s.panel; panel.style.transform = `scale(${0.96 + 0.04 * s.panel})`;
+  const tint = THEME === 'dark' ? '255,255,255' : '0,0,0';
+  for (const id of ORDER) {
+    const sel = id === s.selected, hv = id === s.hover;
+    TILE[id].style.background = sel ? `rgba(${tint},${THEME === 'dark' ? 0.12 : 0.08})` : hv ? `rgba(${tint},${THEME === 'dark' ? 0.07 : 0.045})` : 'transparent';
+    TILE[id].style.transform = hv && s.press ? 'scale(0.96)' : 'none';
+    TILE[id].querySelector('.badge').style.opacity = id === 'Codex' || id === 'Cursor' ? s.badges : 0;
+  }
+  // Context menu and submenu
+  const menu = $('menu'), subm = $('submenu');
+  if (s.menu) {
+    menu.style.opacity = s.menu.o; menu.style.left = s.menu.x + 'px'; menu.style.top = s.menu.y + 'px';
+    menu.innerHTML = menuHTML(s.menu);
+    if (s.menu.sub) {
+      subm.style.opacity = s.menu.sub.o; subm.style.left = s.menu.x + 196 + 'px'; subm.style.top = s.menu.y + 24 * 3 + 9 + 'px';
+      subm.innerHTML = ['½–½', '⅓–⅔', '⅔–⅓'].map((l, i) => `<div class="it${s.menu.sub.hover === i ? ' hl' : ''}">${l}</div>`).join('');
+    } else subm.style.opacity = 0;
+  } else { menu.style.opacity = 0; subm.style.opacity = 0; }
+  // Pointer
+  const pe = $('pointer');
+  if (s.pointer) {
+    pe.style.opacity = s.pointer.o; pe.style.left = s.pointer.x + 'px'; pe.style.top = s.pointer.y + 'px';
+    pe.style.transform = `scale(${s.pointer.press ? 1.35 : 1.5})`;
+  } else pe.style.opacity = 0;
+  // Pair outline around Codex and Cursor, in screen coordinates.
+  const o = $('outline');
+  o.style.opacity = s.outline;
+  const a = s.wins.Codex, b = s.wins.Cursor;
+  o.style.left = a.x - s.offset + 3 + 'px'; o.style.top = TOP + 3 + 'px';
+  o.style.width = b.x + b.w - a.x - 6 + 'px'; o.style.height = FULL - 6 + 'px';
+  // Caption
+  $('keys').innerHTML = s.keys.map(k => `<span class="key${s.down ? ' down' : ''}">${k}</span>`).join('');
+  $('label').textContent = s.label;
+}
+
+const scene = SCENES[SCENE];
+window.DURATION = scene.duration;
+window.render = t => draw(scene.render(t));
+window.render(0);
+</script>
+</body>
+</html>

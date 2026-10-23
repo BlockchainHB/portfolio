@@ -138,7 +138,7 @@ function Stack({ tiles, enterAt, labelAt }: { tiles: StackTile[]; enterAt: numbe
 const INTRO = "I'm Hasaam Bhatti, in Toronto. I take products from idea to shelf, from the backend to the box.";
 
 // Fetch the stack icons with the HTML, so the fan never opens on blank tiles.
-const ICONS = ["beamlet-app", "flagrunner-app", "zensweat-app", "lf-ink", "gc-white", "hb-white"];
+const ICONS = ["beamlet-app", "zensweat-app", "lf-ink", "gc-white", "hb-white"];
 
 export function Hero() {
   for (const icon of ICONS) preload(`/icons/${icon}.webp`, { as: "image" });
@@ -148,6 +148,8 @@ export function Hero() {
   // above the statement.
   return (
     <section className="masthead order-1 mx-auto flex w-full max-w-content flex-col items-center gap-5 pb-12 pt-16 lg:gap-7 lg:pb-24 lg:pt-28">
+      {/* Flag Runner is only in the desktop stacks; the phone fan leaves it out. */}
+      <link rel="preload" as="image" href="/icons/flagrunner-app.webp" media="(min-width: 1024px)" />
       <span aria-hidden className="intro-rise relative block h-24 w-[260px] lg:hidden" style={delay(0)}>
         {FAN.map((t) => (
           <Tile key={t.name} t={t} anchor={FAN[FAN.length - 1]} px={56} radius={13} shadow={fanShadow} />

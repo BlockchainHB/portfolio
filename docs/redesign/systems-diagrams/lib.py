@@ -12,6 +12,7 @@ THEMES = {
 ACCENTS = {  # project accents, light / dark
     "lf": ("#0066CC", "#3395FF"), "gc": ("#B8862B", "#D9B36A"),
     "pr": ("#2F8F5B", "#4CC38A"), "dh": ("#1F7A57", "#3DD68C"),
+    "rb": ("#2856ED", "#7FA0FF"),
 }
 
 class D:

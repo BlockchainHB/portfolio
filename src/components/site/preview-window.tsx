@@ -15,6 +15,7 @@ import { fadeIn } from "./theme-image";
 const TILE_MARKS: Record<string, Mark> = {
   "zen-sweat": MARKS.zenSweat,
   "flag-runner": MARKS.flagRunner,
+  ribbon: MARKS.ribbon,
   "daily-hadith": MARKS.dailyHadith,
   beamlet: MARKS.beamlet,
   "pr-monitor": MARKS.prMonitor,
@@ -333,6 +334,8 @@ function ViewImage({
     const timer = window.setTimeout(
       () => {
         settled.current = true;
+        // Both stages are mounted and CSS hides one; the hidden stage's loop never downloads or plays.
+        if (el.getClientRects().length === 0) return;
         void el.play().catch(() => {});
       },
       settled.current ? 0 : 500,
@@ -350,6 +353,7 @@ function ViewImage({
   // The dialog only renders after a click, so the theme is known: fetch just its picture.
   const { resolvedTheme } = useTheme();
   const src = resolvedTheme === "dark" && image.dark ? image.dark : image.src;
+  const videoSrc = resolvedTheme === "dark" && image.videoDark ? image.videoDark : image.video;
 
   return (
     <div
@@ -371,14 +375,16 @@ function ViewImage({
         quality={90}
         // The view on screen loads straight away; the others wait their turn.
         loading={active ? "eager" : "lazy"}
+        // The other views' stills arrive after it, ready for an instant tab switch.
+        fetchPriority={active ? "high" : "low"}
         draggable={false}
         // A picture still downloading fades in over the stage instead of popping in
         className="fade-img object-contain"
       />
-      {image.video && !still && (
+      {videoSrc && !still && (
         <video
           ref={video}
-          src={image.video}
+          src={videoSrc}
           muted
           loop
           playsInline

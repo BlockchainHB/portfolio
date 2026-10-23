@@ -1,4 +1,3 @@
-import BlurFade from "@/components/magicui/blur-fade";
 import { getBlogPosts } from "@/data/blog";
 import Link from "next/link";
 
@@ -8,39 +7,31 @@ export const metadata = {
   alternates: { canonical: "/blog" },
 };
 
-const BLUR_FADE_DELAY = 0.04;
+// The site's CSS entrance, 40ms apart: it paints on first load, before any JavaScript.
+const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as React.CSSProperties;
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();
 
   return (
-    <section>
-      <BlurFade delay={BLUR_FADE_DELAY}>
-        <h1 className="font-medium text-2xl mb-8 tracking-tighter">blog</h1>
-      </BlurFade>
+    <section data-intro>
+      <h1 className="intro-fade mb-8 text-2xl font-medium tracking-tighter" style={delay(40)}>
+        blog
+      </h1>
       {posts
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1;
-          }
-          return 1;
-        })
+        .sort((a, b) => (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1))
         .map((post, id) => (
-          <BlurFade delay={BLUR_FADE_DELAY * 2 + id * 0.05} key={post.slug}>
-            <Link
-              className="flex flex-col space-y-1 mb-4"
-              href={`/blog/${post.slug}`}
-            >
-              <div className="w-full flex flex-col">
-                <p className="tracking-tight">{post.metadata.title}</p>
-                <p className="h-6 text-xs text-muted-foreground">
-                  {post.metadata.publishedAt}
-                </p>
-              </div>
-            </Link>
-          </BlurFade>
+          <Link
+            key={post.slug}
+            className="intro-fade mb-4 flex flex-col space-y-1"
+            style={delay(80 + id * 50)}
+            href={`/blog/${post.slug}`}
+          >
+            <div className="flex w-full flex-col">
+              <p className="tracking-tight">{post.metadata.title}</p>
+              <p className="h-6 text-xs text-muted-foreground">{post.metadata.publishedAt}</p>
+            </div>
+          </Link>
         ))}
     </section>
   );
